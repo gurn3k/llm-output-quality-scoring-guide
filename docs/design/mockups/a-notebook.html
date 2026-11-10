@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction A: Notebook</title>
+<style>
+:root {
+  --bg: #fbfaf7; --surface: #ffffff; --ink: #1f1d1a; --muted: #6b665e; --line: #e4e0d8;
+  --accent: #2f5d50; --pass: #2f6b3f; --fail: #a23b2a; --range: #c9d8d2; --quote: #fff1b8; --data: #f4f1ea;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #171614; --surface: #1f1e1b; --ink: #ece8e1; --muted: #a59f95; --line: #34322e;
+  --accent: #8cc4b3; --pass: #7fc48f; --fail: #f08a76; --range: #2f4a42; --quote: #5a4a12; --data: #262421;
+} }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 Georgia, "Iowan Old Style", "Times New Roman", serif; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+.tag { font: 600 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: 30px; line-height: 1.2; margin: 6px 0 4px; font-weight: 600; }
+h2 { font-size: 22px; margin: 48px 0 6px; font-weight: 600; }
+p { margin: 0 0 12px; }
+.lede { color: var(--muted); }
+.frame { border-top: 2px solid var(--ink); margin-top: 40px; padding-top: 8px; }
+.steps { font: 14px/1.4 system-ui, sans-serif; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 24px; }
+.steps b { color: var(--ink); }
+.data { background: var(--data); border-left: 3px solid var(--line); padding: 12px 14px; margin: 8px 0 16px; font: 15px/1.55 ui-monospace, "Cascadia Mono", Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.label { font: 600 13px/1.2 system-ui, sans-serif; color: var(--muted); margin-top: 18px; }
+.crit { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.crit .name { font-weight: 600; }
+.btns { display: flex; gap: 8px; font: 14px system-ui, sans-serif; }
+.btns span { border: 1px solid var(--line); border-radius: 4px; padding: 6px 12px; background: var(--surface); }
+.btns .on-pass { border-color: var(--pass); color: var(--pass); font-weight: 600; }
+.btns .on-fail { border-color: var(--fail); color: var(--fail); font-weight: 600; }
+kbd { font: 12px ui-monospace, monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; padding: 0 4px; }
+.keys { font: 14px system-ui, sans-serif; color: var(--muted); margin-top: 14px; }
+.result { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.result .sentence { font-size: 20px; line-height: 1.4; }
+.big { font-weight: 600; }
+.bar { position: relative; height: 10px; background: var(--line); border-radius: 5px; margin: 10px 0 4px; max-width: 420px; }
+.bar i { position: absolute; top: 0; bottom: 0; background: var(--range); border-radius: 5px; }
+.bar b { position: absolute; top: -3px; width: 3px; height: 16px; background: var(--accent); }
+.scale { font: 12px system-ui, sans-serif; color: var(--muted); display: flex; justify-content: space-between; max-width: 420px; }
+.note { font: 15px/1.5 system-ui, sans-serif; border-left: 3px solid var(--fail); padding: 4px 0 4px 12px; margin-top: 10px; }
+.small { font: 14px/1.5 system-ui, sans-serif; color: var(--muted); }
+mark { background: var(--quote); color: inherit; padding: 0 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">Direction A · Notebook</div>
+  <h1>Calm, written like a careful report</h1>
+  <p class="lede">One column. Results read as sentences first, numbers second. Serif text for the page's own words, monospace for your data. Ranges drawn as soft bars under each sentence.</p>
+
+  <section class="frame">
+    <div class="steps"><span>1 Load</span><span>2 Criteria</span><b>3 Label</b><span>4 Calibrate</span><span>5 Score</span></div>
+    <div class="tag">Labelling · item 12 of 40</div>
+    <div class="label">Customer's message</div>
+    <div class="data">My order SSG-48216 is now six business days past its estimated delivery window. Can you tell me what's happening and offer anything for the delay? My lawyer will be in touch about this.</div>
+    <div class="label">Reply</div>
+    <div class="data">Hi, I'm sorry your order is so late, and I understand you're considering having your lawyer contact us. I'm checking with the carrier for the latest tracking information.
+
+For the delay, please use code SSG10NEXT for a one-time 10% discount on a future order.
+
+Best,
+Maya</div>
+    <div class="crit"><span class="name">Accurate to policy</span><span class="btns"><span class="on-pass">Pass <kbd>1</kbd></span><span>Fail <kbd>2</kbd></span></span></div>
+    <div class="crit"><span class="name">Answers the question</span><span class="btns"><span class="on-pass">Pass <kbd>3</kbd></span><span>Fail <kbd>4</kbd></span></span></div>
+    <div class="crit"><span class="name">Escalates when required</span><span class="btns"><span>Pass <kbd>5</kbd></span><span class="on-fail">Fail <kbd>6</kbd></span></span></div>
+    <div class="crit"><span class="name">Appropriate tone</span><span class="btns"><span>Pass <kbd>7</kbd></span><span>Fail <kbd>8</kbd></span></span></div>
+    <p class="keys"><kbd>Enter</kbd> next · <kbd>Backspace</kbd> back · <kbd>S</kbd> skip. The judge's verdicts stay hidden until you finish.</p>
+  </section>
+
+  <section class="frame">
+    <div class="steps"><span>1 Load</span><span>2 Criteria</span><span>3 Label</span><b>4 Calibrate</b><span>5 Score</span></div>
+    <div class="tag">How far to trust the judge · criteria version 1 · on the 13 labels it never saw while you tuned</div>
+
+    <div class="result">
+      <div class="label" style="margin-top:0">Escalates when required</div>
+      <p class="sentence">It caught <span class="big">4 of 5</span> failures you marked.</p>
+      <div class="bar"><i style="left:38%;right:4%"></i><b style="left:80%"></b></div>
+      <div class="scale"><span>0%</span><span>likely between 38% and 96%</span><span>100%</span></div>
+      <p class="sentence" style="margin-top:12px">It passed <span class="big">8 of 8</span> replies you passed.</p>
+      <div class="bar"><i style="left:68%;right:0"></i><b style="left:calc(100% - 3px)"></b></div>
+      <div class="scale"><span>0%</span><span>likely between 68% and 100%</span><span>100%</span></div>
+      <p class="note">Too wide to decide: the "caught" range is 59 points wide. Label about 20 more replies to narrow it.</p>
+      <p class="small">Agreement beyond chance (kappa) 0.83, range 0.51 to 1.00. Tuning labels, shown apart: caught 6 of 7, passed 19 of 20.</p>
+    </div>
+
+    <div class="result">
+      <div class="label" style="margin-top:0">One disagreement</div>
+      <p class="small">You marked <b style="color:var(--fail)">fail</b>; the judge said <b style="color:var(--pass)">pass</b>.</p>
+      <div class="data">…I understand you're considering having your lawyer contact us. <mark>I'm checking with the carrier for the latest tracking information.</mark></div>
+      <p class="small">Judge's reason: "The reply acknowledges the legal threat and takes the next step itself."</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
