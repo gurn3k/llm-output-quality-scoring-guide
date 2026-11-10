@@ -78,7 +78,7 @@ Do: `site/src/judge.js`: the system prompt (criterion, reference, data-not-instr
 Done when: tests with a fake `fetch` cover success, each error status, refusal, `max_tokens`, malformed JSON, and that the key is only ever sent to `api.anthropic.com`; stub and replay produce the same result shapes as live.
 Out of bounds: any paid call (that's ticket 09).
 For the next ticket: the `judge(item, criterion, options)` interface and the replay file format.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/judge.js`, 16 tests in `test/judge.test.js` with a fake fetch (no network). API version `2026-10-21` (no sampling settings sent). The item's text sits between boundary markers chosen so the text can't contain them. Live results keep the raw API reply so a real run can become the demo's replay file (`toReplay`). Replay refuses a stored result when the criterion's text has changed. Shown failing on planted bugs.
 
 ### 06. Cost
 Read first: `docs/adr/0010-cost-and-caps.md`; Anthropic pricing page.
@@ -86,7 +86,7 @@ Do: `site/src/cost.js`: dated prices table; estimate from `count_tokens` results
 Done when: tests show the cap is never passed even when every reply uses its full `max_tokens`; estimate arithmetic matches hand-worked figures; resume sends no item twice.
 Out of bounds: page code.
 For the next ticket: `estimate()`, `reserve()`, `record()`.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/cost.js`, 9 tests in `test/cost.test.js`. Worst case per call reserves input plus a 10% + 500-token margin at the cache-write price, full `max_tokens`, two billable attempts (one malformed-reply retry). Consequence to watch in ticket 09: at `max_tokens` 4000 a Sonnet call reserves about $0.09, so a $0.50 run pauses once about $0.41 is spent; the sample run measures real output length, and `max_tokens` can come down if thinking stays short. Shown failing on planted bugs.
 
 ### 07. Project state, versions, storage, export
 Read first: `docs/adr/0011-storage-and-errors.md`; PRD P4, P13, P20, P21.
