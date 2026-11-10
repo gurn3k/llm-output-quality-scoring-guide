@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Broken page fixture</title></head>
+<body>
+  <!-- Used to prove the harness catches page errors and overflow. Never served by the real site. -->
+  <div style="width: 200px"><div id="too-wide" style="width: 400px">wider than its container</div></div>
+  <script>console.error("planted console error");</script>
+  <script>throw new Error("planted exception");</script>
+</body>
+</html>

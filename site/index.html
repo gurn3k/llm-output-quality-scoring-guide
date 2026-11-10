@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Network requests may go only to this site and to api.anthropic.com. No third-party scripts, styles or fonts. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.anthropic.com; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Check an AI judge against your own labels before you trust its scores. Free, no account, and your data stays in your browser.">
+  <title>LLM Output Quality Scoring Guide</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>LLM Output Quality Scoring Guide</h1>
+    <p class="lede">Check an AI judge against your own labels before you trust its scores.</p>
+  </header>
+  <main id="app" aria-live="polite"></main>
+</body>
+</html>

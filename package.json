@@ -1,0 +1,14 @@
+{
+  "name": "llm-output-quality-scoring-guide",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Check an AI judge against your own labels before you trust its scores. Free, no account, and your data stays in your browser.",
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "check": "node scripts/check.mjs",
+    "start": "node scripts/start.mjs"
+  },
+  "engines": { "node": ">=22" },
+  "license": "MIT"
+}
