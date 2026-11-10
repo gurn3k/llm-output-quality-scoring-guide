@@ -34,11 +34,11 @@ export function drawSample(ids, n, seed) {
   return shuffle(ids, mulberry32(seed)).slice(0, Math.min(n, ids.length));
 }
 
-// Splits labelled ids into tuning (about two-thirds) and held back (every third item of a second
-// shuffle, about one-third). Uses a different stream from the sample draw, so the two are independent.
-export function splitHeldBack(ids, seed) {
-  const order = shuffle(ids, mulberry32((seed ^ 0x9e3779b9) >>> 0));
+// Splits sampled ids, in draw order, into tuning (about two-thirds) and held back (every third item).
+// Taking positions from the draw order keeps the split stable when the sample grows in rounds:
+// extending the sample never moves an item between sets (ADRs 0009, 0013).
+export function splitHeldBack(ids) {
   const tuning = [], heldBack = [];
-  order.forEach((id, i) => (i % 3 === 2 ? heldBack : tuning).push(id));
+  ids.forEach((id, i) => (i % 3 === 2 ? heldBack : tuning).push(id));
   return { tuning, heldBack };
 }

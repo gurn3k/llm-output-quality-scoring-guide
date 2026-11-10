@@ -72,11 +72,21 @@ test("the same seed gives the same draw and split; a different seed gives a diff
   const ids = Array.from({ length: 60 }, (_, i) => `row-${i + 2}`);
   assert.deepEqual(drawSample(ids, 40, 42), drawSample(ids, 40, 42));
   assert.notDeepEqual(drawSample(ids, 40, 42), drawSample(ids, 40, 43));
-  const s = splitHeldBack(drawSample(ids, 40, 42), 42);
-  assert.deepEqual(s, splitHeldBack(drawSample(ids, 40, 42), 42));
+  const s = splitHeldBack(drawSample(ids, 40, 42));
+  assert.deepEqual(s, splitHeldBack(drawSample(ids, 40, 42)));
   assert.equal(s.heldBack.length, 13);
   assert.equal(s.tuning.length, 27);
   assert.deepEqual([...s.tuning, ...s.heldBack].sort(), drawSample(ids, 40, 42).sort(), "every labelled item is in exactly one set");
+});
+
+test("labelling more in rounds never moves an item already drawn or split", () => {
+  const ids = Array.from({ length: 100 }, (_, i) => `row-${i + 2}`);
+  const first = splitHeldBack(drawSample(ids, 40, 7));
+  const more = splitHeldBack(drawSample(ids, 60, 7));
+  assert.deepEqual(drawSample(ids, 60, 7).slice(0, 40), drawSample(ids, 40, 7));
+  assert.deepEqual(more.heldBack.slice(0, first.heldBack.length), first.heldBack);
+  assert.deepEqual(more.tuning.slice(0, first.tuning.length), first.tuning);
+  assert.equal(more.heldBack.length, 20);
 });
 
 test("the draw takes everything when there are fewer items than asked, and never changes its input", () => {

@@ -17,7 +17,7 @@ export function newProject({ rows, criteria, reference = "", seed = newSeed(), n
     labels: {}, // itemId -> criterionId -> "pass" | "fail" | "skip"
     labellingDone: false,
     heldBackSeen: [], // criteria versions whose held-back figures have been shown
-    trusted: {}, // v -> [criterionId]
+    trusted: {}, // v -> criterionId -> { thin, at }
     runs: {}, // v -> { model, results: itemId -> criterionId -> result }
     overrides: {}, // v -> itemId -> criterionId -> { verdict, at }
   };
@@ -46,8 +46,35 @@ export function markHeldBackSeen(p, v) {
 export function drawLabelSample(p, size) {
   if (p.sample) throw new Error("The labelling sample is already drawn; it stays fixed.");
   const ids = drawSample(p.rows.map((r) => r.id), size, p.seed);
-  p.sample = { size, ids, ...splitHeldBack(ids, p.seed) };
+  p.sample = { size, ids, ...splitHeldBack(ids) };
   return p.sample;
+}
+
+// A further round of labelling (ADR 0013): the next items from the same fixed order. Earlier items and
+// the held-back set never move. Labelling is open again until the new items are labelled.
+export function extendSample(p, more) {
+  if (!p.sample) throw new Error("Draw the first sample before labelling more.");
+  const size = Math.min(p.sample.size + more, p.rows.length);
+  const ids = drawSample(p.rows.map((r) => r.id), size, p.seed);
+  const added = ids.slice(p.sample.ids.length);
+  p.sample = { size, ids, ...splitHeldBack(ids) };
+  if (added.length) p.labellingDone = false;
+  return added;
+}
+
+export const MIN_HELD_FAILS = 5;
+
+// Roughly how many more labels would hold back enough failures for this criterion, from the failure
+// rate marked so far, rounded up to the next 10 (and never more than the rows left). Null when enough
+// are held back already; Infinity when no failures are marked yet, so no estimate is possible.
+export function labelsNeeded(p, criterionId) {
+  const marked = p.sample.ids.map((id) => labelOf(p, id, criterionId)).filter((l) => l === "pass" || l === "fail");
+  const heldFails = p.sample.heldBack.filter((id) => labelOf(p, id, criterionId) === "fail").length;
+  if (heldFails >= MIN_HELD_FAILS) return null;
+  const failRate = marked.filter((l) => l === "fail").length / (marked.length || 1);
+  if (!failRate) return Infinity;
+  const more = ((MIN_HELD_FAILS - heldFails) * 3) / failRate;
+  return Math.min(Math.ceil(more / 10) * 10, p.rows.length - p.sample.ids.length);
 }
 
 export function setLabel(p, itemId, criterionId, value) {
@@ -107,8 +134,23 @@ export function calibration(p, v, criterionId) {
   };
 }
 
-export function setTrusted(p, v, criterionIds) {
-  p.trusted[v] = [...criterionIds];
+// Trust a criterion for scoring. If its held-back result is still too wide to decide, it's recorded as
+// trusted on thin evidence (ADR 0013), and that mark follows every score it produces.
+export function trust(p, v, criterionId, now = new Date().toISOString()) {
+  const thin = calibration(p, v, criterionId).heldBack.tooWide;
+  (p.trusted[v] ??= {})[criterionId] = { thin, at: now };
+  return { thin };
+}
+
+export function untrust(p, v, criterionId) {
+  delete p.trusted[v]?.[criterionId];
+}
+
+export const trustOf = (p, v, criterionId) => p.trusted[v]?.[criterionId] ?? null;
+export const trustedIds = (p, v) => Object.keys(p.trusted[v] ?? {});
+
+export function trustLabel(t) {
+  return !t ? "not trusted" : t.thin ? "trusted before the range narrowed" : "trusted";
 }
 
 // --- Overrides and final verdicts (P20, P21) ---
@@ -184,7 +226,7 @@ export function exportJSON(p, v, { now = new Date().toISOString() } = {}) {
     criteria: ver.list,
     measured_after_seeing_earlier_results: ver.measuredAfterSeeing,
     model: p.runs[v]?.model ?? null,
-    trusted: p.trusted[v] ?? [],
+    trust: Object.fromEntries(ver.list.map((c) => [c.id, trustLabel(trustOf(p, v, c.id))])),
     held_back: Object.fromEntries(ver.list.map((c) => {
       const a = p.labellingDone && p.sample ? calibration(p, v, c.id).heldBack : null;
       return [c.id, a && { caught: a.caught && { k: a.caught.k, n: a.caught.n, low: a.caught.low, high: a.caught.high }, passed: a.passed && { k: a.passed.k, n: a.passed.n, low: a.passed.low, high: a.passed.high }, too_wide_to_decide: a.tooWide, reasons: a.reasons }];
@@ -197,6 +239,7 @@ export function exportJSON(p, v, { now = new Date().toISOString() } = {}) {
         judge_verdict: f.judge?.status ?? null, quote: f.judge?.quote ?? null, reason: f.judge?.reason ?? null,
         evidence_source: f.judge?.evidence_source ?? null, withheld_because: f.judge?.why ?? null,
         your_label: labelOf(p, r.id, c.id), overridden: f.decidedBy === "you over the judge",
+        criterion_trust: trustLabel(trustOf(p, v, c.id)),
       };
     })),
   };
@@ -204,7 +247,7 @@ export function exportJSON(p, v, { now = new Date().toISOString() } = {}) {
 
 // One header row, then one row per item and criterion; run-level facts repeat on every row so the
 // file stays a plain table any spreadsheet opens.
-const CSV_COLUMNS = ["item", "criterion", "verdict", "decided_by", "judge_verdict", "quote", "reason", "evidence_source", "withheld_because", "your_label", "overridden", "criteria_version", "measured_after_seeing_earlier_results", "model", "held_back_caught", "held_back_passed", "held_back_too_wide_to_decide"];
+const CSV_COLUMNS = ["item", "criterion", "verdict", "decided_by", "judge_verdict", "quote", "reason", "evidence_source", "withheld_because", "your_label", "overridden", "criterion_trust", "criteria_version", "measured_after_seeing_earlier_results", "model", "held_back_caught", "held_back_passed", "held_back_too_wide_to_decide"];
 
 // A spreadsheet treats a cell starting with = + - @ as a formula; such cells get a leading apostrophe.
 function cell(v) {

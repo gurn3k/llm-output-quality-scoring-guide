@@ -25,7 +25,7 @@ test("a project survives a save/load round trip unchanged", () => {
   const p = labelled();
   judged(p, 1, () => "pass");
   P.override(p, 1, "row-3", "tone", "fail", NOW);
-  P.setTrusted(p, 1, ["accurate"]);
+  P.trust(p, 1, "accurate", NOW);
   P.markHeldBackSeen(p, 1);
   assert.deepEqual(P.parseProject(P.serialize(p)), p);
   const s = fakeStorage();
@@ -159,7 +159,7 @@ test("exports include version, model, held-back rates, every verdict, overrides 
   const j = P.exportJSON(p, 1, { now: NOW });
   assert.equal(j.criteria_version, 1);
   assert.equal(j.model, "claude-sonnet-5-5");
-  assert.ok(j.held_back.accurate.caught);
+  assert.ok("caught" in j.held_back.accurate && j.held_back.accurate.passed, "held-back figures are in the export (caught may be empty when no failures are held back)");
   assert.equal(j.verdicts.length, rows.length * criteria.length);
   const o = j.verdicts.find((v) => v.item === unlabelled && v.criterion === "accurate");
   assert.deepEqual([o.verdict, o.decided_by, o.judge_verdict, o.overridden], ["fail", "you over the judge", "pass", true]);
@@ -184,3 +184,42 @@ function fakeStorage() {
   const m = new Map();
   return { getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: (k) => m.delete(k) };
 }
+
+test("labelling more in rounds keeps earlier labels and the held-back set, and reopens labelling", () => {
+  const p = labelled();
+  const before = structuredClone(p.sample);
+  const added = P.extendSample(p, 3);
+  assert.equal(added.length, 3);
+  assert.deepEqual(p.sample.ids.slice(0, 9), before.ids);
+  assert.deepEqual(p.sample.heldBack.slice(0, before.heldBack.length), before.heldBack);
+  assert.equal(p.labellingDone, false, "results hide again until the new items are labelled");
+  assert.throws(() => P.calibration(p, 1, "accurate"), /hidden/);
+  for (const id of added) for (const c of criteria) P.setLabel(p, id, c.id, "pass");
+  P.finishLabelling(p);
+  assert.equal(P.extendSample(p, 100).length, 0, "can't draw past the last row");
+});
+
+test("labels needed: estimated from the failure rate marked so far, rounded up to 10", () => {
+  const rowsN = Array.from({ length: 200 }, (_, i) => ({ id: `r${i}`, row: i + 2, input: "q", output: "a" }));
+  const p = P.newProject({ rows: rowsN, criteria, seed: 3, now: NOW });
+  P.drawLabelSample(p, 30);
+  p.sample.ids.forEach((id, i) => { P.setLabel(p, id, "accurate", i % 5 === 0 ? "fail" : "pass"); P.setLabel(p, id, "tone", "pass"); });
+  const held = p.sample.heldBack.filter((id) => P.labelOf(p, id, "accurate") === "fail").length;
+  assert.equal(P.labelsNeeded(p, "accurate"), Math.ceil(((5 - held) * 3) / 0.2 / 10) * 10);
+  assert.equal(P.labelsNeeded(p, "tone"), Infinity, "no failures marked: no estimate");
+});
+
+test("trusting a too-wide criterion marks it as thin evidence, in the page and in exports", () => {
+  const p = labelled();
+  judged(p, 1, () => "pass");
+  assert.equal(P.trust(p, 1, "accurate", NOW).thin, true, "9 labels can't meet the rule");
+  assert.equal(P.trustLabel(P.trustOf(p, 1, "accurate")), "trusted before the range narrowed");
+  assert.equal(P.trustLabel(P.trustOf(p, 1, "tone")), "not trusted");
+  assert.deepEqual(P.trustedIds(p, 1), ["accurate"]);
+  const j = P.exportJSON(p, 1, { now: NOW });
+  assert.equal(j.trust.accurate, "trusted before the range narrowed");
+  assert.ok(j.verdicts.filter((v) => v.criterion === "accurate").every((v) => v.criterion_trust === "trusted before the range narrowed"));
+  assert.match(P.exportCSV(p, 1, { now: NOW }), /trusted before the range narrowed/);
+  P.untrust(p, 1, "accurate");
+  assert.deepEqual(P.trustedIds(p, 1), []);
+});

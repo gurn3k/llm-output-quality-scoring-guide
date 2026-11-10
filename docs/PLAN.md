@@ -102,7 +102,7 @@ Do: `docs/PRODUCT.md` (who visits: PMs first, hiring managers second; what each 
 Done when: you've picked a direction, and `DESIGN.md` covers every screen in ticket 08.
 Out of bounds: product logic.
 For the next ticket: the design spec ticket 08 builds to.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `docs/PRODUCT.md`; three directions in `docs/design/mockups/` (checked at 390 and 1280 px, light and dark); Gurnek chose C, Guided; `docs/DESIGN.md` covers every screen in ticket 08. Making the mockups showed that 40 labels hold back only about 2 failures per criterion, below the 5 the rule needs; Gurnek decided ADR 0013 (label in rounds; trust on thin evidence, marked), now in `project.js` and `random.js` with tests. Open: the test set needs more planted failures per criterion so the demo can reach a real trust decision (ADR 0013).
 
 ### 08. The page
 Read first: PRD flow and P3-P25; `docs/adr/0005`; tickets 02-07.
