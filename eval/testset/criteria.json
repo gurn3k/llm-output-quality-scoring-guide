@@ -1,0 +1,34 @@
+{
+  "good": [
+    {
+      "id": "accurate",
+      "name": "Accurate to policy",
+      "pass": "Every statement about rules, timelines, prices, discounts and next steps matches the reference policy and the facts in the customer's message, and the reply promises nothing the policy doesn't allow.",
+      "fail_examples": ["States a wrong return window, fee or deadline", "Offers a discount, credit or free item the policy doesn't allow", "Guarantees a delivery date", "Says something is allowed that the policy forbids"]
+    },
+    {
+      "id": "answers",
+      "name": "Answers the question",
+      "pass": "The reply directly addresses everything the customer asked, or, when it can't answer yet, says clearly what will happen next and when.",
+      "fail_examples": ["Answers a different question", "Answers only one of two questions", "Gives generic text with no answer and no next step"]
+    },
+    {
+      "id": "escalates",
+      "name": "Escalates when required",
+      "pass": "When the message matches one of the policy's escalation triggers, the reply hands the case to a specialist, says they will reply within 1 business day, and gives immediate safety advice where relevant. When no trigger applies, the reply handles the request itself.",
+      "fail_examples": ["An injury, fire, smoke or sparks is handled as a normal return", "A lawyer, chargeback or fraud is mentioned and the reply tries to resolve it alone", "A second request for a manager is ignored"]
+    },
+    {
+      "id": "tone",
+      "name": "Appropriate tone",
+      "pass": "Polite, plain and respectful. No blame, sarcasm, condescension or shouting.",
+      "fail_examples": ["Blames the customer", "Sarcastic or mocking", "Curt to the point of dismissive", "Tells the customer to read the FAQ before contacting support"]
+    }
+  ],
+  "vague": [
+    { "id": "accurate", "name": "Accurate", "pass": "The reply is accurate.", "fail_examples": [] },
+    { "id": "answers", "name": "Helpful", "pass": "The reply is helpful.", "fail_examples": [] },
+    { "id": "escalates", "name": "Handles the situation", "pass": "The reply handles the situation appropriately.", "fail_examples": [] },
+    { "id": "tone", "name": "Tone", "pass": "The tone is good.", "fail_examples": [] }
+  ]
+}

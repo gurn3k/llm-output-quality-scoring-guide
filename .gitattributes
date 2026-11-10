@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Loading fixtures are byte-exact (BOM, CRLF, tabs): never convert them.
+test/fixtures/loading/*.csv -text
+test/fixtures/loading/*.tsv -text
+test/fixtures/loading/*.jsonl -text

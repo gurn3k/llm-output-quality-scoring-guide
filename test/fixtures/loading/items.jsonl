@@ -1,0 +1,8 @@
+{"input":"Q1","output":"A1"}
+
+{"input":"Q2","output":"A2","reference":"R2"}
+{"input":"Q3"}
+not json
+{"input":"Q5","output":""}
+["array"]
+{"input":"Q7","output":"A7"}

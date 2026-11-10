@@ -1,0 +1,210 @@
+{
+  "basic.csv": {
+    "loaded": [
+      {
+        "input": "Where is my order?",
+        "output": "It ships in 3-7 business days.",
+        "reference": ""
+      },
+      {
+        "input": "Can I return it?",
+        "output": "Yes within 30 days.",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "quoted.csv": {
+    "loaded": [
+      {
+        "input": "Hi, I have two questions",
+        "output": "Sure, here are both answers:\n1. Yes\n2. No",
+        "reference": ""
+      },
+      {
+        "input": "She said \"thanks\"",
+        "output": "ok",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "semicolon.csv": {
+    "loaded": [
+      {
+        "input": "Where is my order?",
+        "output": "It ships soon, usually in 3-7 days.",
+        "reference": ""
+      },
+      {
+        "input": "Refund?",
+        "output": "5-7 business days",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "bom.csv": {
+    "loaded": [
+      {
+        "input": "Café question",
+        "output": "Réponse en français",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "excel-crlf.csv": {
+    "loaded": [
+      {
+        "input": "First",
+        "output": "One",
+        "reference": ""
+      },
+      {
+        "input": "Second",
+        "output": "Two",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "sheets-paste.tsv": {
+    "loaded": [
+      {
+        "input": "Where is my order?",
+        "output": "It ships in 3-7 days, roughly.",
+        "reference": ""
+      },
+      {
+        "input": "Refund?",
+        "output": "5-7 business days",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "with-reference.csv": {
+    "loaded": [
+      {
+        "input": "Q1",
+        "output": "A1",
+        "reference": "Ref one"
+      },
+      {
+        "input": "Q2",
+        "output": "A2",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "column-names.csv": {
+    "needsColumnChoice": true,
+    "columns": [
+      "Customer message",
+      "AI reply",
+      "Notes"
+    ],
+    "choose": {
+      "input": "Customer message",
+      "output": "AI reply"
+    },
+    "loaded": [
+      {
+        "input": "Q1",
+        "output": "A1",
+        "reference": ""
+      }
+    ],
+    "refused": []
+  },
+  "malformed.csv": {
+    "loaded": [
+      {
+        "input": "Good row",
+        "output": "Fine",
+        "reference": ""
+      },
+      {
+        "input": "Another good",
+        "output": "Also fine",
+        "reference": ""
+      }
+    ],
+    "refused": [
+      {
+        "row": 3,
+        "reason": "reply is empty"
+      },
+      {
+        "row": 4,
+        "reason": "message is empty"
+      },
+      {
+        "row": 5,
+        "reason": "4 columns"
+      },
+      {
+        "row": 7,
+        "reason": "never closes"
+      }
+    ]
+  },
+  "items.jsonl": {
+    "loaded": [
+      {
+        "input": "Q1",
+        "output": "A1",
+        "reference": ""
+      },
+      {
+        "input": "Q2",
+        "output": "A2",
+        "reference": "R2"
+      },
+      {
+        "input": "Q7",
+        "output": "A7",
+        "reference": ""
+      }
+    ],
+    "refused": [
+      {
+        "row": 4,
+        "reason": "reply is empty"
+      },
+      {
+        "row": 5,
+        "reason": "not valid JSON"
+      },
+      {
+        "row": 6,
+        "reason": "reply is empty"
+      },
+      {
+        "row": 7,
+        "reason": "not an object"
+      }
+    ]
+  },
+  "too-many.csv": {
+    "loadedCount": 500,
+    "refused": [
+      {
+        "row": 502,
+        "reason": "500"
+      }
+    ]
+  },
+  "empty.csv": {
+    "loaded": [],
+    "refused": [],
+    "error": "empty"
+  },
+  "header-only.csv": {
+    "loaded": [],
+    "refused": [],
+    "error": "no rows"
+  }
+}
