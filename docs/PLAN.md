@@ -23,7 +23,8 @@ The core logic comes first and has no page code in it, so the page is a thin lay
 | 05 | Judge client: prompt, fetch, stub and replay modes | P16, P18, P22, P24 | 04 | 06 |
 | 06 | Cost: estimate, worst-case cap, resume | P15 | 00 | 05 |
 | 07 | Project state, versions, storage, export | P4, P13, P20, P21 | 03 | none |
-| 08 | The page: every screen, keyboard labelling, key handling | P3, P7, P8, P12, P14, P18-P20, P22, P23 | 02-07 | none |
+| 07b | Design: who visits, what they need first, a direction round with mockups, then a design spec | all screens | 00 | 01-07 |
+| 08 | The page: every screen, keyboard labelling, key handling | P3, P7, P8, P12, P14, P18-P20, P22, P23 | 02-07, 07b | none |
 | 09 | Sample run (paid, after your approval of the key and spend) | sample bars below | 05, 06, 01 | none |
 | 10 | Model comparison, staged (10a, 10b, optional 10c) | measurement bars | 09 | none |
 | 11 | Demo built from real results | P25 | 10 | none |
@@ -93,6 +94,14 @@ Do: `site/src/project.js`: the project model (rows, criteria versions, labels, s
 Done when: a project survives a save/load round trip unchanged; results are never shown against another criteria version; the "measured after you saw earlier results" flag is set correctly; the page still works when storage throws.
 Out of bounds: page code.
 For the next ticket: the state API the page renders from.
+Status / Comments:
+
+### 07b. Design
+Read first: PRD (flow, user), `docs/RESEARCH.md` section 5.
+Do: `docs/PRODUCT.md` (who visits: PMs first, hiring managers second; what each needs in the first 30 seconds); a brief per screen; a direction round with two or three clickable or static mockups for you to choose between (not just colour palettes); then `docs/DESIGN.md` (type, spacing, colour tokens for light and dark, components, how ranges and withheld counts are drawn).
+Done when: you've picked a direction, and `DESIGN.md` covers every screen in ticket 08.
+Out of bounds: product logic.
+For the next ticket: the design spec ticket 08 builds to.
 Status / Comments:
 
 ### 08. The page
