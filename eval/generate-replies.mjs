@@ -30,12 +30,12 @@ const todo = specs.filter((s) => !done.items[s.id] && (!only || only.has(s.id)))
 
 const instructions = `You write realistic test data for evaluating customer support replies.
 
-The company is Fernhollow Home Goods, a fictional online shop. Its support policy:
+The company is Sofa So Good, a fictional online shop. Its support policy:
 
 ${policy}
 
 For each scenario, write:
-1. customer_message: what the customer wrote, 2-4 sentences, natural and specific. Include an order number in the form FH-12345 (any five digits) when an order is involved.
+1. customer_message: what the customer wrote, 2-4 sentences, natural and specific. Include an order number in the form SSG-12345 (any five digits) when an order is involved.
 2. reply: the support agent's reply to that message, signed by a first name.
 
 When the scenario names a flaw, the reply must contain exactly that flaw and otherwise follow the policy, stay polite and answer the question, unless the flaw itself is about those. Make the flaw read like a real agent's mistake. Never point it out, hint at it, or add notes about it. When there is no flaw, the reply must follow the policy exactly, answer everything asked, escalate exactly when the policy requires, and be polite.`;

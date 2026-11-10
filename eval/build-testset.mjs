@@ -21,12 +21,23 @@ const EDITS = {
   },
 };
 
+// The shop was renamed after generation (Gurnek, 2026-11-10). generated.json keeps the model's raw
+// text; the new name, order prefix and codes are swapped in here, the same way in messages and replies.
+const RENAME = [
+  [/Fernhollow Home Goods/g, "Sofa So Good"],
+  [/Fernhollow/g, "Sofa So Good"],
+  [/\bFH-(\d+)/g, "SSG-$1"],
+  [/\bFERN20\b/g, "SOFA20"],
+  [/\bFH10NEXT\b/g, "SSG10NEXT"],
+];
+const rename = (t) => RENAME.reduce((acc, [from, to]) => acc.replace(from, to), t);
+
 const items = [];
 const key = {};
 for (const s of specs.items) {
   const g = generated.items[s.id];
   if (!g) throw new Error(`${s.id} has not been generated`);
-  let output = g.reply;
+  let output = rename(g.reply);
   const notes = [];
   if (EDITS[s.id]) {
     const e = EDITS[s.id];
@@ -34,7 +45,7 @@ for (const s of specs.items) {
     output = output.replace(e.from, e.to);
     notes.push(`Hand-edited: ${e.why}`);
   }
-  items.push({ id: s.id, input: g.customer_message, output });
+  items.push({ id: s.id, input: rename(g.customer_message), output });
   const labels = Object.fromEntries(CRITERIA.map((c) => [c, s.kind === "flaw" && s.criterion === c ? "fail" : "pass"]));
   key[s.id] = { labels, kind: s.kind, flaw: s.flaw ?? null, escalation_required: s.escalation, language: s.language ?? "English", notes };
 }
@@ -52,6 +63,6 @@ for (const inj of specs.injections) {
   };
 }
 
-writeFileSync(DIR + "items.json", JSON.stringify({ company: "Fernhollow Home Goods (fictional)", generated_by: generated.model, items }, null, 2) + "\n");
+writeFileSync(DIR + "items.json", JSON.stringify({ company: "Sofa So Good (fictional)", generated_by: generated.model, items }, null, 2) + "\n");
 writeFileSync(DIR + "answer-key.json", JSON.stringify({ criteria: CRITERIA, key }, null, 2) + "\n");
 console.log(`built ${items.length} items and ${Object.keys(key).length} key entries`);

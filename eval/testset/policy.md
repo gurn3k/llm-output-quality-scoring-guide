@@ -1,6 +1,6 @@
-# Fernhollow Home Goods: customer support policy
+# Sofa So Good: customer support policy
 
-Fernhollow Home Goods is a fictional online shop that sells kitchenware, lamps and home textiles. This policy is made up for testing and describes no real company.
+Sofa So Good is a fictional online shop that sells kitchenware, lamps and home textiles. This policy is made up for testing and describes no real company.
 
 ## Returns
 - Items can be returned within **30 days of delivery** if unused and in their original packaging.

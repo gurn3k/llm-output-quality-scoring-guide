@@ -58,3 +58,10 @@ test("the fictional company is labelled as fictional", () => {
   const policy = readFileSync(new URL("../eval/testset/policy.md", import.meta.url), "utf8");
   assert.match(policy, /fictional online shop/);
 });
+
+test("the old shop name, order prefix and codes are gone everywhere", () => {
+  const all = JSON.stringify(items) + readFileSync(new URL("../eval/testset/policy.md", import.meta.url), "utf8");
+  assert.doesNotMatch(all, /Fernhollow|\bFH-?\d|FERN20|FH10NEXT/);
+  assert.match(all, /Sofa So Good/);
+  assert.match(all, /SSG-\d{5}/);
+});
