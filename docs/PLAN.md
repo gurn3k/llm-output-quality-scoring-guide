@@ -54,7 +54,7 @@ Do: `site/src/load.js`: CSV (comma or semicolon detected, quotes, embedded newli
 Done when: every loading fixture gives its expected result; no row disappears without being reported ("N loaded, M refused" adds up).
 Out of bounds: page code.
 For the next ticket: the row shape `{id, input, output, reference}`.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/load.js`, 19 tests in `test/load.test.js` against the ticket 01 fixtures. Every row loads or is refused with its row number; shown failing on planted bugs (extra columns allowed, empty replies allowed, blank lines kept).
 
 ### 03. Sampling, split and statistics
 Read first: `docs/adr/0002-labels-and-held-back-check.md`, `0003`, `0009`.
@@ -62,7 +62,7 @@ Do: `site/src/stats.js` and `site/src/random.js`: mulberry32, seeded Fisher-Yate
 Done when: each formula matches hand-worked examples, including 0 of N, N of N, and empty sets; the same seed gives the same draw and split.
 Out of bounds: page code.
 For the next ticket: function signatures for ticket 07 and 08.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/random.js` and `site/src/stats.js`, 9 tests in `test/stats.test.js` against values computed independently in Python. Shown failing on planted bugs (Wilson centre, chance agreement, unclear counted, looser too-wide rule).
 
 ### 04. Quote check and reply validation
 Read first: `docs/adr/0007-judge-call-design.md`, `0008-quote-check.md`.
@@ -70,7 +70,7 @@ Do: `site/src/quote.js` (normalising, "..." splitting, the 3-word minimum); `sit
 Done when: tests cover curly quotes, line breaks, case, ellipsis in order and out of order, a quote from the input for a missing-element failure, a paraphrase (refused), a too-short quote (refused), and malformed replies.
 Out of bounds: network calls.
 For the next ticket: `checkQuote(text, quote)` and `parseReply(apiResponse)`.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/quote.js` and `site/src/reply.js`, 9 tests in `test/quote-reply.test.js`. Shown failing on planted bugs (order ignored, no minimum length, case-sensitive, passes quoting the input, unverified quotes shown).
 
 ### 05. Judge client
 Read first: `docs/adr/0005`, `0007`, `0011`; Anthropic Messages API docs for structured outputs and errors.
