@@ -94,7 +94,7 @@ Do: `site/src/project.js`: the project model (rows, criteria versions, labels, s
 Done when: a project survives a save/load round trip unchanged; results are never shown against another criteria version; the "measured after you saw earlier results" flag is set correctly; the page still works when storage throws.
 Out of bounds: page code.
 For the next ticket: the state API the page renders from.
-Status / Comments:
+Status / Comments: **Done 2026-11-10.** `site/src/project.js`, 13 tests in `test/project.test.js`. Results live under the criteria version that produced them, and one version keeps one model. Who decided: your override, then your label, then the judge. The raw API reply is not kept in the saved project (keeps saves small); the replay file for the demo is built from the live results directly. CSV export is a single table (run facts repeat per row) and neutralises cells a spreadsheet would run as formulas. Shown failing on planted bugs.
 
 ### 07b. Design
 Read first: PRD (flow, user), `docs/RESEARCH.md` section 5.
