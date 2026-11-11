@@ -160,7 +160,7 @@ Do: first recalculate the cost from ticket 09's measured cost per call and confi
 - **10c (optional):** one other effort level on the winning model, only if the remaining budget covers it.
 - Your 30 blind labels against the answer key; held-back rates, withheld rate, injection flips, cost per item, all as counts out of counts.
 Done when: `eval/REPORT.md` reports every PRD bar as measured, misses included; total spend within the $10 cap.
-Status / Comments:
+Status / Comments: **10a and 10b done 2026-11-11; 10c skipped** (replies average about 114 output tokens and most of the cost is input, so a lower effort level can save little). `eval/REPORT.md` reports every bar: the good criteria pass on Sonnet 5.5, the default by the tie rule (Haiku is out on 2 injection flips); the vague-criteria bar is missed as written (catch rate stays 100%, while agreement falls from 96% to 77%); the owner's blind labels and the demo timing are open. c09 was an answer-key error, edited and re-judged. Spend $2.18 (`eval/full-run.mjs`, resumable, three caps; a cap too small for one call now stops instead of looping).
 
 ### 11. Demo from real results
 Do: the demo's stored judge results come from ticket 10's real run (not hand-written), pre-labelled with your blind labels.
