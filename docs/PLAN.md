@@ -133,7 +133,16 @@ Status / Comments: **Done 2026-11-10, waiting on the owner's look.**
 Read first: PRD bars; sample bars below. Needs your approval of the API key and spend first.
 Do: 10 items from the test set (including at least 2 planted failures per criterion and 1 injection) x 4 criteria on Sonnet 5.5, live.
 Done when: each sample bar is reported pass or fail with numbers. Scale only if all pass.
-Status / Comments:
+Status / Comments: **Done 2026-11-11, all bars pass.** `eval/sample-run.mjs` uses the page's own judge and cost code; results with raw replies are in `eval/runs/sample-2026-11-11.json`. 40 calls on Sonnet 5.5, $0.0923 in total.
+- **Reply shape:** 40 of 40 valid.
+- **Quotes found:** 39 of 40 pass/fail verdicts.
+- **Planted failures:** 8 of 8 caught.
+- **Injection:** 0 of 4 verdicts changed.
+- **Cost:** $0.0023 per call against $0.0039 estimated (-41%). Replies averaged 112 output tokens, not the 300 assumed; the page's typical estimate now uses 120. Prompt caching worked: from the second item on, the system prompt was read from the cache.
+- **Found, to settle before ticket 10:**
+  - (1) The good criteria overlap. A missed escalation (e01, e02) is also failed on "Accurate to policy" and "Answers the question", and an omission (q02) on "Accurate", which the criteria text allows. The answer key assumes one failure per planted reply.
+  - (2) e02 also fails "Answers the question" (no time for the update): a key error, the same slip as e07.
+  - (3) For "no escalation needed", the judge quoted the customer's message as evidence of a pass, which is correctly withheld. The judge instructions should ask for the reply's own handling as the quote.
 
 ### 10. Full test-set run and model comparison (staged, ADR 0007)
 Do: first recalculate the cost from ticket 09's measured cost per call and confirm it fits the remaining budget.

@@ -18,7 +18,7 @@ const STEPS = [
 ];
 const KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="];
 const MAX_CRITERIA = 6;
-const OUTPUT_TOKENS_GUESS = 300; // typical reply length until a sample run measures it (ADR 0010)
+const OUTPUT_TOKENS_GUESS = 120; // typical judge reply, measured on the sample run: 112 tokens on average (eval/runs)
 const PAGE = 25;
 
 let apiKey = "";
