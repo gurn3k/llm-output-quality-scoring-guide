@@ -73,7 +73,7 @@ test("the flow in a real browser", { skip: SKIP }, async (t) => {
     await click("fill-key");
     await click("lab-finish");
     assert.equal(await heading(), "Now the judge scores your labelled replies");
-    assert.match(await b.js(`document.querySelector(".panel").textContent`), /placeholders/);
+    assert.match(await b.js(`document.querySelector(".panel").textContent`), /stored results from a real run/);
     await click("run-start");
     await b.until(`document.querySelector(".panel h2").textContent === "How far can you trust the judge?"`, "the trust screen");
     const panel = await b.js(`document.querySelector(".panel").textContent`);

@@ -4,9 +4,10 @@
 // planted flaw), the fictional policy as reference material, the answer key as ready-made labels,
 // and stored judge results for the good and the vague criteria.
 //
-// Until the real judge run (plan ticket 10), the stored results are PLACEHOLDERS: they follow the
-// answer key, with a fixed few flipped, marked unclear or given a quote that isn't in the reply, so
-// every screen has something to show. Each placeholder's reason says so, and the page says so too.
+// The stored results are the real API replies from eval/runs/full-sonnet-<set>-all.json (every reply
+// judged on Claude Sonnet 5.5). Only what the page reads is kept: the stop reason, the text block
+// and the token counts. `--placeholder` builds the old placeholder results instead (they follow the
+// answer key with a fixed few flipped, unclear or withheld, and say so in every reason).
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { mulberry32, shuffle } from "../site/src/random.js";
@@ -60,9 +61,22 @@ function placeholder(row, c, set) {
   return body({ verdict: truth, evidence_source: "output", quote, reason: "Placeholder result: agrees with the answer key." });
 }
 
+const PLACEHOLDER = process.argv.includes("--placeholder");
+const RUNS = fileURLToPath(new URL("./runs/", import.meta.url));
+const slim = (b) => ({ stop_reason: b.stop_reason, content: b.content.filter((x) => x.type === "text").map(({ type, text }) => ({ type, text })), usage: { input_tokens: b.usage.input_tokens, output_tokens: b.usage.output_tokens } });
+const runs = {};
 const replays = ["good", "vague"].map((set) => {
-  const bodies = Object.fromEntries(rows.map((r) => [r.id, Object.fromEntries(criteria[set].map((c) => [c.id, placeholder(r, c, set)]))]));
-  return { ...toReplay("placeholder", criteria[set], bodies), set, placeholder: true };
+  if (PLACEHOLDER) {
+    const bodies = Object.fromEntries(rows.map((r) => [r.id, Object.fromEntries(criteria[set].map((c) => [c.id, placeholder(r, c, set)]))]));
+    return { ...toReplay("placeholder", criteria[set], bodies), set, placeholder: true };
+  }
+  const run = (runs[set] = JSON.parse(readFileSync(RUNS + `full-sonnet-${set}-all.json`, "utf8")));
+  const bodies = Object.fromEntries(rows.map((r) => [r.id, Object.fromEntries(criteria[set].map((c) => {
+    const stored = run.results[testIdOf[r.id]]?.[c.id];
+    if (!stored?.body) throw new Error(`${set}: no stored reply for ${testIdOf[r.id]} on ${c.id}; finish the run first`);
+    return [c.id, slim(stored.body)];
+  }))]));
+  return { ...toReplay(run.model, criteria[set], bodies), set, placeholder: false, ran: run.updated.slice(0, 10) };
 });
 
 const demo = {
@@ -70,7 +84,7 @@ const demo = {
   version: 1,
   company: "Sofa So Good (fictional)",
   about: "Customer support replies for a made-up online shop, with planted failures and a written answer key.",
-  placeholder: true,
+  placeholder: PLACEHOLDER,
   sample_seed: SAMPLE_SEED,
   reference: policy,
   criteria: { good: criteria.good, vague: criteria.vague },

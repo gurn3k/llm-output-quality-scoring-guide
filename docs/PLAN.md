@@ -165,7 +165,7 @@ Status / Comments: **10a and 10b done 2026-11-11; 10c skipped** (replies average
 ### 11. Demo from real results
 Do: the demo's stored judge results come from ticket 10's real run (not hand-written), pre-labelled with your blind labels.
 Done when: the demo runs end to end without a key; two people new to it finish in under 2 minutes (timed).
-Status / Comments:
+Status / Comments: **Real results in 2026-11-11; the timed test with two new people is open.** All 220 replies judged on Sonnet 5.5 with both criteria sets (the 60 from ticket 10 reused, 1,280 new calls, $2.43). `eval/build-demo.mjs` stores the real replies (stop reason, text and token counts only; `--placeholder` still builds the old ones); the page says the results come from a real run, with the model and date. Labels are the answer key's; the owner's blind labels are being collected separately. Fully labelled, the demo trusts Accurate, Answers and Escalates outright; Tone (11 of 12 caught held back) only on thin evidence. 114 tests.
 
 ### 12. Audit
 Do: copy pass in plain language; accessibility (labels, focus order, contrast, screen reader names); the README's claims each have a test; layout widths either side of every breakpoint; a scan that no process notes or internal labels are in tracked files.

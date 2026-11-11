@@ -1,4 +1,4 @@
-// The demo file the page loads: built from the test set, honest about its placeholder results.
+// The demo file the page loads: built from the test set and a real judge run, and honest about which.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -28,6 +28,24 @@ test("while the stored results are placeholders, the file and every reason say s
     assert.equal(rep.model, "placeholder");
     for (const byCrit of Object.values(rep.results)) for (const body of Object.values(byCrit)) {
       assert.match(JSON.parse(body.content[0].text).reason, /^Placeholder result/);
+    }
+  }
+});
+
+test("real stored results are the judge run's own replies, one per reply and criterion, none a placeholder", () => {
+  if (demo.placeholder) return;
+  for (const rep of demo.replays) {
+    assert.match(rep.model, /^claude-/);
+    assert.match(rep.ran, /^\d{4}-\d{2}-\d{2}$/);
+    const run = JSON.parse(readFileSync(new URL(`../eval/runs/full-sonnet-${rep.set}-all.json`, import.meta.url), "utf8"));
+    assert.equal(run.model, rep.model);
+    assert.equal(Object.keys(rep.results).length, demo.rows.length);
+    for (const r of demo.rows) {
+      for (const c of demo.criteria[rep.set]) {
+        const body = rep.results[r.id][c.id];
+        assert.ok(body, `${r.id} ${c.id}`);
+        assert.doesNotMatch(body.content[0].text, /Placeholder result/);
+      }
     }
   }
 });

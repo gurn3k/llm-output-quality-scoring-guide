@@ -15,7 +15,7 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 |---|---|---|---|
 | Good criteria, default model | Catches ≥ 80% of planted failures; passes ≥ 85% of clean replies | Sonnet: 34 of 36 caught (94%, range 82–98%); 80 of 80 clean passed (100%, range 95–100%). Sample-run replies left out: 27 of 28, 76 of 76 | **Pass** |
 | Vague criteria, as first written | Catch rate at least 20 points lower | 36 of 36 caught (100%) | **Missed** (see below) |
-| Vague criteria, replacement bar (2026-11-11) | Agreement with the key at least 15 points lower, and kappa below 0.6 | 96% to 77% (19 points lower); kappa 0.87 to 0.46 | **Pass** on these 60; to be confirmed on the 160 replies not yet judged |
+| Vague criteria, replacement bar (2026-11-11) | Agreement with the key at least 15 points lower, and kappa below 0.6 | 96% to 77% (19 points lower); kappa 0.87 to 0.46 | **Pass** on these 60, and on the 160 replies judged after the bar was fixed: 94.0% to 60.5% (33.5 points lower), kappa 0.85 to 0.31 |
 | Evidence | 100% of shown scores have a quote found in the text | Enforced in code and tested. Sonnet: 0 of 240 withheld; Haiku: 2 withheld (shown as withheld, never as a score) | **Pass** |
 | Injection | 0 verdicts changed by a planted instruction | Sonnet 0 of 16; Opus 0 of 16; Haiku 2 of 16 | **Pass** for the default |
 | Owner's blind labels vs the answer key | Reported as measured | Not yet labelled | **Open** |
@@ -52,6 +52,22 @@ So a vague rubric does show clearly lower agreement, which is what the page meas
 
 **The bar was replaced, not quietly rewritten.** The original bar and its miss stay in this report. The replacement, at least 15 points lower agreement and kappa below 0.6, counts false alarms as well as misses. It was written after these 60 replies were judged, so passing here proves little. It was fixed *before* the other 160 replies in the test set were judged, and its real test is those 160. Vague tone ("The tone is good") held up well (kappa 0.88), since tone needs little definition. One vague verdict flipped under injection (i02, tone: pass to unclear).
 
+## The other 160 replies (judged for the demo)
+
+The rest of the test set, 160 replies, was judged on Sonnet 5.5 with both criteria sets after the replacement bar was fixed. These replies took no part in choosing the model or setting any bar.
+
+| | Good criteria | Vague criteria |
+|---|---|---|
+| Planted failures caught | 155 of 160 | 157 of 160 |
+| Agreement with the key | 594 of 632 (94.0%), kappa 0.85 | 375 of 620 (60.5%), kappa 0.31 |
+| Failed where the key passes | 34 | 245 |
+| Unclear or withheld | 8 of 640 | 20 of 640 |
+
+- **The good criteria hold up on new replies.** The weak spot is again Accurate, with kappa 0.69 and 22 over-fails. Most of these are replies that keep an escalation case to themselves and are also failed on Accurate, the overlap described below.
+- **Vague criteria fall apart further on the larger set.** "Handles the situation" reaches kappa 0.09, close to chance.
+
+**The demo, fully labelled.** On its held-back third, the good criteria catch 16 of 16 (Accurate), 20 of 20 (Answers), 17 of 17 (Escalates) and 11 of 12 (Tone). The first three can be trusted outright. Tone's caught range is 34 points wide (65–99%), so it can be trusted only on thin evidence, marked as such.
+
 ## Answer-key corrections found by the runs
 
 - **c09** (clean): the reply asked the customer for the tracking status and gave no next step or time, so it failed "Answers the question" under the same standard used everywhere else. Haiku and Opus failed it. The reply was edited, and c09 re-judged on all three models; the first verdicts are kept in each run file under `rejudged`.
@@ -69,5 +85,6 @@ So a vague rubric does show clearly lower agreement, which is what the page meas
 |---|---|
 | Sample run, 3 runs | $0.26 |
 | Model comparison and vague criteria | $2.18 |
-| **Judge spend so far** | **$2.44 of the $10 cap** |
+| The other 160 replies, both criteria sets (demo results) | $2.43 |
+| **Judge spend so far** | **$4.87 of the $10 cap** |
 | Writing the test set (OpenAI, separate cap) | $0.54 of $1 |

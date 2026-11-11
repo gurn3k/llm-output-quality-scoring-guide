@@ -532,7 +532,7 @@ async function estimateNow(pairs) {
 async function runNow(pairs, resume = false) {
   S.ui.error = null;
   const demo = S.mode === "demo";
-  const model = demo ? "placeholder" : fixedModel() ?? MODELS[S.ui.model].id;
+  const model = demo ? S.demo.replays[0].model : fixedModel() ?? MODELS[S.ui.model].id;
   const est = S.ui.estimate;
   const results = structuredClone(P.resultsFor(S.p, v()));
   const todo = missing(pairs, results);
@@ -633,6 +633,7 @@ function runPanel(pairs, purpose) {
 
 function demoNotice() {
   if (S.mode !== "demo") return null;
+  if (!S.demo.placeholder) return notice("These are stored results from a real run.", `${modelName(S.demo.replays[0].model)} judged every reply on ${S.demo.replays[0].ran}. The demo replays its answers, so nothing is sent and nothing is paid. Your labels here come from the test set's answer key.`);
   return notice("These stored results are placeholders.", "Until the real judge run, they follow the answer key, with a few planted disagreements, unclear verdicts and withheld quotes, so every screen has something to show. The figures below are not a measurement of any model.");
 }
 
