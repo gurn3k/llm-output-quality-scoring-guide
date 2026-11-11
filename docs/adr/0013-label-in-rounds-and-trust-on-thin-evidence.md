@@ -10,6 +10,7 @@ The "too wide to decide" rule (ADR 0009) needs at least 5 failures in the held-b
 - **How many more.** For each criterion still too wide, the page estimates the labels needed from the failure rate you've marked so far ("about 40 more to hold back 5 failures"), rounded up to the next 10.
 - **Trust on thin evidence.** You may mark a criterion trusted while it's still too wide. It's then marked "trusted before the range narrowed" on the trust screen, beside every score it produces, and in both exports.
 - **Demo.** The demo's test set gets enough planted failures per criterion for the held-back third to reach 5, so it can show a real trust decision as well as a too-wide one.
+  - *Correction, 2026-11-10 (found while building the page):* with all 92 replies labelled, the held-back third holds 4 to 7 failures per criterion. That can meet the 5-failure rule, but the "caught" range stays wider than 30 points: even 7 of 7 caught gives 65% to 100%. A range under 30 points needs about 10 held-back failures. So the demo can show trust on thin evidence, but not plain "trusted". Open for the owner: accept this, or change the demo or the rule.
 
 ## Alternatives
 - Rounds only, no trust until the rule is met. Strictest, but most users would need about 100 labels before scoring anything.

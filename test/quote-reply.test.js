@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { checkQuote, normalize } from "../site/src/quote.js";
+import { checkQuote, normalize, locate } from "../site/src/quote.js";
 import { parseReply, decide } from "../site/src/reply.js";
 
 const REPLY = "Hi,\n\nYou can return the linen throw within 60 days of delivery, provided it’s unused.\r\nOnce the return arrives — usually in a week — your refund goes back to your card.\n\nBest,\nMaya";
@@ -17,6 +17,19 @@ test("an ellipsis joins parts that must all appear, in order", () => {
   assert.deepEqual(checkQuote(REPLY, "You can return the linen throw… your refund goes back"), { found: true });
   assert.match(checkQuote(REPLY, "your refund goes back ... You can return the linen throw").reason, /out of order/);
   assert.deepEqual(checkQuote(REPLY, "...within 60 days of delivery..."), { found: true }, "leading and trailing ellipses are ignored");
+});
+
+test("a found quote is placed in the original text, so it can be marked in place", () => {
+  const at = (q) => locate(REPLY, q)?.map(([a, b]) => REPLY.slice(a, b));
+  assert.deepEqual(at("within 60 days of delivery, provided it's unused"), ["within 60 days of delivery, provided it’s unused"]);
+  assert.deepEqual(at("PROVIDED IT’S UNUSED. Once the return arrives"), ["provided it’s unused.\r\nOnce the return arrives"]);
+  assert.deepEqual(at("You can return the linen throw ... your refund goes back"), ["You can return the linen throw", "your refund goes back"]);
+  assert.deepEqual(at("arrives - usually in a week"), ["arrives — usually in a week"]);
+  assert.equal(locate(REPLY, "within 30 days of delivery"), null, "a quote that isn't there is never placed");
+  assert.equal(locate(REPLY, "60 days"), null, "a quote the check refuses (too short) is never placed either");
+  // "İ" lowercases to two characters; both must map back to the one original character.
+  const tr = "Hi. İstanbul is lovely today";
+  assert.deepEqual(locate(tr, "istanbul is lovely")?.map(([a, b]) => tr.slice(a, b)) ?? null, checkQuote(tr, "istanbul is lovely").found ? ["İstanbul is lovely"] : null);
 });
 
 test("a paraphrase or invented quote is refused", () => {

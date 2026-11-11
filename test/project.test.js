@@ -223,3 +223,15 @@ test("trusting a too-wide criterion marks it as thin evidence, in the page and i
   P.untrust(p, 1, "accurate");
   assert.deepEqual(P.trustedIds(p, 1), []);
 });
+
+test("criteria edited before any results replace the list; after results, an edit makes a new version", () => {
+  const p = P.newProject({ rows, criteria, seed: 1, now: NOW });
+  assert.equal(P.canReplaceCriteria(p), true);
+  P.replaceCriteria(p, [criteria[0]]);
+  assert.equal(p.criteria.length, 1);
+  assert.deepEqual(P.current(p).list.map((c) => c.id), ["accurate"]);
+  const q = labelled();
+  judged(q, 1, () => "pass");
+  assert.equal(P.canReplaceCriteria(q), false);
+  assert.throws(() => P.replaceCriteria(q, criteria), /new version/);
+});

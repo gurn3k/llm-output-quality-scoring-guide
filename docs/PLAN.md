@@ -110,7 +110,24 @@ Do: every screen (load, criteria, label, calibrate, trust, score, results, expor
 Done when: page tests run the whole flow in replay mode on the demo data; keyboard-only labelling works; a reply containing `<img onerror>` shows as text; screenshots at both widths in both themes have no overflow, including with the wide fallback font; every element sits inside its container.
 Out of bounds: paid calls.
 For the next ticket: the first usable version, ready for your look.
-Status / Comments:
+Status / Comments: **Done 2026-11-10, waiting on the owner's look.**
+- **The page:** `site/src/app.js` holds the screens; `site/src/ui.js` holds the shared pieces, all built as DOM with no HTML strings. `site/style.css` follows the Guided tokens.
+- **The demo:** `site/data/demo.json`, built by `eval/build-demo.mjs`. Its rows are shuffled with neutral ids, and the policy is the reference. Its stored judge results are placeholders until ticket 10; they say so on every screen and in every reason.
+- **Supporting changes:**
+  - `quote.locate` marks the quote in place.
+  - `cost.run` takes `costOfResult`, so replay runs cost $0.
+  - `project.replaceCriteria` handles edits before any results exist.
+  - Account errors (bad key) are re-sent on resume.
+- **Page tests (`test/flow.test.js`, 8):**
+  - The whole demo in replay mode, including a second round, trust on thin evidence, scoring, an override and CSV export.
+  - Reload, keyboard-only labelling, and `<img onerror>`/`<script>` shown as text.
+  - Refused rows and the column choice.
+  - Live mode refusing without a key or an estimate.
+  - Live mode against a fake API: it pauses at the cap, resumes after the cap is raised, and sends each pair once. Every request goes only to api.anthropic.com, and the key is never stored in the project.
+  - Every screen fits at 390 and 1280 px, light and dark, with and without the wide font.
+  - Five planted page bugs were caught. The sixth (removing the page's key check) changes nothing, because the judge refuses without a key too.
+- **Found:** the column-choice screen dropped the chosen rows; fixed. The demo can't reach plain "trusted" (ADR 0013 correction).
+- **Not built:** the optional one-line critique per label (PRD flow step 3, not in the promises), and a source link, which waits for the repo.
 
 ### 09. Sample run (paid)
 Read first: PRD bars; sample bars below. Needs your approval of the API key and spend first.

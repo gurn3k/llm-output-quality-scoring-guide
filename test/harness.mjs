@@ -109,7 +109,7 @@ export async function launch() {
       if (!parent || getComputedStyle(el).position === "fixed") continue;
       const a = el.getBoundingClientRect(), b = parent.getBoundingClientRect();
       if (a.width === 0 || getComputedStyle(parent).overflowX !== "visible") continue;
-      if (a.right > b.right + 1 || a.left < b.left - 1) out.push(el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (el.className && typeof el.className === "string" ? "." + el.className.split(" ").join(".") : "") + " sticks out of its container");
+      if (a.right > b.right + 1 || a.left < b.left - 1) out.push(el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (el.className && typeof el.className === "string" ? "." + el.className.split(" ").join(".") : "") + " sticks out of its container (" + (parent.tagName.toLowerCase() + (parent.className && typeof parent.className === "string" ? "." + parent.className.split(" ").join(".") : "")) + ", '" + (el.textContent || "").trim().slice(0, 30) + "', by " + Math.round(Math.max(a.right - b.right, b.left - a.left)) + "px)");
     }
     return out;
   })()`);

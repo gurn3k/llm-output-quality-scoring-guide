@@ -13,9 +13,16 @@
 </head>
 <body>
   <header class="site-header">
-    <h1>LLM Output Quality Scoring Guide</h1>
+    <div class="title-row">
+      <h1>LLM Output Quality Scoring Guide</h1>
+      <span id="mode-badge" class="badge" hidden></span>
+    </div>
     <p class="lede">Check an AI judge against your own labels before you trust its scores.</p>
+    <p class="privacy">Your data and key stay in this browser.</p>
   </header>
-  <main id="app" aria-live="polite"></main>
+  <main id="app">
+    <noscript><p>This page needs JavaScript to run. Nothing you load is sent anywhere except, when you ask, to api.anthropic.com.</p></noscript>
+  </main>
+  <div id="status" class="sr" role="status" aria-live="polite"></div>
 </body>
 </html>

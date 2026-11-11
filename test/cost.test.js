@@ -71,6 +71,8 @@ test("resume sends only what's missing, and never a finished pair twice", async 
   const pairs = pairsFor(["a", "b", "c"], ["x", "y"]);
   const results = { a: { x: { status: "pass" }, y: { status: "error", transient: true } }, b: { x: { status: "withheld" } }, c: { y: { status: "error", stopped: true } } };
   assert.deepEqual(missing(pairs, results), [["a", "y"], ["b", "y"], ["c", "x"], ["c", "y"]]);
+  assert.deepEqual(missing([["a", "x"]], { a: { x: { status: "error", fatal: true } } }), [["a", "x"]], "a bad-key error is sent again once the key is fixed");
+  assert.deepEqual(missing([["a", "x"]], { a: { x: { status: "error", reason: "The model declined." } } }), [], "a refusal is a finished answer");
   const sent = [];
   const budget = createBudget(1);
   await run({ pairs, results, budget, model: "claude-haiku-5-5", reserveFor: () => 0.001, judgeOne: async (p) => { sent.push(p.join()); return { status: "pass", usage: { input_tokens: 10 } }; } });
@@ -97,4 +99,13 @@ test("a judge that throws releases its reservation", async () => {
   const budget = createBudget(1);
   await assert.rejects(run({ pairs: [["a", "x"]], results: {}, budget, model: "claude-sonnet-5-5", reserveFor: () => 0.5, judgeOne: async () => { throw new Error("boom"); } }));
   assert.equal(budget.held, 0);
+});
+
+test("replay runs cost nothing, even for a model with no price", async () => {
+  const results = {};
+  const budget = createBudget(0);
+  const out = await run({ pairs: [["a", "x"]], results, budget, model: "stored-results", reserveFor: () => 0, costOfResult: () => 0, judgeOne: async () => ({ status: "pass", usage: { output_tokens: 1e6 } }) });
+  assert.equal(out.paused, null);
+  assert.equal(results.a.x.cost, 0);
+  assert.equal(budget.spent, 0);
 });

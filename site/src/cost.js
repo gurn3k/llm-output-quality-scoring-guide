@@ -80,9 +80,10 @@ export function createBudget(cap = DEFAULT_CAP, spent = 0) {
   };
 }
 
-// A result counts as finished unless it was stopped or hit a passing problem (network, rate limit,
-// overload). Those are sent again on resume; everything else is kept.
-export const isFinished = (r) => !!r && !(r.status === "error" && (r.stopped || r.transient));
+// A result counts as finished unless it was stopped, hit a passing problem (network, rate limit,
+// overload), or failed on the account (bad key, billing), which the user can fix before resuming.
+// Those are sent again on resume; everything else is kept.
+export const isFinished = (r) => !!r && !(r.status === "error" && (r.stopped || r.transient || r.fatal));
 
 // The pairs still to do, in order. Resume uses this, so no finished pair is ever sent twice.
 export function missing(pairs, results) {
@@ -92,7 +93,8 @@ export function missing(pairs, results) {
 // Runs the missing pairs one at a time under the budget.
 // reserveFor([itemId, criterionId]) gives that call's worst case; judgeOne runs it.
 // Returns { done, paused: "cap" | "stopped" | "fatal" | null, reason }.
-export async function run({ pairs, results, budget, model, reserveFor, judgeOne, onResult = () => {}, signal }) {
+// costOfResult defaults to the price table; replay mode passes () => 0, since stored results are free.
+export async function run({ pairs, results, budget, model, reserveFor, judgeOne, onResult = () => {}, signal, costOfResult = (r) => costOf(model, r.usage ?? {}) }) {
   let done = 0;
   for (const pair of missing(pairs, results)) {
     if (signal?.aborted) return { done, paused: "stopped" };
@@ -105,7 +107,7 @@ export async function run({ pairs, results, budget, model, reserveFor, judgeOne,
       budget.settle(ticket, 0);
       throw e;
     }
-    const spent = costOf(model, r.usage ?? {});
+    const spent = costOfResult(r);
     budget.settle(ticket, spent);
     const [itemId, criterionId] = pair;
     (results[itemId] ??= {})[criterionId] = { ...r, cost: spent };

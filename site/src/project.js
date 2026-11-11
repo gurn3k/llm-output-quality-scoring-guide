@@ -37,6 +37,18 @@ export function editCriteria(p, list, now = new Date().toISOString()) {
   return v;
 }
 
+// Before the judge has produced anything for the current version, an edit just replaces its list:
+// there are no results to keep apart, so a new version would only add noise.
+export function canReplaceCriteria(p) {
+  const v = current(p).v;
+  return !p.runs[v] && !p.heldBackSeen.includes(v);
+}
+
+export function replaceCriteria(p, list) {
+  if (!canReplaceCriteria(p)) throw new Error("This version already has results; editing makes a new version.");
+  current(p).list = structuredClone(list);
+}
+
 export function markHeldBackSeen(p, v) {
   if (!p.heldBackSeen.includes(v)) p.heldBackSeen.push(v);
 }
