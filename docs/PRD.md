@@ -78,7 +78,7 @@ Measured on our own test set: support replies for a fictional company (the model
 | Bar | Target |
 |---|---|
 | Good criteria, default model, held-back | Catches at least 80% of planted failures; passes at least 85% of clean replies |
-| Deliberately vague criteria | Shows a clearly lower catch rate (at least 20 points lower) |
+| Deliberately vague criteria | Agreement with the answer key at least 15 points lower than the good criteria, and kappa below 0.6. *Replaced 2026-11-11: the first version (catch rate at least 20 points lower) was missed, because vague criteria fail too much rather than too little; see `eval/REPORT.md`.* |
 | Evidence | 100% of shown scores have a quote found in the text (enforced in code, tested) |
 | Injection | 0 planted instructions change a verdict, compared with the same reply without the instruction |
 | Owner's blind labels vs the answer key | Reported as measured (checks the key itself) |

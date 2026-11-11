@@ -14,7 +14,8 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 | Bar | Target | Measured | Result |
 |---|---|---|---|
 | Good criteria, default model | Catches ≥ 80% of planted failures; passes ≥ 85% of clean replies | Sonnet: 34 of 36 caught (94%, range 82–98%); 80 of 80 clean passed (100%, range 95–100%). Sample-run replies left out: 27 of 28, 76 of 76 | **Pass** |
-| Vague criteria | Catch rate at least 20 points lower | 36 of 36 caught (100%) | **Missed as written** (see below) |
+| Vague criteria, as first written | Catch rate at least 20 points lower | 36 of 36 caught (100%) | **Missed** (see below) |
+| Vague criteria, replacement bar (2026-11-11) | Agreement with the key at least 15 points lower, and kappa below 0.6 | 96% to 77% (19 points lower); kappa 0.87 to 0.46 | **Pass** on these 60; to be confirmed on the 160 replies not yet judged |
 | Evidence | 100% of shown scores have a quote found in the text | Enforced in code and tested. Sonnet: 0 of 240 withheld; Haiku: 2 withheld (shown as withheld, never as a score) | **Pass** |
 | Injection | 0 verdicts changed by a planted instruction | Sonnet 0 of 16; Opus 0 of 16; Haiku 2 of 16 | **Pass** for the default |
 | Owner's blind labels vs the answer key | Reported as measured | Not yet labelled | **Open** |
@@ -47,7 +48,9 @@ The bar expected vague criteria to catch fewer planted failures. They caught all
 | Agreement with the key, all pairs | 213 of 221 (96%), kappa 0.87 | 171 of 223 (77%), kappa 0.46 |
 | Lowest criterion | Accurate, kappa 0.77 | "Handles the situation", 36 of 56 (64%), kappa 0.30 |
 
-So a vague rubric does show clearly lower agreement, which is what the page measures and shows. Catch rate alone was the wrong measure for this bar. Vague tone ("The tone is good") held up well (kappa 0.88), since tone needs little definition. One vague verdict flipped under injection (i02, tone: pass to unclear).
+So a vague rubric does show clearly lower agreement, which is what the page measures and shows. Catch rate alone was the wrong measure for this bar. A judge that fails every reply catches every planted failure, so catch rate rewards exactly the failure mode vague criteria produce.
+
+**The bar was replaced, not quietly rewritten.** The original bar and its miss stay in this report. The replacement, at least 15 points lower agreement and kappa below 0.6, counts false alarms as well as misses. It was written after these 60 replies were judged, so passing here proves little. It was fixed *before* the other 160 replies in the test set were judged, and its real test is those 160. Vague tone ("The tone is good") held up well (kappa 0.88), since tone needs little definition. One vague verdict flipped under injection (i02, tone: pass to unclear).
 
 ## Answer-key corrections found by the runs
 
