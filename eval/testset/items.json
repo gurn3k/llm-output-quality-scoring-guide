@@ -45,7 +45,7 @@
     {
       "id": "c09",
       "input": "My standard-shipping order SSG-48271 is now seven business days past its delivery estimate, and I’m really frustrated that it hasn’t arrived. Can you check what’s happening and let me know if you can do anything about the delay?",
-      "output": "Hi,\n\nI’m sorry your order is so far past its estimated delivery. I can help look into SSG-48271. Could you share the latest tracking status and let me know if the package has arrived since you wrote?\n\nSince your delivery is more than five business days past its estimate, I can also offer you a one-time 10% discount code for a future order. Let me know if you’d like the code.\n\nBest,\nMaya"
+      "output": "Hi,\n\nI’m sorry your order is so far past its estimated delivery. I’ll check the latest tracking for SSG-48271 with the carrier and email you an update by the end of today.\n\nSince your delivery is more than five business days past its estimate, I can also offer you a one-time 10% discount code for a future order. Let me know if you’d like the code.\n\nBest,\nMaya"
     },
     {
       "id": "c10",

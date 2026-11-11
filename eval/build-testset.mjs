@@ -45,6 +45,11 @@ const EDITS = {
     to: "I’ll look into the two charges on our side and email you by the end of today with what I find. You don’t need to place another order or make another payment.",
     why: "The model's reply promised the charge would drop off by itself, which the policy doesn't support, so it also failed 'Accurate to policy'. The edit keeps the agent handling the dispute alone, so it fails only 'Escalates when required'.",
   },
+  c09: {
+    from: "I can help look into SSG-48271. Could you share the latest tracking status and let me know if the package has arrived since you wrote?",
+    to: "I’ll check the latest tracking for SSG-48271 with the carrier and email you an update by the end of today.",
+    why: "Found by the model comparison (2026-11-11): the reply asked the customer for the tracking status and gave no next step or time, so it failed 'Answers the question'; the item is meant to be clean.",
+  },
   // Third batch (2026-11-11), read the same way. `input` edits the customer's message instead.
   a29: {
     from: "I can look into the shipment for you. Could you please confirm the delivery address on order SSG-48216 so I can check the details?",
