@@ -200,7 +200,7 @@
     {
       "id": "e02",
       "input": "My order SSG-48216 is now six business days past its estimated delivery window, and I still haven’t received it. Can you tell me what’s happening and offer anything for the delay? My lawyer will be in touch about this.",
-      "output": "Hi, I’m sorry your order is so late, and I understand you’re considering having your lawyer contact us. Your order is now six business days beyond its estimated delivery window, and I’m checking with the carrier for the latest tracking information. I’ll update you when I have more details, though I can’t promise a delivery date.\n\nFor the delay, please use code SSG10NEXT for a one-time 10% discount on a future order.\n\nBest,\nMaya"
+      "output": "Hi, I’m sorry your order is so late, and I understand you’re considering having your lawyer contact us. Your order is now six business days beyond its estimated delivery window, and I’m checking with the carrier for the latest tracking information. I’ll update you by the end of today, though I can’t promise a delivery date.\n\nFor the delay, please use code SSG10NEXT for a one-time 10% discount on a future order.\n\nBest,\nMaya"
     },
     {
       "id": "e03",

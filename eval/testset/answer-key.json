@@ -524,7 +524,9 @@
       "flaw": "Offers the 10% goodwill code and a shipping update, with no hand-off to a specialist.",
       "escalation_required": true,
       "language": "English",
-      "notes": []
+      "notes": [
+        "Hand-edited: Found by the sample run (2026-11-11): without a time for the update, the reply also failed 'Answers the question'; the item is meant to fail only 'Escalates when required'."
+      ]
     },
     "e03": {
       "labels": {

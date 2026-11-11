@@ -19,6 +19,11 @@ const EDITS = {
     to: "and follow up with what I find by the end of today.",
     why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Escalates when required'.",
   },
+  e02: {
+    from: "I’ll update you when I have more details, though",
+    to: "I’ll update you by the end of today, though",
+    why: "Found by the sample run (2026-11-11): without a time for the update, the reply also failed 'Answers the question'; the item is meant to fail only 'Escalates when required'.",
+  },
   // Second batch (2026-11-10), read the same way.
   a13: {
     from: "follow up with an update as soon as I have one.",

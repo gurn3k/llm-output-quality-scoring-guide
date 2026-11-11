@@ -1,5 +1,5 @@
 // Ticket 09: a small paid run before anything bigger. Uses the page's own judge and cost code.
-//   node eval/sample-run.mjs
+//   node eval/sample-run.mjs [tag]
 // Reads ANTHROPIC_API_KEY from .env.local (never printed). 10 items x the 4 good criteria on
 // Sonnet 5.5, under a hard $0.50 cap. Writes eval/runs/sample-<date>.json and prints each bar.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -17,9 +17,11 @@ const reference = readFileSync(DIR + "policy.md", "utf8").trim();
 const IDS = ["a01", "a02", "q01", "q02", "e01", "e02", "t01", "t02", "i01", "c01"];
 const MODEL = MODELS[DEFAULTS.model].id;
 const CAP = 0.5;
-const OUTPUT_GUESS = 300;
+const OUTPUT_GUESS = 120; // measured: judge replies average 112 output tokens
 const OUT_DIR = fileURLToPath(new URL("./runs/", import.meta.url));
-const OUT = OUT_DIR + `sample-${new Date().toISOString().slice(0, 10)}.json`;
+// An optional tag keeps earlier runs: node eval/sample-run.mjs sharpened
+const TAG = process.argv[2] ? `-${process.argv[2].replace(/[^a-z0-9-]/gi, "")}` : "";
+const OUT = OUT_DIR + `sample-${new Date().toISOString().slice(0, 10)}${TAG}.json`;
 
 const apiKey = readFileSync(new URL("../.env.local", import.meta.url), "utf8").match(/^ANTHROPIC_API_KEY=(.+)$/m)?.[1]?.trim();
 if (!apiKey) throw new Error("ANTHROPIC_API_KEY is missing from .env.local");

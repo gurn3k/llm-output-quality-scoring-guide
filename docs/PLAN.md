@@ -143,6 +143,15 @@ Status / Comments: **Done 2026-11-11, all bars pass.** `eval/sample-run.mjs` use
   - (1) The good criteria overlap. A missed escalation (e01, e02) is also failed on "Accurate to policy" and "Answers the question", and an omission (q02) on "Accurate", which the criteria text allows. The answer key assumes one failure per planted reply.
   - (2) e02 also fails "Answers the question" (no time for the update): a key error, the same slip as e07.
   - (3) For "no escalation needed", the judge quoted the customer's message as evidence of a pass, which is correctly withheld. The judge instructions should ask for the reply's own handling as the quote.
+- **Settled 2026-11-11 (Gurnek chose to sharpen the criteria):**
+  - "Accurate" now judges only what the reply says. Omissions belong to "Answers", and whether to hand off belongs to "Escalates", which the wording now states explicitly.
+  - "Answers" judges only whether each question is addressed.
+  - e02 was hand-edited (a time for the update).
+  - The judge instructions ask a pass to quote the reply's own handling (prompt version 2).
+- **Re-runs on the same 10 items:**
+  - `sharpened`: 37 of 40 verdicts match the key.
+  - `sharpened2`: 39 of 40 match, every bar passes, $0.0793. The one miss is t02, where "because you chose standard shipping" is mild blame that the judge called neutral; it stays a real miss.
+- **Spend:** ticket 09 in total, $0.2646 over three runs.
 
 ### 10. Full test-set run and model comparison (staged, ADR 0007)
 Do: first recalculate the cost from ticket 09's measured cost per call and confirm it fits the remaining budget.
