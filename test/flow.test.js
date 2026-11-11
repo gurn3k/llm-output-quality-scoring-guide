@@ -57,7 +57,7 @@ test("the flow in a real browser", { skip: SKIP }, async (t) => {
     await fits("start");
     await click("start-demo");
     await b.until(`document.querySelector("#mode-badge").textContent === "Demo"`, "the demo badge");
-    assert.match(await b.js(`document.querySelector(".summary-line").textContent`), /^92 loaded, 0 refused$/);
+    assert.match(await b.js(`document.querySelector(".summary-line").textContent`), /^220 loaded, 0 refused$/);
     await fits("load");
     await click("load-next");
     assert.equal(await heading(), "Write your criteria");

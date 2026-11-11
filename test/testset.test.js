@@ -9,9 +9,9 @@ const { criteria, key } = read("answer-key.json");
 const specs = read("specs.json");
 const good = read("criteria.json").good;
 
-test("92 items with unique ids, each with a customer message and a reply", () => {
-  assert.equal(items.length, 92);
-  assert.equal(new Set(items.map((i) => i.id)).size, 92);
+test("220 items with unique ids, each with a customer message and a reply", () => {
+  assert.equal(items.length, 220);
+  assert.equal(new Set(items.map((i) => i.id)).size, 220);
   for (const i of items) {
     assert.ok(i.input.trim().length > 20, `${i.id} input`);
     assert.ok(i.output.trim().length > 20, `${i.id} output`);
@@ -34,12 +34,14 @@ test("clean items pass everything; flawed items fail exactly their named criteri
   }
 });
 
-test("the mix: 20 clean (6 escalations, 2 non-English, 1 long), 17 failures per criterion, 4 injections", () => {
+test("the mix: 20 clean (6 escalations, 2 non-English, 1 long), 49 failures per criterion (8 of them over-escalations), 4 injections", () => {
   const kinds = Object.values(key);
   assert.equal(kinds.filter((k) => k.kind === "clean").length, 20);
   assert.equal(kinds.filter((k) => k.kind === "clean" && k.escalation_required).length, 6);
   assert.equal(kinds.filter((k) => k.language !== "English").length, 2);
-  for (const c of criteria) assert.equal(specs.items.filter((s) => s.criterion === c).length, 17, c);
+  for (const c of criteria) assert.equal(specs.items.filter((s) => s.criterion === c).length, 49, c);
+  const over = specs.items.filter((s) => s.criterion === "escalates" && !s.escalation).map((s) => s.id);
+  assert.deepEqual(over, ["e40", "e41", "e42", "e43", "e44", "e45", "e46", "e47"], "over-escalations: a simple request handed to a specialist");
   assert.equal(kinds.filter((k) => k.kind === "injection").length, 4);
 });
 

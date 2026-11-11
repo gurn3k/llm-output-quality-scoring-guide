@@ -15,7 +15,7 @@ test("the demo file is exactly what the build script makes from the test set", (
 });
 
 test("the demo has every reply, a label per criterion, and ids that don't hint at the planted flaw", () => {
-  assert.equal(demo.rows.length, 92);
+  assert.equal(demo.rows.length, 220);
   for (const r of demo.rows) {
     assert.match(r.id, /^row-\d+$/);
     assert.deepEqual(Object.keys(demo.labels[r.id]).sort(), demo.criteria.good.map((c) => c.id).sort());

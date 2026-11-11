@@ -45,10 +45,52 @@ const EDITS = {
     to: "I’ll look into the two charges on our side and email you by the end of today with what I find. You don’t need to place another order or make another payment.",
     why: "The model's reply promised the charge would drop off by itself, which the policy doesn't support, so it also failed 'Accurate to policy'. The edit keeps the agent handling the dispute alone, so it fails only 'Escalates when required'.",
   },
-  t10: {
-    from: "Hi Maya,",
-    to: "Hi,",
-    why: "The reply greeted the customer by the agent's own name, a slip unrelated to the planted flaw.",
+  // Third batch (2026-11-11), read the same way. `input` edits the customer's message instead.
+  a29: {
+    from: "I can look into the shipment for you. Could you please confirm the delivery address on order SSG-48216 so I can check the details?",
+    to: "I’ll look into the shipment with the carrier and email you an update by the end of today.",
+    why: "The reply asked the customer to confirm their address and gave no time for the update, so it also failed 'Answers the question'; the item is meant to fail only 'Accurate to policy'.",
+  },
+  q44: {
+    from: "You can return the throw within 30 days of delivery, provided it is unused and in its original packaging.",
+    to: "To be returned, the throw needs to be unused and in its original packaging.",
+    why: "The reply stated the 30-day window, so a labeller could fairly say the customer can work out the days left; the edit keeps only the conditions, so the question clearly goes unanswered.",
+  },
+  e49: {
+    from: "who will reply within 5 business days.",
+    to: "who will be in touch.",
+    why: "A wrong reply time (5 business days) is also a wrong statement, failing 'Accurate to policy'. With no time at all, the hand-off fails only 'Escalates when required'.",
+  },
+  q28: {
+    from: "Our [returns policy page](https://example.com/returns) has",
+    to: "Our returns policy page has",
+    why: "The reply linked to a placeholder web address. The edit keeps the pointer to the policy page as plain text; the item still fails only 'Answers the question'.",
+  },
+  t20: {
+    from: "I can check the latest tracking information for order SSG-48216 and see whether there’s an update on its status.",
+    to: "I’ll check the latest tracking information for order SSG-48216 and email you an update on its status by the end of today.",
+    why: "Without a time for the update, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
+  },
+  t25: {
+    from: "I’ll look into the shipment and share any available update.",
+    to: "I’ll look into the shipment and reply with an update the same day.",
+    why: "Without a time for the update, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
+  },
+  t29: {
+    from: "Once we have that information, we can look into the delivery further.",
+    to: "Once we have that information, we’ll look into the delivery and reply the same day.",
+    why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
+  },
+  t36: {
+    input: true,
+    from: "Can I return it for a refund?",
+    to: "It was a clearance item. Can I return it for a refund?",
+    why: "The customer's message never said the vase was clearance, so the reply's 'final sale' answer would also fail 'Accurate to policy'. The message now says so, as the spec intended.",
+  },
+  t48: {
+    from: "I can check the latest tracking information for SSG-48216 and follow up with an update.",
+    to: "I’ll check the latest tracking information for SSG-48216 and email you an update by the end of today.",
+    why: "Without a time for the update, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
   },
 };
 
@@ -63,20 +105,32 @@ const RENAME = [
 ];
 const rename = (t) => RENAME.reduce((acc, [from, to]) => acc.replace(from, to), t);
 
+// The model sometimes greets the customer by one of its own agent names ("Hi Maya," signed "Lena").
+// The customer never gave that name, so it's a slip unrelated to any planted flaw: "Hi," instead.
+const AGENT_GREETING = /^(Hi|Hello|Dear) (Maya|Mia|Jamie|Lena|Sam|Alex),/;
+const fixGreeting = (reply, message) => {
+  const m = reply.match(AGENT_GREETING);
+  return m && !message.includes(m[2]) ? reply.replace(AGENT_GREETING, "$1,") : reply;
+};
+
 const items = [];
 const key = {};
 for (const s of specs.items) {
   const g = generated.items[s.id];
   if (!g) throw new Error(`${s.id} has not been generated`);
-  let output = rename(g.reply);
+  let input = rename(g.customer_message);
+  let output = fixGreeting(rename(g.reply), g.customer_message);
   const notes = [];
+  if (output !== rename(g.reply)) notes.push("Greeting changed to \"Hi,\": the reply had greeted the customer by an agent's name.");
   if (EDITS[s.id]) {
     const e = EDITS[s.id];
-    if (!output.includes(e.from)) throw new Error(`${s.id}: edit text not found`);
-    output = output.replace(e.from, e.to);
-    notes.push(`Hand-edited: ${e.why}`);
+    const text = e.input ? input : output;
+    if (!text.includes(e.from)) throw new Error(`${s.id}: edit text not found`);
+    if (e.input) input = input.replace(e.from, e.to);
+    else output = output.replace(e.from, e.to);
+    notes.push(`Hand-edited${e.input ? " (customer's message)" : ""}: ${e.why}`);
   }
-  items.push({ id: s.id, input: rename(g.customer_message), output });
+  items.push({ id: s.id, input, output });
   const labels = Object.fromEntries(CRITERIA.map((c) => [c, s.kind === "flaw" && s.criterion === c ? "fail" : "pass"]));
   key[s.id] = { labels, kind: s.kind, flaw: s.flaw ?? null, escalation_required: s.escalation, language: s.language ?? "English", notes };
 }
