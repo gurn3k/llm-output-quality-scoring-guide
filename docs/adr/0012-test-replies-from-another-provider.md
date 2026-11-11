@@ -15,6 +15,6 @@ A judge in real use mostly grades text another system wrote. The test set should
 
 ## Consequences
 - A second provider's terms apply to the generation step. Checked 2026-11-10: OpenAI's terms forbid using output "to develop models that compete with OpenAI" ([terms](https://www.openai.com/terms)); generating evaluation data for judges isn't that.
-- What was used: `gpt-6.1-terra` ($1 in / $5 out per million tokens, [pricing](https://developers.openai.com/api/docs/pricing), checked 2026-11-10), with a $1 cap enforced per call on worst-case cost. All 56 items, flawed ones included, came from the same model, so the judge can't tell clean from flawed by writing style. Actual spend: $0.14.
+- What was used: `gpt-6.1-terra` ($1 in / $5 out per million tokens, [pricing](https://developers.openai.com/api/docs/pricing), checked 2026-11-10), with a $1 cap enforced per call on worst-case cost. All 88 generated items (56, then 32 more failures under ADR 0013), flawed ones included, came from the same model, so the judge can't tell clean from flawed by writing style. Actual spend: $0.22 ($0.14 for the first 56, $0.08 for the second batch).
 - The generated replies can't be regenerated exactly. The files are kept as written, with the model name and date recorded.
 - If a clean reply turns out to break the policy, it's either fixed by hand or retagged as a failure, and the change is noted in the answer key.

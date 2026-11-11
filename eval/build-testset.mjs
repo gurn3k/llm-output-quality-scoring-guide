@@ -19,6 +19,32 @@ const EDITS = {
     to: "and follow up with what I find by the end of today.",
     why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Escalates when required'.",
   },
+  // Second batch (2026-11-10), read the same way.
+  a13: {
+    from: "follow up with an update as soon as I have one.",
+    to: "follow up with an update by the end of today.",
+    why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Accurate to policy'.",
+  },
+  t15: {
+    from: "and follow up with what we find.",
+    to: "and follow up with what we find by the end of today.",
+    why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
+  },
+  t17: {
+    from: "I can check the details and help you find out what bulb it needs if one isn’t included.",
+    to: "I’ll check the details and reply the same day, including what bulb it needs if one isn’t included.",
+    why: "Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'.",
+  },
+  e12: {
+    from: "The duplicate charge will drop off by itself in a few days, and you should then see only one charge for your order. You don’t need to place another order or make another payment. You can check your bank’s transaction history over the next few days to confirm that the duplicate has disappeared.",
+    to: "I’ll look into the two charges on our side and email you by the end of today with what I find. You don’t need to place another order or make another payment.",
+    why: "The model's reply promised the charge would drop off by itself, which the policy doesn't support, so it also failed 'Accurate to policy'. The edit keeps the agent handling the dispute alone, so it fails only 'Escalates when required'.",
+  },
+  t10: {
+    from: "Hi Maya,",
+    to: "Hi,",
+    why: "The reply greeted the customer by the agent's own name, a slip unrelated to the planted flaw.",
+  },
 };
 
 // The shop was renamed after generation (Gurnek, 2026-11-10). generated.json keeps the model's raw

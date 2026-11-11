@@ -736,6 +736,432 @@
       "language": "English",
       "notes": []
     },
+    "a10": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says damage can be reported within 30 days of delivery and arranges a replacement.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a11": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says express shipping takes 2-4 business days.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a12": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says the refund arrives within 24 hours of the return reaching the warehouse.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a13": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Offers the one-time 10% discount code.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": [
+        "Hand-edited: Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Accurate to policy'."
+      ]
+    },
+    "a14": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Agrees to refund the $15 difference.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a15": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Offers free shipping on the next order.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a16": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says the toaster is still under warranty and offers a replacement.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "a17": {
+      "labels": {
+        "accurate": "fail",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says orders can only be changed within 15 minutes, so it's too late to swap.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q10": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Talks only about the 1-year warranty against defects and never says whether the used kettle can be returned.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q11": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains how to start the return and pack the lamp, but never says what return shipping costs.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q12": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Answers only when the refund will arrive and ignores the card-or-store-credit question.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q13": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Describes the price adjustment policy in general (within 7 days, once per item) and asks for the order number, without saying whether the clearance lamp qualifies.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q14": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Thanks them and asks for the photo, but never says what options they'll have or what happens after the photo.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q15": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains that the item must be unused and in its original packaging, but never says how long they have.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q16": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains how to place a separate new order and the shipping times, without saying whether the mug can be added to the existing order.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "q17": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "fail",
+        "escalates": "pass",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains the steps to file a warranty claim, without saying whether accidental damage is covered.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "e10": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Offers a replacement lamp under warranty, with no hand-off to a specialist and no advice to stop using it.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e11": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains the 5-7 business day refund timeline and offers to check its status, with no hand-off to a specialist.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e12": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says the duplicate charge will drop off by itself in a few days, with no hand-off to a specialist.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": [
+        "Hand-edited: The model's reply promised the charge would drop off by itself, which the policy doesn't support, so it also failed 'Accurate to policy'. The edit keeps the agent handling the dispute alone, so it fails only 'Escalates when required'."
+      ]
+    },
+    "e13": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Explains how to reset the password with the 'Forgot password' link, with no hand-off to a specialist.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e14": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Says the agent has opened a trace with the carrier and asks the customer to wait 3 business days, with no hand-off to a specialist.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e15": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Asks for photos to start a warranty claim, with no hand-off to a specialist and no advice to stop using it.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e16": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Arranges a replacement rug itself and doesn't acknowledge the manager request or hand off.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "e17": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "fail",
+        "tone": "pass"
+      },
+      "kind": "flaw",
+      "flaw": "Apologises and offers a full refund for the toaster, with no hand-off to a specialist.",
+      "escalation_required": true,
+      "language": "English",
+      "notes": []
+    },
+    "t10": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Flippant and too casual for the situation: slang like 'lol' and 'chill', treats the question as a joke.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": [
+        "Hand-edited: The reply greeted the customer by the agent's own name, a slip unrelated to the planted flaw."
+      ]
+    },
+    "t11": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Lectures the customer that they should have checked their order properly before placing it.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "t12": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Implies the customer may have chipped it themselves, while still sending the replacement.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "t13": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Cold and bureaucratic: refers to the customer as 'the claimant' and uses internal codes like 'WTY-1 eligibility' without explaining them.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "t14": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Smug: says rules are rules and they're lucky clearance items are sold at all.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "t15": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Scolds the customer for their tone before answering.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": [
+        "Hand-edited: Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'."
+      ]
+    },
+    "t16": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Belittles the customer for asking, saying the fee is only $6.95 and hardly worth an email.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": []
+    },
+    "t17": {
+      "labels": {
+        "accurate": "pass",
+        "answers": "pass",
+        "escalates": "pass",
+        "tone": "fail"
+      },
+      "kind": "flaw",
+      "flaw": "Overly familiar and pushy: calls the customer 'buddy' and pressures them to add more items to their order.",
+      "escalation_required": false,
+      "language": "English",
+      "notes": [
+        "Hand-edited: Without a time for the follow-up, the reply also failed 'Answers the question'; the item is meant to fail only 'Appropriate tone'."
+      ]
+    },
     "i01": {
       "labels": {
         "accurate": "fail",
