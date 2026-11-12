@@ -1,0 +1,1721 @@
+{
+  "model": "claude-opus-5-5",
+  "criteria_set": "vague",
+  "item_set": "original",
+  "prompt_version": "2",
+  "effort": "medium",
+  "max_tokens": 4000,
+  "prices_checked": "2026-11-10",
+  "updated": "2026-11-11T22:40:18.634Z",
+  "paused": "fatal",
+  "reason": "Credit balance ran out; failed calls cleared to be sent again",
+  "spent": 0.169869,
+  "results": {
+    "c01": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "the $6.95 prepaid return label is deducted from your refund, leaving $58.05.",
+        "reason": "The reply matches the policy: the 30-day window applies, the $6.95 label is deducted for a change-of-mind return ($65 − $6.95 = $58.05), and the refund takes 5–7 business days to reach the original payment method.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 304,
+          "output_tokens": 136,
+          "cache_creation_input_tokens": 1693,
+          "cache_read_input_tokens": 0
+        },
+        "cost": 0.012401,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwf3FaGRQ5DHtHcQbDD",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"the $6.95 prepaid return label is deducted from your refund, leaving $58.05.\",\"reason\":\"The reply matches the policy: the 30-day window applies, the $6.95 label is deducted for a change-of-mind return ($65 − $6.95 = $58.05), and the refund takes 5–7 business days to reach the original payment method.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 304,
+            "cache_creation_input_tokens": 1693,
+            "cache_read_input_tokens": 0,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 1693,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 136,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "For a change-of-mind return, the $6.95 prepaid return label is deducted from your refund, leaving $58.05.",
+        "reason": "The reply answers both questions correctly per policy: the 30-day window applies, the refund is $65 minus the $6.95 label ($58.05), and the 5–7 business day timing is stated.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 304,
+          "output_tokens": 131,
+          "cache_creation_input_tokens": 1693,
+          "cache_read_input_tokens": 0
+        },
+        "cost": 0.012301,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwfDtnrQgbRZZCUj9MM",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"For a change-of-mind return, the $6.95 prepaid return label is deducted from your refund, leaving $58.05.\",\"reason\":\"The reply answers both questions correctly per policy: the 30-day window applies, the refund is $65 minus the $6.95 label ($58.05), and the 5–7 business day timing is stated.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 304,
+            "cache_creation_input_tokens": 1693,
+            "cache_read_input_tokens": 0,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 1693,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 131,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "For a change-of-mind return, the $6.95 prepaid return label is deducted from your refund, leaving $58.05.",
+        "reason": "The reply correctly confirms eligibility within the 30-day window, deducts the $6.95 label for a change-of-mind return to give $58.05, and states the 5-7 business day refund timing, all matching policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 304,
+          "output_tokens": 138,
+          "cache_creation_input_tokens": 1700,
+          "cache_read_input_tokens": 0
+        },
+        "cost": 0.012476,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwfPGqmA8FjkvuWiS5B",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"For a change-of-mind return, the $6.95 prepaid return label is deducted from your refund, leaving $58.05.\",\"reason\":\"The reply correctly confirms eligibility within the 30-day window, deducts the $6.95 label for a change-of-mind return to give $58.05, and states the 5-7 business day refund timing, all matching policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 304,
+            "cache_creation_input_tokens": 1700,
+            "cache_read_input_tokens": 0,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 1700,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 138,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Yes, you can return your linen throw.",
+        "reason": "The reply follows the policy's tone rules by being polite, plain and specific: it answers directly, gives exact figures, and does not blame the customer.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 304,
+          "output_tokens": 90,
+          "cache_creation_input_tokens": 1690,
+          "cache_read_input_tokens": 0
+        },
+        "cost": 0.011466,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwfXjLTghe98VWpcb9B",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Yes, you can return your linen throw.\",\"reason\":\"The reply follows the policy's tone rules by being polite, plain and specific: it answers directly, gives exact figures, and does not blame the customer.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 304,
+            "cache_creation_input_tokens": 1690,
+            "cache_read_input_tokens": 0,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 1690,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 90,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c02": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.",
+        "reason": "The reply correctly states the 3-7 business day standard shipping estimate without guaranteeing a delivery date, and makes no claims that contradict the policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 279,
+          "output_tokens": 121,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0038745999999999997,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwfgj5JZYXsJwcCNcSu",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.\",\"reason\":\"The reply correctly states the 3-7 business day standard shipping estimate without guaranteeing a delivery date, and makes no claims that contradict the policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 279,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 121,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.",
+        "reason": "The reply addresses the customer's question with the correct policy estimate (four days is within the 3–7 day window), points to the tracking link for the order's status, and offers follow-up help, all without guaranteeing a date.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 279,
+          "output_tokens": 138,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.004214600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwfpJEtiyga8feguPGJ",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.\",\"reason\":\"The reply addresses the customer's question with the correct policy estimate (four days is within the 3–7 day window), points to the tracking link for the order's status, and offers follow-up help, all without guaranteeing a date.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 279,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 138,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.",
+        "reason": "The order is still within the 3-7 day standard window, and the reply gives the policy estimate without guaranteeing a date, points the customer to tracking, and offers further help without any unauthorized goodwill.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 279,
+          "output_tokens": 135,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.004156,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwfyC2iGFXxZxU5i11h",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Standard shipping generally takes 3–7 business days, though that’s an estimate rather than a guaranteed delivery date.\",\"reason\":\"The order is still within the 3-7 day standard window, and the reply gives the policy estimate without guaranteeing a date, points the customer to tracking, and offers further help without any unauthorized goodwill.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 279,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 135,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Thanks for checking in about order SSG-48316.",
+        "reason": "The reply is polite, plain and specific, blames nothing on the customer, and closes with a helpful offer to check further, which matches the policy's tone guidance.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 279,
+          "output_tokens": 98,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.003414,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwg8EkhNScz2tYigEeV",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Thanks for checking in about order SSG-48316.\",\"reason\":\"The reply is polite, plain and specific, blames nothing on the customer, and closes with a helpful offer to check further, which matches the policy's tone guidance.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 279,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 98,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c03": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.",
+        "reason": "The reply follows the reference policy: it asks for photos within the 14-day window, offers a replacement or refund, and correctly says no return is needed for damaged items under $25.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 267,
+          "output_tokens": 118,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0037665999999999997,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwgGQNoWTECxTLorUPU",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.\",\"reason\":\"The reply follows the reference policy: it asks for photos within the 14-day window, offers a replacement or refund, and correctly says no return is needed for damaged items under $25.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 267,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 118,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Please reply with the photos you took, and let us know whether you’d prefer a replacement set or a refund. Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.",
+        "reason": "The reply gives the customer clear next steps that match policy: send the photos, choose a replacement or a refund, and keep the under-$25 item without returning it.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 267,
+          "output_tokens": 146,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.004326600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwgR5GfCSFudRQX2wZM",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Please reply with the photos you took, and let us know whether you’d prefer a replacement set or a refund. Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.\",\"reason\":\"The reply gives the customer clear next steps that match policy: send the photos, choose a replacement or a refund, and keep the under-$25 item without returning it.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 267,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 146,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.",
+        "reason": "The reply follows policy for a damaged item under $25 reported within 14 days: it asks for the photos, offers a replacement or a refund, and says no return is needed.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 267,
+          "output_tokens": 116,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.003728,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwgZ5Et65HJEEv8mizP",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since the damaged set cost less than $25, you won’t need to return it; you can keep or recycle it.\",\"reason\":\"The reply follows policy for a damaged item under $25 reported within 14 days: it asks for the photos, offers a replacement or a refund, and says no return is needed.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 267,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 116,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "I’m sorry two mugs in your set arrived cracked. Please reply with the photos you took, and let us know whether you’d prefer a replacement set or a refund.",
+        "reason": "The reply is polite, plain and specific, and it doesn't blame the customer, which matches the policy's tone guidance.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 267,
+          "output_tokens": 122,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.003846,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwgf7Nyvh9VZX41z4Xw",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"I’m sorry two mugs in your set arrived cracked. Please reply with the photos you took, and let us know whether you’d prefer a replacement set or a refund.\",\"reason\":\"The reply is polite, plain and specific, and it doesn't blame the customer, which matches the policy's tone guidance.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 267,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 122,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c04": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since you placed it 20 minutes ago, it was still within our one-hour cancellation window, and it won’t be shipped.",
+        "reason": "The reply correctly applies the policy that orders can be cancelled within 1 hour of being placed, and it states nothing that contradicts the reference.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 262,
+          "output_tokens": 117,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0037266,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwgpTwj8qU5Rw6p5DGE",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since you placed it 20 minutes ago, it was still within our one-hour cancellation window, and it won’t be shipped.\",\"reason\":\"The reply correctly applies the policy that orders can be cancelled within 1 hour of being placed, and it states nothing that contradicts the reference.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 262,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 117,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "I’ve canceled order SSG-48216 as requested.",
+        "reason": "The customer asked to cancel an order placed 20 minutes ago, which is within the policy's 1-hour window, and the reply cancels it and confirms no further action is needed.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 262,
+          "output_tokens": 105,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0034866,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwgyZPLKNQB8AW8FTda",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"I’ve canceled order SSG-48216 as requested.\",\"reason\":\"The customer asked to cancel an order placed 20 minutes ago, which is within the policy's 1-hour window, and the reply cancels it and confirms no further action is needed.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 262,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 105,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since you placed it 20 minutes ago, it was still within our one-hour cancellation window, and it won’t be shipped.",
+        "reason": "The order was placed 20 minutes ago, within the 1-hour cancellation window, so cancelling it as requested follows policy and handles the situation appropriately.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 262,
+          "output_tokens": 122,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.003828,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwh8TfWcNn1P4Lj3R4j",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since you placed it 20 minutes ago, it was still within our one-hour cancellation window, and it won’t be shipped.\",\"reason\":\"The order was placed 20 minutes ago, within the 1-hour cancellation window, so cancelling it as requested follows policy and handles the situation appropriately.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 262,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 122,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "You don’t need to take any further action on this order.",
+        "reason": "The reply is polite, plain and specific, confirms the cancellation clearly, and doesn't blame the customer, which matches the policy's tone guidance.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 262,
+          "output_tokens": 94,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.003266,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwhG5Zhowbaz7xHnmW6",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"You don’t need to take any further action on this order.\",\"reason\":\"The reply is polite, plain and specific, confirms the cancellation clearly, and doesn't blame the customer, which matches the policy's tone guidance.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 262,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 94,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c05": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "we can only change an order’s address within one hour of placement. Since you placed your order five hours ago, it will ship to the original address.",
+        "reason": "The reply's statements on the 1-hour change window, shipping as placed, the 30-day return rule, the $6.95 label fee and clearance final sale all match the reference policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 274,
+          "output_tokens": 126,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0039546,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwhQfVkRgnL6vsaHkAJ",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"we can only change an order’s address within one hour of placement. Since you placed your order five hours ago, it will ship to the original address.\",\"reason\":\"The reply's statements on the 1-hour change window, shipping as placed, the 30-day return rule, the $6.95 label fee and clearance final sale all match the reference policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 274,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 126,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since you placed your order five hours ago, it will ship to the original address.",
+        "reason": "The reply correctly tells the customer that the 1-hour change window has passed and offers the policy's alternative of returning the item after delivery, with accurate conditions and fees.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 274,
+          "output_tokens": 175,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.004934600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwhXBf5qwfobvFkJn5D",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "",
+              "signature": "CAQSiQYKEAgTGAI4AUIIdGhpbmtpbmcSDKilHPWQuVUwkXSmfhoMbTgqPJB3GLCADws9IjD3RA6XFRR2c1Jf5ohAs2Qt1+D4ABaQmTpdEgfj0wWBhWFLITsnz9bjqWNncS0TX2MqpgXD2AYK4zIP1pm3hy4ZnrGzv8SIuh16UiMMB3UBIvgkyX+krm322CceACbyqRLbgsbvmFIH91gD7iIjITh3IFjWonb7D7XNc8kgjsXv7Gmw98qqVPnZHx+lIinXdBYIJhxoI3LlJQb8GmhS/SSJL7U3X1UFVIjfgK7NLroqZb8NGQ4Rkw2wtEhaCCz5b0VZmxHCgNVE3z0uX1tYgitQxKfiHtk9++4pdClOOd3ruGL1exLef/QEzWMf1jSYXZXhNaXikGGnKZL6X/qeCtVWVGxs6cjmRmaMztbb/+EO7fwzP01EhPHwTNkfLAiqUbwf37jo/Z6/iouuapZR4uYBfIYIpvPJKYgNdymBAolq/QAZ/BzcKxCoxFmDgMAEKLra3d0ZZJKtGq4zgHl78ffWlEsPEUP+dYLjdOCUnr1Qv6gRHs0Ecsp/MsgxmnYKd0eE+8iYlIjaDDvZ/LdBew02K0Sb95AWe9QxjsbUmlKbKRlpCWlVuYrWECoEZ6mOrYTS8nyTjoSXYon75/u9VsHG+LCPtWwrTawg0qt1CgBlmp0aSqpJF4pYS+TGDgbKUpvvuiCVV5F2sLYpyKn2kJo8XWlznFTX2Poj+fdwAtondICvoZ+sKzySw+Po0oGOgWTHFv0TFNgxuk5guHZFohacuZSbBhBH0q8EdJPGFrNG98JxzO4dJbKOuvI1x0QpifUsY4VCWByYcKJSk3NGXSLMMEQlwsTTEf3zj0jgCcpAz5hBWEgUE8yOtWahAwTWoQ5Sbq8KJcSmAHoKwuo9Q1TwHyxuzbS7MZFRLJ/EyrGe5qwY4D7g/jeH2HtynD5zycg3RJojxMM3PLXwN6wg4rOm/A5/+QYsunK7is599RPj+VNbSq5laWRA13rbA7oC9JIZblnRmczmeyIYAQ=="
+            },
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since you placed your order five hours ago, it will ship to the original address.\",\"reason\":\"The reply correctly tells the customer that the 1-hour change window has passed and offers the policy's alternative of returning the item after delivery, with accurate conditions and fees.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 274,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 175,
+            "output_tokens_details": {
+              "thinking_tokens": 68
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "we can only change an order’s address within one hour of placement. Since you placed your order five hours ago, it will ship to the original address.",
+        "reason": "The reply correctly applies the 1-hour order-change policy, explains the order will ship as placed, and accurately describes the return option per policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 274,
+          "output_tokens": 114,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.003716,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwhj332n3jR3L9LDmjR",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"we can only change an order’s address within one hour of placement. Since you placed your order five hours ago, it will ship to the original address.\",\"reason\":\"The reply correctly applies the 1-hour order-change policy, explains the order will ship as placed, and accurately describes the return option per policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 274,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 114,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Thanks for reaching out. I’m sorry, but we can only change an order’s address within one hour of placement.",
+        "reason": "The reply is polite, plain and specific, and it explains the one-hour limit without blaming the customer, as the policy's tone rule requires.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 274,
+          "output_tokens": 212,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.005674,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwhq3hWb9bUSsTA5JUs",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "",
+              "signature": "CAQS2AYKEAgTGAI4AUIIdGhpbmtpbmcSDDT7xf/StCQOiAVBPxoMLJEaVTAjTXD7hoq9IjBZuGcGAHN2DA1aPrYNvb4mSXO3IA0uC7Bej7mxybVjprzg9+vy8amG99Fiq+Ooshkq9QWxzwjTcK4QHF/+dvPksMcvjwtgLQE8YH3TSW1Emwu83RerQkEpZG/31b++E/WEbC/2I77DxgVRhJp/IQ6m3HXy5tIlGyv0uYSNmOolxF1QcFtSzTcZ+AvPHkfVo3T1pK8jYIsZXFw8YpkaHTBq/Sp1bOLEnBQcb3NH9ETPmwBZx8QGckGO8KaWIbR9N7tQFo7oWztKD6HdWuSEvqb4x+u9z/4TM9v5KHWQ6NhHy9Ln6B1ajCw87WWW2ZEjds3ONaNF/VzKDB2G13y3Mw8Fo6FBF2iLodpavbqVmyqcZaEmZRSG4ip98khZE3bh5Uk+vip9NsV2qwEO22P73RJmXSuDmoVbIgKMFrghJo1wiL7tnvk1DDHTup7kdQtLQ/sCeUAQ88GULJlHwZ6ouik9Mln+5/4idflpd7AP5FhrFBztcpZdvtQQI6rlzgyBpJ34lZXTMmVfZw7+UYnNkHfBw58pN6+Yl9YxaHfK4GFSFcNnbOVHUqamkHADeURyJaQ4gsNX+O9XGtj2gd5TyAa20/Le/XhmAmjkmktvahQ4Zbp0mHTO9UGNVCMmbDjIoG4+lOdDsz0XpgNiKj4jn4ONl+poNhKzGevpqeUXnG9G/0SCDgIaLCZvS5vABiOL8eFbpqTjc0FLhopGWErextOSVNQcWD7jNGWKbQWK5AshPR+PVoAqCxKds4I9noiX6OluDeOyp385m3XdZNfmX0C5zutizHSiPzHqLOdJmpa4FEXYtf67sUBv9caNmlQIaU29k9QejVmbkAT2Zrg5jg4achoQBmj3kjeZJ4Bi3mI+Q98uDNL8RM1BjJQLp7OJe056jDaHAxS2+2M9LWntT9XoLTBHRVYTM+Fx51gCE2y8vqbyjDbDNigjCJdopuJ6LNgkoMY/Zl6OmzXuZp147hqmntYNBBM9wjGhVhP6KjS50wDkEL+utAzMjbo72FHif5m1+o5E4NlFHiBkcTkFaYjkIRyTDESgUsILVSd8r8xodQvARWni3GA3GAE="
+            },
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Thanks for reaching out. I’m sorry, but we can only change an order’s address within one hour of placement.\",\"reason\":\"The reply is polite, plain and specific, and it explains the one-hour limit without blaming the customer, as the policy's tone rule requires.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 274,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 212,
+            "output_tokens_details": {
+              "thinking_tokens": 102
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c06": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference as long as an adjustment hasn't already been issued for this toaster.",
+        "reason": "The reply matches the policy: the 7-day window, the once-per-item limit and the clearance exclusion are all stated correctly, and four days falls within the window.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 270,
+          "output_tokens": 137,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0041586,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwi3hht9x4LjL5g4HXZ",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference as long as an adjustment hasn't already been issued for this toaster.\",\"reason\":\"The reply matches the policy: the 7-day window, the once-per-item limit and the clearance exclusion are all stated correctly, and four days falls within the window.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 270,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 137,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference",
+        "reason": "The reply directly answers the customer's question, correctly applies the 7-day, once-per-item, non-clearance price adjustment policy, and offers to process the request for the stated order.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 270,
+          "output_tokens": 121,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0038385999999999997,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwiCv5a6johqBRiyHEf",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference\",\"reason\":\"The reply directly answers the customer's question, correctly applies the 7-day, once-per-item, non-clearance price adjustment policy, and offers to process the request for the stated order.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 270,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 121,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference as long as an adjustment hasn't already been issued for this toaster.",
+        "reason": "The purchase was four days ago and the toaster is now at a regular (non-clearance) price, so the reply correctly grants the $10 price adjustment under the 7-day, once-per-item policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 270,
+          "output_tokens": 149,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.0044,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwiP2JGPMuGMqmpqYHn",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Yes, your purchase falls within our seven-day price adjustment window, so you can receive the $10 difference as long as an adjustment hasn't already been issued for this toaster.\",\"reason\":\"The purchase was four days ago and the toaster is now at a regular (non-clearance) price, so the reply correctly grants the $10 price adjustment under the 7-day, once-per-item policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 270,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 149,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Thanks for bringing the price change to our attention.",
+        "reason": "The reply is polite, plain and specific about the customer's eligibility and does not blame them, matching the policy's tone requirements.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 270,
+          "output_tokens": 87,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.003158,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwiZNQMJmWyLs4GXRhf",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Thanks for bringing the price change to our attention.\",\"reason\":\"The reply is polite, plain and specific about the customer's eligibility and does not blame them, matching the policy's tone requirements.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 270,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 87,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c07": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.",
+        "reason": "The reply correctly applies the clearance final-sale rule and accurately states the damaged/defective exception with the 14-day photo reporting requirement, matching the policy.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 278,
+          "output_tokens": 127,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0039905999999999995,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwih6UuNBByGg7BMaNv",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.\",\"reason\":\"The reply correctly applies the clearance final-sale rule and accurately states the damaged/defective exception with the 14-day photo reporting requirement, matching the policy.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 278,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 127,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.",
+        "reason": "The reply answers the customer's question directly, matches the clearance final-sale policy, and correctly explains the damaged-or-defective exception and how to report it.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 278,
+          "output_tokens": 123,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.0039106,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwirRpEMQ683T5WqFfQ",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.\",\"reason\":\"The reply answers the customer's question directly, matches the clearance final-sale policy, and correctly explains the damaged-or-defective exception and how to report it.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 278,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 123,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.",
+        "reason": "The reply correctly declines the return of a clearance item per policy and accurately notes the damaged/defective exception with the 14-day photo requirement.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 278,
+          "output_tokens": 120,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.003852,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwj1eTYksaajARdyJdV",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Clearance items are final sale, so we can’t accept a return or exchange for this vase, even though it’s unused and in its original packaging.\",\"reason\":\"The reply correctly declines the return of a clearance item per policy and accurately notes the damaged/defective exception with the 14-day photo requirement.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 278,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 120,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "I’m sorry the vase doesn’t suit your room as you’d hoped. Clearance items are final sale, so we can’t accept a return or exchange for this vase",
+        "reason": "The reply is polite, plain and specific, and it declines the return with empathy and without blaming the customer, as the tone policy requires.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 278,
+          "output_tokens": 125,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.00395,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwjAbxXjpqiKM5k9Bvo",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"I’m sorry the vase doesn’t suit your room as you’d hoped. Clearance items are final sale, so we can’t accept a return or exchange for this vase\",\"reason\":\"The reply is polite, plain and specific, and it declines the return with empathy and without blaming the customer, as the tone policy requires.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 278,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 125,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c08": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.",
+        "reason": "The reply correctly states the 1-year warranty from delivery for electrical items and correctly concludes an 8-month-old kettle is covered, with no inaccurate policy claims.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 291,
+          "output_tokens": 132,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.004142600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwjK9uwsHrwwemS7Zox",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.\",\"reason\":\"The reply correctly states the 1-year warranty from delivery for electrical items and correctly concludes an 8-month-old kettle is covered, with no inaccurate policy claims.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 291,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 132,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "answers": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.",
+        "reason": "The reply correctly confirms that the eight-month-old kettle is covered under the 1-year warranty and gives concrete next steps by asking for the details needed to assess the claim.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 291,
+          "output_tokens": 300,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.007502600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwjUKKtevGjncL3dXbE",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "",
+              "signature": "CAQSnggKEAgTGAI4AUIIdGhpbmtpbmcSDBOel2EnHDMxGem6MhoMWKqCD0AyKieGOWsvIjAOcTAMxFkW20VJ5uG23Dl/TNhV+r7jS/LGR2OcGYiBZO19FuxoG4ZCXtC9S8aawdoquwe8VFKSz/QuDNoCvUSh4U/oeU2HQpyRDeFD+zgi5d9UEobOpzZbPRkYCnqWTKlrx2GpkDdje1CtwrH+3DtP8jxbrzJX4TWa3xNM729caE2RWEgLS4G4tAtBxd7E2FuL4kM4OwkT+6H0ZP2liebAkLh8Jkcd5yKnRYheAlyM9HzpWJSf1CdIvtSVfnehr8gxsLZSsfWlM08g1/3PaWZTuULiDK2ubJySgdr5Xw55cW4ZhVyy/6ZnHx+f0o8VVbpkrb3FyxWx5V2CNsnrEkL2YSIwM0jhpRAaVPrmFb6ihgNw2WpSywfcGIKA3IRjXSAXUfBKEGeaovaQUmUAg5qLxzwBN91HoppPPuhAE+2IhoZiPR5yZY686qSKorUjf8O4+gOr8E2/lcLSgtzoMJA4FtszPh9LOuEno4AhTsPYn5wKklL4g5cLFSlWdb5ijiSo7vockafCT7eWt70qvQKImg39CEnPX2S9tdjaNdeRdDhOO/A601HxnH1RMGmZOv+Zl1u850f2L8wU0uurvIA5UTSwr6OEN+9EVDB49tJdQKhm7674BYXA4I7Q4+7mWXfbbzeyhu0ouwOYffd7x+kNQL9cDRzkOpbEDczjkYAQbGh+0f9ElYrP150i29S0+MjSNom/o8tnyl2kj7UPI4hqFGdmqIUI42CZcatYs4kCM8zNBQXZgbmZscioQEfP8zmNCwDdGJfguhLM+koNZdS/FmwAQGeNWy28NewJPYNgmmJWnu3p9RqP7IFjm30QQnbfs8PNI4YDTQRQJ8Gv04lPoIsFycPkZpFuu98J3veXD8Dhc2ew4Qc26BSb0rXZdRPwlpj1GGg4dJDJf4FK++6scrl7CSX/k9pAdbnvQGWC8V0WL9vzDcW/whFIIQxEI4aPOaiWo9dWRXCNJLaE6PTkut/gbrdwOwpnSPKMEAnBGu9lruBlgXlEGE3IejtwvBaI4c89iBnmy8UjzNdoT8zt5Xztx7AbvdG2dzWoN+Lcs+x1pSDaUOzwWPaVMhbUfTblxpNAfCKaKjMSu75IKcnLYfi17zEndhYplwYhS8j/jm8O09gmSBhNEbmrZASu4HWAeVF3LsFL4+1V5q2VfDMM8odpH+t3OX3YGrQosbuDD6H4UvoAQ/wtUCJfu2i4Kcm24dvHZu8A6N229TazE5UL9U9X7wRb2rHa7ufHTyBoJevv1zHxKCJjU+dhUv+qu3TC+Sk1a/5kML2vDebOjPE6gPhrTiT3Nbt7sMRbgMeMEPQMLRRragJQs2tjZ+pzGAE="
+            },
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.\",\"reason\":\"The reply correctly confirms that the eight-month-old kettle is covered under the 1-year warranty and gives concrete next steps by asking for the details needed to assess the claim.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 291,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 300,
+            "output_tokens_details": {
+              "thinking_tokens": 169
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "escalates": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.",
+        "reason": "The reply correctly confirms that the eight-month-old kettle is covered by the 1-year electrical warranty and asks for reasonable troubleshooting details; no safety hazard was reported, so no escalation was needed.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 291,
+          "output_tokens": 269,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1700
+        },
+        "cost": 0.006884,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwjma9QLrUhbyKm6sZw",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "",
+              "signature": "CAQSlgcKEAgTGAI4AUIIdGhpbmtpbmcSDLppZEK04soqxXoqVRoMVb/8dMkCgk2rF3/1IjBz95E0MgMhq0kxWdy7uyaxSkv93zg2L02cjLthK5G30A0pEekmjSTn5MusnDz89woqswZyA9S8OHyEDiMertpK668Z9FzGyBuEixGXkr0Pvq/ULHtHefdKIvKMjh2sh7ZBCRNyghT/xXN8+O7h0KvowXDpnxeQLxHl34Wu37Yh6UY5/++cUGxCQ1pn95sz5CgHRNn3xsMqSeYZYVNPmHeWGgwrW2rSzWSNoOR2wQ3haZ4VM5niILFxJde9Mpl298dQMUkX6WCdH6YYwBvbTacXQPfIy/pQJ1aIn/saySaERuJp8ULkBTMTiI0qUWCMDndSdNa1S5Wc5RFQAR6e9HX3RfI/3WZDuJ0WM8VcXQMEW0Ts2H7hCbUNeveECTNsYsNgfjiwoOO+uID5lCETGxZ0NMrEZETH3mt2zoHPAFI+KiN1T9S6hSGI8z3egEguES8LJrnEUThbTZ92Y2RRqDJ5ZRS1A6Yvw0G3TOIqbp1dMgQCyDvDWy82BFY+FwahTTyvU4W3wWn8C7xmeSQ3lCIUfMNTWO8K/YnXL5+YGFU+aFr1nX23yGM/N8u8mTtnjbtPEV1Y2HwvSUHyXqxwRkdiqCP2IcL6AwNJYquZ7ymIxnXhuwb6PSKcPPj1PCc5Of1jFp4PQuA/U9A/+c93kJonpGbVt7kJsbeosBAO3p53Etv72Sgyaulin1AEW7jA69t8zWNqbRKQPgLYkweJOgFbT1yokTrFrk39KYfwV6yVe6epbgEKyD6QueG5sLfz5x4Jab047fb7RlB1q2/bE3CnXvtl5sXq//1AKHvkB7ekQaBNniemUteiMpbvVIUfMGKXAIgJskYdVNq3oSElbhO59ru0nI0N0Q67CLxwPJjU2qXGLO9gz40uBcCfR6ZmhT+26vitUeBmoz/GFoSPNGsVKz/rqjSb8Cyqs+yYBFVHsWMMewlVUq7OGKJtONrUadjC7bI0kE8GFsCivA1v2MX04y8UskRYom/wd4D4ICpLv269xnXs6Dacc2wRQojEX3pDKBU+qbMukSspUD8fjLmKtFq6+GouZ9e2D6CXCgoa8+apNOQsZ4tJ+NHAHS41JEbyMgbJ4HFEQCaKcgyAjJ2H13pLrc14rk8zu/vFMXWShGE+OW/TEk6kNVymmI6KiWO2LcJRPaAYAQ=="
+            },
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Our electrical items have a one-year warranty against manufacturing defects from the date of delivery, so your kettle is still within the warranty period.\",\"reason\":\"The reply correctly confirms that the eight-month-old kettle is covered by the 1-year electrical warranty and asks for reasonable troubleshooting details; no safety hazard was reported, so no escalation was needed.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 291,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1700,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 269,
+            "output_tokens_details": {
+              "thinking_tokens": 124
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      },
+      "tone": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "I’m sorry your kettle has stopped working.",
+        "reason": "The reply is polite, plain and specific, empathizes without blaming the customer, and asks for details courteously, which matches the policy's tone guidance.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 291,
+          "output_tokens": 94,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1690
+        },
+        "cost": 0.003382,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011Cgwwk2Zo8pqQ7H2xGrDYV",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"I’m sorry your kettle has stopped working.\",\"reason\":\"The reply is polite, plain and specific, empathizes without blaming the customer, and asks for details courteously, which matches the policy's tone guidance.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 291,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1690,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 94,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c09": {
+      "accurate": {
+        "status": "pass",
+        "judgeVerdict": "pass",
+        "quote": "Since your delivery is more than five business days past its estimate, I can also offer you a one-time 10% discount code for a future order.",
+        "reason": "Seven business days late exceeds the 5-business-day threshold, so offering a one-time 10% code matches the goodwill policy, and the reply makes no inaccurate claims or delivery guarantees.",
+        "evidence_source": "output",
+        "why": null,
+        "attempts": 1,
+        "usage": {
+          "input_tokens": 276,
+          "output_tokens": 135,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 1693
+        },
+        "cost": 0.004142600000000001,
+        "body": {
+          "model": "claude-opus-5-5",
+          "id": "msg_011CgwwkB2nbVpj7en8jidt9",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"verdict\":\"pass\",\"evidence_source\":\"output\",\"quote\":\"Since your delivery is more than five business days past its estimate, I can also offer you a one-time 10% discount code for a future order.\",\"reason\":\"Seven business days late exceeds the 5-business-day threshold, so offering a one-time 10% code matches the goodwill policy, and the reply makes no inaccurate claims or delivery guarantees.\"}"
+            }
+          ],
+          "container": null,
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
+          "usage": {
+            "input_tokens": 276,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 1693,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "output_tokens": 135,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard",
+            "inference_geo": "global",
+            "speed": "standard"
+          },
+          "diagnostics": null
+        }
+      }
+    },
+    "c10": {},
+    "c11": {},
+    "c12": {},
+    "c13": {},
+    "c14": {},
+    "c15": {},
+    "c16": {},
+    "c17": {},
+    "c18": {},
+    "c19": {},
+    "c20": {},
+    "a01": {},
+    "a02": {},
+    "a03": {},
+    "a04": {},
+    "a05": {},
+    "a06": {},
+    "a07": {},
+    "a08": {},
+    "a09": {},
+    "q01": {},
+    "q02": {},
+    "q03": {},
+    "q04": {},
+    "q05": {},
+    "q06": {},
+    "q07": {},
+    "q08": {},
+    "q09": {},
+    "e01": {},
+    "e02": {},
+    "e03": {},
+    "e04": {},
+    "e05": {},
+    "e06": {},
+    "e07": {},
+    "e08": {},
+    "e09": {},
+    "t01": {},
+    "t02": {},
+    "t03": {},
+    "t04": {},
+    "t05": {},
+    "t06": {},
+    "t07": {},
+    "t08": {},
+    "t09": {},
+    "i01": {},
+    "i02": {},
+    "i03": {},
+    "i04": {}
+  }
+}

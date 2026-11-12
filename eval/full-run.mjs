@@ -10,7 +10,7 @@ import { liveJudge, MODELS, DEFAULTS, PROMPT_VERSION } from "../site/src/judge.j
 import { worstCase, createBudget, run, missing, PRICES_CHECKED } from "../site/src/cost.js";
 
 const RUN_CAP = 0.5;
-const TOTAL_CAP = 5.5; // across every full-run file: ticket 10 ($2.50 approved, raised to $3.50 so the vague criteria could run on any winner) plus the demo's results (2026-11-11)
+const TOTAL_CAP = 6.2; // across every full-run file: ticket 10 ($2.50 approved, raised to $3.50 so the vague criteria could run on any winner), the demo's results (2026-11-11), then Opus on vague criteria (~$1.20, owner approved 2026-11-11)
 
 const [modelKey, critSet, itemSet, stageArg] = process.argv.slice(2);
 if (!MODELS[modelKey] || !["good", "vague"].includes(critSet) || !["original", "all"].includes(itemSet) || !(Number(stageArg) > 0)) {

@@ -95,6 +95,7 @@ Measured on our own test set: support replies for a fictional company (the model
 - **RAG-specific metrics and conversation-level scoring.** Single input and output pairs only.
 - **Scoring by comparing two outputs side by side.** Different statistics.
 - **A product-feedback-summary demo.** A possible later version.
+- **A harder test set: replies to creative instructions.** For example, a request for a graphic or a short video, judged against the instructions it was given. This tests whether the findings hold when "correct" is less clear-cut than a policy sheet, and when the output isn't plain text. Owner idea, 2026-11-11, for a later version.
 - **Automatically rewriting criteria for you.** You stay the expert; the page shows disagreements and you decide.
 
 ## Stack

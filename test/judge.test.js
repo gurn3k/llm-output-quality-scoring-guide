@@ -87,6 +87,14 @@ test("each non-retryable status gives its own message without retrying", async (
   }
 });
 
+test("an empty credit balance (a 400) stops the run like a bad key", async () => {
+  const f = fakeFetch({ status: 400, body: { type: "error", error: { type: "invalid_request_error", message: "Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits." } } });
+  const r = await make(f).judge(item, accurate);
+  assert.equal(r.status, "error");
+  assert.equal(r.fatal, true);
+  assert.equal(f.calls.length, 1);
+});
+
 test("a network failure is retried, then reported", async () => {
   const f = fakeFetch(new TypeError("Failed to fetch"));
   const r = await make(f).judge(item, accurate);

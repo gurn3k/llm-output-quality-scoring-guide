@@ -167,6 +167,24 @@ Do: the demo's stored judge results come from ticket 10's real run (not hand-wri
 Done when: the demo runs end to end without a key; two people new to it finish in under 2 minutes (timed).
 Status / Comments: **Real results in 2026-11-11; the timed test with two new people is open.** All 220 replies judged on Sonnet 5.5 with both criteria sets (the 60 from ticket 10 reused, 1,280 new calls, $2.43). `eval/build-demo.mjs` stores the real replies (stop reason, text and token counts only; `--placeholder` still builds the old ones); the page says the results come from a real run, with the model and date. Labels are the answer key's. The owner's blind labels (30 random replies, 2026-11-11) agree with the key on 116 of 120 (kappa 0.90); all 4 differences sit on the Accurate/Answers line (`eval/REPORT.md`). Fully labelled, the demo trusts Accurate, Answers and Escalates outright; Tone (11 of 12 caught held back) only on thin evidence. 114 tests.
 
+### Change of product (2026-11-11, ADR 0014)
+After looking at the working page, the owner chose to publish the findings rather than the tool. Tickets 00-11 stand as the private measurement work. Ticket 11's two-person timing no longer applies. Ticket 12's audit applies to the report page instead. New tickets:
+
+### 13. Findings and their numbers
+Do: one script derives every figure the report quotes from the run files, the answer key and the blind labels (`eval/findings.mjs` writes `report/data/findings.json`), so no number in the report is typed by hand. Pick the example replies.
+Done when: every figure in the report comes from `findings.json`, and a test fails if a quoted figure doesn't match.
+Status / Comments:
+
+### 14. The report page
+Do: one static page in `report/` (no dependencies), built to read in about 5 minutes: headline findings first, then method, charts, examples and limits. Checked at 390 and 1280 px, light and dark, with the wide font.
+Done when: page tests pass; the owner approves the copy and the look.
+Status / Comments:
+
+### 15. Public repo contents
+Do: a staging folder holding only the report and its public data: policy, criteria, test set, answer key, verdicts with quotes and reasons, and blind labels. Leave out the tool, the judge's instructions, the run scripts and raw API replies. Scan it for anything private.
+Done when: the owner approves the repo name and visibility, and the file list.
+Status / Comments:
+
 ### 12. Audit
 Do: copy pass in plain language; accessibility (labels, focus order, contrast, screen reader names); the README's claims each have a test; layout widths either side of every breakpoint; a scan that no process notes or internal labels are in tracked files.
 Done when: each item checked and recorded.

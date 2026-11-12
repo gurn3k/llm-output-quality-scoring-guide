@@ -143,6 +143,10 @@ function result(item, criterion, body, extra) {
 
 // Live mode. fetchFn and sleep are injectable for tests.
 // The result's usage counts every attempt, since every attempt that reached the API may be billed.
+// An empty credit balance comes back as a 400, not a 402. Every later call would fail the same way,
+// so it stops the run like a bad key does.
+const outOfCredit = (body) => /credit balance is too low/i.test(body?.error?.message ?? "");
+
 export function liveJudge({ apiKey, fetch: fetchFn = globalThis.fetch.bind(globalThis), sleep = wait, maxRetries = 3 }) {
   if (!apiKey) throw new Error("An API key is needed for live mode.");
   async function judge(item, criterion, opts = {}) {
@@ -167,7 +171,7 @@ export function liveJudge({ apiKey, fetch: fetchFn = globalThis.fetch.bind(globa
         return out;
       }
       if (RETRY_STATUSES.has(res.status) && retries < maxRetries) { await sleep(retryDelay(retries++, res.headers)); continue; }
-      return { itemId: item.id, criterionId: criterion.id, status: "error", reason: errorMessage(res.status, res.body), httpStatus: res.status, usage, attempts, fatal: [401, 402, 403, 404].includes(res.status), transient: RETRY_STATUSES.has(res.status) };
+      return { itemId: item.id, criterionId: criterion.id, status: "error", reason: errorMessage(res.status, res.body), httpStatus: res.status, usage, attempts, fatal: [401, 402, 403, 404].includes(res.status) || outOfCredit(res.body), transient: RETRY_STATUSES.has(res.status) };
     }
   }
   async function countTokens(request, signal) {
