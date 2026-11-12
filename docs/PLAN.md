@@ -176,14 +176,19 @@ Done when: every figure in the report comes from `findings.json`, and a test fai
 Status / Comments:
 
 ### 14. The report page
-Do: one static page in `report/` (no dependencies), built to read in about 5 minutes: headline findings first, then method, charts, examples and limits. Checked at 390 and 1280 px, light and dark, with the wide font.
+Do: one static page in `report/` (no dependencies), built to read in about 5 minutes: headline findings first, then method, charts, examples and limits, and a "How it was measured" section holding the walkthrough video (ticket 14b). Checked at 390 and 1280 px, light and dark, with the wide font.
 Done when: page tests pass; the owner approves the copy and the look.
 Status / Comments:
 
-### 15. Public repo contents
-Do: a staging folder holding only the report and its public data: policy, criteria, test set, answer key, verdicts with quotes and reasons, and blind labels. Leave out the tool, the judge's instructions, the run scripts and raw API replies. Scan it for anything private.
-Done when: the owner approves the repo name and visibility, and the file list.
-Status / Comments:
+### 14b. Walkthrough video of the private tool (ADR 0014 amendment)
+Do: a 60-90 second silent MP4 with burnt-in captions, filmed from the real calibration page in headless Chrome in replay mode on the demo data (no key, no API calls). Shows load, criteria, labelling by keyboard, calibrate (ranges and "too wide to decide"), disagreements with the highlighted quote, trust, score, results. Made by a separate agent on Fable 5.2 from a prompt the owner approves first. The MP4 sits in `report/media/` with a poster frame.
+Done when: the owner approves the video; it shows no API key field contents, no file paths, no judge instructions and no code; it plays inline on the report page at 390 and 1280 px.
+Status / Comments: **Done 2026-11-12, approved by the owner.** `report/media/walkthrough.mp4` (83 s, 1280x720, 7.9 MB), `poster.jpg`, `contact-sheet.jpg`; made on Fable 5.2 (medium effort) by `scripts/video/` (`film.mjs`, then `encode.mjs prep` and `render`). Demo mode throughout: 52 page requests, all to 127.0.0.1. Shows a full trust decision (Accurate, Answers, Escalates trusted; Tone on thin evidence), the vague-criteria kappa drop on Escalates (0.96 to 0.17), and ends on the gurn3k wordmark, the owner's name and the repo link.
+
+### 15. Prepare this repo for public view (ADR 0015)
+Do: rewrite internal notes in tracked files for a public reader (README, PLAN, REPORT); point the page footer's source line at this repo; confirm again that no secret is in any commit; add the report link and video to the README.
+Done when: the owner approves the README and makes the repo public.
+Status / Comments: secrets scan done 2026-11-12 (21 commits, none found).
 
 ### 12. Audit
 Do: copy pass in plain language; accessibility (labels, focus order, contrast, screen reader names); the README's claims each have a test; layout widths either side of every breakpoint; a scan that no process notes or internal labels are in tracked files.

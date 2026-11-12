@@ -1,6 +1,6 @@
 # 0014. Publish the findings, not the tool
 
-Decided by the owner, 2026-11-11, after looking at the working page.
+Decided by the owner, 2026-11-11, after looking at the working page. **Superseded in part by ADR 0015 (2026-11-12): the whole repo, tool included, goes public.**
 
 ## Context
 The calibration page works end to end: bring outputs, write criteria, label, check the judge, score the rest. The measurement work behind it produced findings worth more than the page itself: how well an AI judge agrees with a written answer key, what vague criteria do, how the three model sizes compare, how many labels a trust decision needs, and where a person and the judge both find the criteria ambiguous. The owner doesn't want to publish a tool that lets others repeat the method; they want to publish what it found.
@@ -21,3 +21,6 @@ The calibration page works end to end: bring outputs, write criteria, label, che
 - The measurement bars stay as measured in `eval/REPORT.md`, which becomes the report's source.
 - The tool's tests keep running here, so the numbers stay reproducible privately.
 - Publishing needs the owner's approval of the repo name and the deploy.
+
+## Amendment, 2026-11-12: show the tool, don't ship it
+Decided by the owner. The report includes a short video walkthrough of the private calibration page running the demo in replay mode (stored results, no key, no API calls). Readers see that the tool exists and how it works; its code, judge instructions and run scripts stay private as above. No public page calls a paid API, on anyone's key.

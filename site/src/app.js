@@ -156,7 +156,8 @@ function footer() {
       button("Download project", downloadProject, { key: "dl-project", disabled: !S.p }),
       h("label.btn.btn-secondary.file-btn", { for: "open-project", tabindex: "0", dataset: { k: "open-project" }, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); } } }, "Open project"), fileInput,
       clear),
-    h("p.small", `Prices checked ${PRICES_CHECKED}. No analytics, no third-party scripts. Your key is sent only to api.anthropic.com. The source code link is added when the code is published.`));
+    h("p.small", `Prices checked ${PRICES_CHECKED}. No analytics, no third-party scripts. Your key is sent only to api.anthropic.com. `,
+      h("a", { href: "https://github.com/gurn3k/llm-output-quality-scoring-guide", rel: "noopener" }, "Source code on GitHub"), "."));
 }
 
 // --- Start ---

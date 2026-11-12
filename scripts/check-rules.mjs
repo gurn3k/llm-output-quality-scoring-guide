@@ -10,9 +10,10 @@ export function unsafeHtml(file, source) {
   return out;
 }
 
-// The page may only reach its own origin and the Anthropic API (ADR 0005).
+// The page may only reach its own origin and the Anthropic API (ADR 0005). github.com appears only
+// as a plain link to this repo's source (ADR 0015); the page never fetches from it.
 const URL_RE = /\bhttps?:\/\/[^\s"'`)<>;,]+/g;
-export const ALLOWED_HOSTS = new Set(["api.anthropic.com"]);
+export const ALLOWED_HOSTS = new Set(["api.anthropic.com", "github.com"]);
 
 export function externalUrls(file, source, allowed = ALLOWED_HOSTS) {
   const out = [];
