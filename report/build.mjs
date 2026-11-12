@@ -45,14 +45,34 @@ function kappaChart() {
 <figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · Agreement beyond chance (kappa) with the answer key, all ${fmt.n(F.full.replies)} replies. 1 is perfect agreement, 0 is no better than chance.</figcaption></figure>`;
 }
 
+// The headline: catch rate barely moves with vague criteria, agreement falls. Two pairs of bars, 0-100%.
+function catchAgreeChart() {
+  const W = 640, left = 190, right = 64, top = 30, rowH = 30, gap = 22;
+  const x = (v) => left + (W - left - right) * v;
+  const sets = [["Clear criteria", F.full.good, "bar-good"], ["Vague criteria", F.full.vague, "bar-vague"]];
+  const H = top + sets.length * (2 * rowH + gap) + 8;
+  const parts = [];
+  for (const t of [0, 0.25, 0.5, 0.75, 1]) parts.push(`<line x1="${x(t)}" x2="${x(t)}" y1="${top - 8}" y2="${H - 22}" class="grid"/><text x="${x(t)}" y="${H - 6}" class="tick" text-anchor="middle">${Math.round(t * 100)}%</text>`);
+  sets.forEach(([label, m, cls], i) => {
+    const y = top + i * (2 * rowH + gap);
+    const caught = m.caught.k / m.caught.n, agree = m.agree / m.n;
+    parts.push(`<text x="${left - 12}" y="${y - 6}" class="lab grp" text-anchor="end">${label}</text>`);
+    parts.push(`<text x="${left - 12}" y="${y + 13}" class="lab sub" text-anchor="end">Planted failures caught</text><rect x="${left}" y="${y + 2}" width="${x(caught) - left}" height="16" class="${cls}" rx="2"/><text x="${x(caught) + 6}" y="${y + 15}" class="val">${fmt.pct(caught)}</text>`);
+    parts.push(`<text x="${left - 12}" y="${y + rowH + 13}" class="lab sub" text-anchor="end">Agreement with the key</text><rect x="${left}" y="${y + rowH + 2}" width="${x(agree) - left}" height="16" class="${cls}" rx="2"/><text x="${x(agree) + 6}" y="${y + rowH + 15}" class="val">${fmt.pct(agree)}</text>`);
+  });
+  return `<figure class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="cachart-t"><title id="cachart-t">Clear criteria: ${m2s(F.full.good)}. Vague criteria: ${m2s(F.full.vague)}.</title>${parts.join("")}</svg>
+<figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · All ${fmt.n(F.full.replies)} replies, judged by ${esc(F.models[F.chosen].label)}. Catch rate counts only the planted failures; agreement counts every verdict, so it also counts failing replies the answer key passes.</figcaption></figure>`;
+}
+const m2s = (m) => `caught ${m.caught.k} of ${m.caught.n} planted failures, agreed with the answer key on ${m.agree} of ${m.n} verdicts`;
+
 // How many labels a trust decision needs: one row per label count, one cell per criterion.
 function labelsTable() {
   const head = `<tr><th scope="col">Replies labelled</th>${CRIT.map((c) => `<th scope="col">${esc(NAME[c])}</th>`).join("")}</tr>`;
   const rows = F.labelsNeeded.map((r) => `<tr><th scope="row">${r.labels}</th>${CRIT.map((c) => {
     const x = r.byCriterion[c];
-    return `<td class="${x.decidable ? "ok" : "no"}"><span class="cell-v">${x.decidable ? "Can decide" : "Too few"}</span><span class="cell-d">${x.caught} of ${x.heldBackFailures} held-back failures caught</span></td>`;
+    return `<td class="${x.decidable ? "ok" : "no"}"><span class="cell-v">${x.decidable ? "Can decide" : "Too few"}</span><span class="cell-d">${x.caught} of ${x.heldBackFailures} caught</span></td>`;
   }).join("")}</tr>`).join("");
-  return `<div class="table-wrap"><table class="grid-table">${head}${rows}</table></div>`;
+  return `<div class="table-wrap"><table class="grid-table"><caption>Each cell: whether the criterion can be decided, and how many of its held-back failures the judge caught.</caption>${head}${rows}</table></div>`;
 }
 
 function modelsTable() {
@@ -79,12 +99,12 @@ ${showReply ? `<p class="ex-who">Customer</p><p class="ex-text cust">${esc(e.cus
 function verdictOnly(name) { return example(name, { showReply: false }); }
 
 const blocks = {
-  kappaChart, labelsTable, modelsTable,
+  kappaChart, catchAgreeChart, labelsTable, modelsTable,
   exCaught: () => example("caught"), exMissed: () => example("missed"),
   exVague: () => example("vague"), exVagueHelpful: () => verdictOnly("vagueHelpful"), exVagueGood: () => verdictOnly("vagueGood"), exVagueGoodAccurate: () => verdictOnly("vagueGoodAccurate"),
   exWithheld: () => example("withheld"),
   injectionText: () => esc(F.examples.injection.text),
-  blindDifferences: () => `<ul>${F.blind.differences.map((d) => `<li>${esc(NAME[d.criterion])}: you ${d.owner === "pass" ? "passed" : "failed"} it, the key ${d.key === "pass" ? "passes" : "fails"} it, the judge ${d.judge === "pass" ? "passed" : "failed"} it.</li>`).join("")}</ul>`,
+  blindDifferences: () => `<ul>${F.blind.differences.map((d) => `<li>${esc(NAME[d.criterion])}: I ${d.owner === "pass" ? "passed" : "failed"} it, the answer key ${d.key === "pass" ? "passes" : "fails"} it, and the judge ${d.judge === "pass" ? "passed" : "failed"} it.</li>`).join("")}</ul>`,
 };
 
 const template = readFileSync(here("./template.html"), "utf8");

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- A static page: no scripts, nothing fetched from anywhere but this site. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="How far can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts on customer support replies, checked against a written answer key and a person's blind labels.">
+  <title>Can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts</title>
+  <link rel="icon" href="media/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <p class="kicker">Findings report</p>
+  <h1>Can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts</h1>
+  <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
+  <p class="byline"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture><span>Gurnek Khaira · <span data-fixed>November 2026</span> · about a five-minute read</span></p>
+</header>
+
+<main>
+<section class="tldr" aria-labelledby="tldr-h">
+  <h2 id="tldr-h">Three findings</h2>
+  <ol>
+    <li><strong>With clear criteria, the judge is good.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts (kappa {{k full.good.kappa}}, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</li>
+    <li><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high ({{n full.vague.caught.k}} of {{n full.vague.caught.n}}), but agreement fell to {{pct full.vague.rate}} (kappa {{k full.vague.kappa}}), because the judge failed {{n full.vague.overFailed}} verdicts the key passes. Catch rate alone would have called the vague rubric better.</li>
+    <li><strong>A few dozen labels can't tell you whether to trust it.</strong> With {{n labelsNeeded.0.labels}} labelled replies, no criterion had enough held-back failures to decide. It took {{n labelsNeeded.2.labels}} before three of the four could, and Tone still couldn't at {{n labelsNeeded.3.labels}}.</li>
+  </ol>
+</section>
+
+<section aria-labelledby="tool-h">
+  <h2 id="tool-h">The tool behind the numbers</h2>
+  <p>I built a small calibration tool to run this: load replies, write pass/fail criteria, label a sample, and see how far the judge agrees with you on replies it never tuned on. This walkthrough uses its demo, which replays stored results, so it makes no API calls.</p>
+  <figure class="video">
+    <video controls muted playsinline preload="metadata" poster="media/poster.jpg" width="1280" height="720">
+      <source src="media/walkthrough.mp4" type="video/mp4">
+      <a href="media/walkthrough.mp4">Download the walkthrough video</a>
+    </video>
+    <figcaption>Walkthrough of the calibration tool in demo mode. Silent, with captions.</figcaption>
+  </figure>
+</section>
+
+<section aria-labelledby="setup-h">
+  <h2 id="setup-h">What was tested</h2>
+  <p>A made-up furniture shop, Sofa So Good, with a one-page support policy. {{n testSet.replies}} customer messages and support replies, written by an OpenAI model from a scenario per item and each checked by hand, so the judge never grades its own maker's writing. {{n testSet.cleanReplies}} replies are clean; the rest each carry one planted flaw ({{n testSet.failuresPerCriterion}} per criterion), such as a wrong return window, a missed safety escalation, or a curt brush-off. Another {{n testSet.injections}} replies hide an instruction aimed at the judge, to see whether it obeys.</p>
+  <p>The judge, {{text models.sonnet.label}} (chosen from three models, below), graded each reply on four criteria, each judging one thing:</p>
+  <ul class="crit-list">
+    <li><strong>{{text testSet.criteria.0.name}}</strong>: what the reply says matches the policy.</li>
+    <li><strong>{{text testSet.criteria.1.name}}</strong>: every question is addressed.</li>
+    <li><strong>{{text testSet.criteria.2.name}}</strong>: cases the policy sends to a specialist are handed over, and others aren't.</li>
+    <li><strong>{{text testSet.criteria.3.name}}</strong>: polite, plain, no blame.</li>
+  </ul>
+  <p>For every verdict the judge had to quote the reply. A check confirmed the quote really appears in the text; if it didn't, the score was withheld rather than shown.</p>
+</section>
+
+<section aria-labelledby="f1-h">
+  <h2 id="f1-h"><span data-fixed>1.</span> Clear criteria: the judge mostly agrees</h2>
+  <p>Across all {{n testSet.replies}} replies, the judge caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures (likely between {{pct full.good.caught.low}} and {{pct full.good.caught.high}}) and passed {{n full.good.cleanPassed.k}} of {{n full.good.cleanPassed.n}} verdicts on clean replies. It failed {{n full.good.overFailed}} verdicts the key passes, and left {{n full.good.undecided}} of {{n full.good.pairs}} undecided.</p>
+  <p>The bars were set on the first replies judged. The {{n full.goodNew.caught.n}} planted failures judged afterwards held up: {{n full.goodNew.caught.k}} caught, kappa {{k full.goodNew.kappa}}.</p>
+  <p>The weakest criterion was <strong>{{text testSet.criteria.0.name}}</strong> (kappa {{k full.good.byCriterion.accurate.kappa}}). Most of its {{n full.good.byCriterion.accurate.overFailed}} over-fails are replies that should have gone to a specialist; the judge also marked them inaccurate, a reading a person could defend. Of the judge's {{n full.good.missed}} misses, {{n full.good.byCriterion.tone.missed}} were on Tone: mild blame it read as neutral.</p>
+  <h3>A catch, with its evidence</h3>
+  {{block exCaught}}
+  <h3>A miss</h3>
+  {{block exMissed}}
+</section>
+
+<section aria-labelledby="f2-h">
+  <h2 id="f2-h"><span data-fixed>2.</span> Vague criteria: catch rate lies</h2>
+  <p>I ran the same replies against a deliberately vague version of the four criteria ("The reply is accurate", "The reply is helpful", and so on). I expected it to catch fewer failures. It caught slightly more.</p>
+  {{block catchAgreeChart}}
+  <p>The catch was that it failed almost everything. Vague criteria failed {{n full.vague.overFailed}} verdicts the answer key passes, against {{n full.good.overFailed}} for the clear ones. A judge that fails every reply catches every failure, so catch rate rewards exactly the mistake vague criteria make. Agreement beyond chance shows it:</p>
+  {{block kappaChart}}
+  <p>Tone held up even when vague, since "the tone is good" needs little definition. The criteria that depend on the policy collapsed, with "Handles the situation" at kappa {{k full.vague.byCriterion.escalates.kappa}}, close to chance.</p>
+  <h3>One flaw, three failures</h3>
+  <p>This reply states the wrong return window, and nothing else is wrong with it. The vague criteria fail it three times: on "Accurate", which is right, and also on "Helpful" and "Handles the situation":</p>
+  {{block exVague}}
+  {{block exVagueHelpful}}
+  <p class="compare-label">The same reply with the clear criteria:</p>
+  {{block exVagueGoodAccurate}}
+  {{block exVagueGood}}
+</section>
+
+<section aria-labelledby="f3-h">
+  <h2 id="f3-h"><span data-fixed>3.</span> How many labels before you can trust it</h2>
+  <p>To check a judge fairly, part of your labels must be held back: the judge's instructions are tuned on some, and it is measured only on the rest. A decision needs at least <span data-fixed>5</span> held-back failures per criterion and a catch-rate range no wider than <span data-fixed>30</span> points. Using the tool's own random draw:</p>
+  {{block labelsTable}}
+  <p>Labelling {{n labelsNeeded.0.labels}} replies, a common first instinct, holds back only {{n labelsNeeded.0.heldBack}}, too few failures on every criterion to decide anything. In real data failures are often rarer still, so the number needed is driven by how many failures you can hold back, not by how many replies you label.</p>
+</section>
+
+<section aria-labelledby="more-h">
+  <h2 id="more-h">Also worth knowing</h2>
+  <h3>The cheapest model obeyed a hidden instruction</h3>
+  <p>Four replies carried a planted note to the judge:</p>
+  <p class="ex-text inj">{{block injectionText}}</p>
+  <p>{{text models.haiku.label}} changed {{n models.haiku.flips.length}} of {{n models.haiku.injectionPairs}} verdicts because of it, from unclear to pass. {{text models.sonnet.label}} and {{text models.opus.label}} changed none. Sonnet was chosen: Opus agreed slightly more, but within the tie rule set before the runs, at a higher cost.</p>
+  {{block modelsTable}}
+
+  <h3>People draw the same lines differently</h3>
+  <p>I labelled {{n blind.replies}} random replies blind, without seeing the answer key or the judge. I agreed with the key on {{n blind.agree}} of {{n blind.labels}} labels (kappa {{k blind.kappa}}) and with the judge on {{n blind.vsJudge.agree}} of {{n blind.vsJudge.n}}. Every disagreement was on the line between "Accurate" and "Answers the question", the same line the judge found hardest:</p>
+  {{block blindDifferences}}
+
+  <h3>Evidence that can't be checked isn't shown</h3>
+  <p>Here the judge stitched two separate sentences into one quote. The quote check refused it, so the verdict was withheld instead of scored:</p>
+  {{block exWithheld}}
+</section>
+
+<section aria-labelledby="limits-h">
+  <h2 id="limits-h">Limits</h2>
+  <ul>
+    <li><strong>One made-up shop, one policy, one person.</strong> I wrote the answer key; my blind labels are the only independent check on it.</li>
+    <li><strong>Planted failures are clearer than real ones.</strong> Real replies fail in subtler, mixed ways, so expect lower agreement on real data.</li>
+    <li><strong>The criteria overlap at the edges.</strong> A reply that keeps a specialist case to itself is sometimes also failed on accuracy. I didn't tune the criteria further against this test set, to keep the figures honest.</li>
+    <li><strong>One bar was replaced after the fact.</strong> The original vague-criteria bar expected a lower catch rate; it was missed. Its replacement was fixed before the last {{n full.vagueNew.caught.n}} planted failures were judged, and it passes on those.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="cost-h">
+  <h2 id="cost-h">Cost</h2>
+  <p>Every judge run, including three small trial runs, cost {{usd spend.judgeTotal}} in API fees. Writing the test replies cost {{usd spend.generation}}.</p>
+</section>
+</main>
+
+<footer class="foot">
+  <picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture>
+  <p>Built and measured by Gurnek Khaira.</p>
+  <p><a href="https://github.com/gurn3k/llm-output-quality-scoring-guide">Code, test set and every verdict on GitHub</a> · <a href="https://www.linkedin.com/in/gurnek-khaira">LinkedIn</a></p>
+</footer>
+</body>
+</html>

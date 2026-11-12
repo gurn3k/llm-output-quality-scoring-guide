@@ -7,8 +7,11 @@
   "scripts": {
     "test": "node --test \"test/*.test.js\"",
     "check": "node scripts/check.mjs",
-    "start": "node scripts/start.mjs"
+    "start": "node scripts/start.mjs",
+    "report": "node eval/findings.mjs && node report/build.mjs"
   },
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "license": "MIT"
 }

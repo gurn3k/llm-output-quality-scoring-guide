@@ -173,12 +173,12 @@ After looking at the working page, the owner chose to publish the findings rathe
 ### 13. Findings and their numbers
 Do: one script derives every figure the report quotes from the run files, the answer key and the blind labels (`eval/findings.mjs` writes `report/data/findings.json`), so no number in the report is typed by hand. Pick the example replies.
 Done when: every figure in the report comes from `findings.json`, and a test fails if a quoted figure doesn't match.
-Status / Comments:
+Status / Comments: **Done 2026-11-12.** `eval/findings.mjs` writes `report/data/findings.json` (`npm run report` rebuilds it and the page). The blind labels live only in the owner's `.local/`; elsewhere the script keeps the figures already derived from them instead of dropping them. Examples: a28 (caught), t02 (missed), a01 (one flaw, three vague failures), e23 (withheld quote), i01 (injection). `test/report.test.js`: the template has no hand-typed figures (fixed rules are marked `data-fixed`; shown failing on planted numbers), and the built page quotes `findings.json`.
 
 ### 14. The report page
 Do: one static page in `report/` (no dependencies), built to read in about 5 minutes: headline findings first, then method, charts, examples and limits, and a "How it was measured" section holding the walkthrough video (ticket 14b). Checked at 390 and 1280 px, light and dark, with the wide font.
 Done when: page tests pass; the owner approves the copy and the look.
-Status / Comments:
+Status / Comments: **Built 2026-11-12, waiting on the owner's look.** `report/template.html` + `report/style.css`, built to `report/index.html` by `report/build.mjs`; no scripts, CSP allows only this site. Three findings first, then the walkthrough video (poster: the vague-criteria frame), setup, each finding with charts and real examples, models and injection, blind labels, the quote check, limits, cost; gurn3k wordmark in the byline and footer, links to the repo and LinkedIn. Page test: every image loads, no console errors, nothing overflows at 390 and 1280 px, light and dark, normal and wide font. About 2,300 words including the example replies, so longer than the 5-minute target if read in full; the three findings at the top stand alone. Open: the title, and the deploy.
 
 ### 14b. Walkthrough video of the private tool (ADR 0014 amendment)
 Do: a 60-90 second silent MP4 with burnt-in captions, filmed from the real calibration page in headless Chrome in replay mode on the demo data (no key, no API calls). Shows load, criteria, labelling by keyboard, calibrate (ranges and "too wide to decide"), disagreements with the highlighted quote, trust, score, results. Made by a separate agent on Fable 5.2 from a prompt the owner approves first. The MP4 sits in `report/media/` with a poster frame.
