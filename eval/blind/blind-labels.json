@@ -1,0 +1,182 @@
+{
+ "R01": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R02": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R03": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R04": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R05": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R06": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "fail"
+ },
+ "R07": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "fail"
+ },
+ "R08": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R09": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R10": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R11": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R12": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "fail"
+ },
+ "R13": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R14": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R15": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R16": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R17": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R18": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R19": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R20": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R21": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R22": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R23": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R24": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R25": {
+  "accurate": "pass",
+  "answers": "fail",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R26": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "fail"
+ },
+ "R27": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ },
+ "R28": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "fail",
+  "tone": "pass"
+ },
+ "R29": {
+  "accurate": "pass",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "fail"
+ },
+ "R30": {
+  "accurate": "fail",
+  "answers": "pass",
+  "escalates": "pass",
+  "tone": "pass"
+ }
+}
