@@ -92,7 +92,7 @@ function example(name, { showReply = true } = {}) {
   const verdict = e.verdict === "withheld" ? `<span class="v v-withheld">Withheld</span> <span class="small">(the judge said ${esc(e.judgeSaid)})</span>` : `<span class="v v-${e.verdict}">${e.verdict === "pass" ? "Pass" : "Fail"}</span>`;
   const keyWord = e.key === "pass" ? "pass" : "fail";
   return `<div class="ex">
-${showReply ? `<p class="ex-who">Customer</p><p class="ex-text cust">${esc(e.customer)}</p><p class="ex-who">Reply being judged</p><p class="ex-text reply">${esc(e.reply)}</p>` : ""}
+${showReply ? `<details class="ex-full"><summary>Show the customer's message and the reply</summary><p class="ex-who">Customer</p><p class="ex-text cust">${esc(e.customer)}</p><p class="ex-who">Reply being judged</p><p class="ex-text reply">${esc(e.reply)}</p></details>` : ""}
 <div class="verdict"><p class="ex-crit">${esc(e.criterionName)}${e.set === "vague" ? " <span class=\"chip\">vague</span>" : ""} · answer key: ${keyWord} · judge: ${verdict}</p>
 <p class="ex-quote">“${esc(e.quote)}”</p><p class="ex-reason">${esc(e.reason)}</p>${e.why ? `<p class="small">Quote check: ${esc(e.why)}</p>` : ""}</div></div>`;
 }
@@ -104,7 +104,7 @@ const blocks = {
   exVague: () => example("vague"), exVagueHelpful: () => verdictOnly("vagueHelpful"), exVagueGood: () => verdictOnly("vagueGood"), exVagueGoodAccurate: () => verdictOnly("vagueGoodAccurate"),
   exWithheld: () => example("withheld"),
   injectionText: () => esc(F.examples.injection.text),
-  blindDifferences: () => `<ul>${F.blind.differences.map((d) => `<li>${esc(NAME[d.criterion])}: I ${d.owner === "pass" ? "passed" : "failed"} it, the answer key ${d.key === "pass" ? "passes" : "fails"} it, and the judge ${d.judge === "pass" ? "passed" : "failed"} it.</li>`).join("")}</ul>`,
+  blindDifferences: () => `<details class="ex-full"><summary>Show the ${F.blind.differences.length} disagreements</summary><ul>${F.blind.differences.map((d) => `<li>${esc(NAME[d.criterion])}: I ${d.owner === "pass" ? "passed" : "failed"} it, the answer key ${d.key === "pass" ? "passes" : "fails"} it, and the judge ${d.judge === "pass" ? "passed" : "failed"} it.</li>`).join("")}</ul></details>`,
 };
 
 const template = readFileSync(here("./template.html"), "utf8");

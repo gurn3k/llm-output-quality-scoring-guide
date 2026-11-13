@@ -2,6 +2,8 @@
 
 2026-11-10. Promises (P1-P25) are in `docs/PRD.md`; decisions in `docs/adr/`.
 
+This is the working build log, kept as it was written: "the owner" is the author, Gurnek Khaira, and each ticket's status records what was done and decided at the time.
+
 ## Finished means
 
 Each ticket is done only when these pass on a clean checkout:
@@ -33,7 +35,7 @@ The core logic comes first and has no page code in it, so the page is a thin lay
 ---
 
 ### 00. Skeleton, CI, test harness
-Read first: `docs/adr/0006-stack.md`; `../rice-ranker/test/browser.test.js` and its `scripts/` for the headless-Chrome harness.
+Read first: `docs/adr/0006-stack.md`; the headless-Chrome harness from an earlier project of the owner's.
 Do: `site/index.html` (CSP meta tag per ADR 0005), `site/style.css`, `site/src/`; `package.json` with `test`, `check`, `start` scripts and no dependencies; a local server that serves only `site/`; a headless-Chrome harness that loads the page, fails on any console error, and saves screenshots to `SCREENSHOT_DIR` at 390 and 1280 px wide, in light and dark; a GitHub Actions workflow; MIT licence; a stub README.
 Done when: `npm test` and `npm run check` pass; the harness fails when a console error is planted (shown once, then removed); a screenshot set is produced.
 Out of bounds: any product logic.
@@ -188,7 +190,7 @@ Status / Comments: **Done 2026-11-12, approved by the owner.** `report/media/wal
 ### 15. Prepare this repo for public view (ADR 0015)
 Do: rewrite internal notes in tracked files for a public reader (README, PLAN, REPORT); point the page footer's source line at this repo; confirm again that no secret is in any commit; add the report link and video to the README.
 Done when: the owner approves the README and makes the repo public.
-Status / Comments: secrets scan done 2026-11-12 (21 commits, none found).
+Status / Comments: secrets scan done 2026-11-12 (21 commits, none found). **Prepared 2026-11-12:** README rewritten for public readers (findings, walkthrough, folder map, how to run); the build log's pointer to another private project removed and a note added that it's kept as written; `.local/` now ignored; `eval/findings.mjs` reads blind labels from `eval/blind/` when published there. Left for the owner, on their PC: run `npm run check` (the private term list exists only there); copy `.local/blind-labels.json` and `.local/blind-mapping.json` into `eval/blind/` if the blind labels are to be public; then make the repo public. Hosting: decided later.
 
 ### 12. Audit
 Do: copy pass in plain language; accessibility (labels, focus order, contrast, screen reader names); the README's claims each have a test; layout widths either side of every breakpoint; a scan that no process notes or internal labels are in tracked files.

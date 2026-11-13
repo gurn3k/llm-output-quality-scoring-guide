@@ -109,7 +109,9 @@ const labelsNeeded = [40, 100, 160, 220].map((n) => {
 // The blind labels live only on the owner's machine (.local/). Elsewhere, keep the figures already
 // derived from them in findings.json rather than dropping them.
 let blind = null;
-const BLIND = here("../.local/blind-labels.json"), MAP = here("../.local/blind-mapping.json"), OUT = here("../report/data/findings.json");
+// Published copies in eval/blind/ win over the owner's local ones.
+const pick = (name) => [here(`./blind/${name}`), here(`../.local/${name}`)].find(existsSync) ?? here(`../.local/${name}`);
+const BLIND = pick("blind-labels.json"), MAP = pick("blind-mapping.json"), OUT = here("../report/data/findings.json");
 if (!(existsSync(BLIND) && existsSync(MAP)) && existsSync(OUT)) blind = JSON.parse(readFileSync(OUT, "utf8")).blind ?? null;
 if (existsSync(BLIND) && existsSync(MAP)) {
   const labels = JSON.parse(readFileSync(BLIND, "utf8")), map = JSON.parse(readFileSync(MAP, "utf8"));
