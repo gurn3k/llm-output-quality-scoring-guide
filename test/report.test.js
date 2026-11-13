@@ -29,10 +29,10 @@ test("the built report quotes findings.json", () => {
   const g = F.full.good, v = F.full.vague;
   for (const s of [
     `caught ${g.caught.k} of ${g.caught.n} planted failures`,
-    `${Math.round(g.rate * 100)}% of verdicts`,
-    `(${v.caught.k} of ${v.caught.n})`,
-    `fell to ${Math.round(v.rate * 100)}% (kappa ${v.kappa.toFixed(2)})`,
-    `With ${F.labelsNeeded[0].labels} labelled replies`,
+    `on ${Math.round(g.rate * 100)}% of verdicts`,
+    `still caught ${v.caught.k} of ${v.caught.n}`,
+    `agreement fell to ${Math.round(v.rate * 100)}%: it also failed ${v.overFailed} verdicts`,
+    `${F.labelsNeeded[0].labels} labels couldn't settle a single criterion`,
     `on ${F.blind.agree} of ${F.blind.labels} labels`,
     `$${F.spend.judgeTotal.toFixed(2)}`,
     `kappa ${F.models.opus.kappa.toFixed(2)} against ${F.models.sonnet.kappa.toFixed(2)}`,

@@ -41,11 +41,11 @@
     </div>
 
     <section class="exam" aria-labelledby="tldr-h">
-      <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">marked against the answer key</span></h2>
+      <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">kappa: <span data-fixed>1</span> is perfect agreement, <span data-fixed>0</span> is chance</span></h2>
       <ol>
-        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>With clear criteria, the judge is good.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts (kappa {{k full.good.kappa}}, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>{{k full.good.kappa}}</b><small>kappa</small></span></li>
-        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high ({{n full.vague.caught.k}} of {{n full.vague.caught.n}}), but agreement fell to {{pct full.vague.rate}} (kappa {{k full.vague.kappa}}), because the judge failed {{n full.vague.overFailed}} verdicts the key passes. Catch rate alone would have called the vague rubric better.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>{{k full.vague.kappa}}</b><small>kappa</small></span></li>
-        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>A few dozen labels can't tell you whether to trust it.</strong> With {{n labelsNeeded.0.labels}} labelled replies, no criterion had enough held-back failures to decide. It took {{n labelsNeeded.2.labels}} before three of the four could, and Tone still couldn't at {{n labelsNeeded.3.labels}}.</p><span class="exam-m red"><b>{{n labelsNeeded.2.labels}}</b><small>labels</small></span></li>
+        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>Clear criteria: the judge holds up.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>{{k full.good.kappa}}</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria: the usual metric hides the damage.</strong> It still caught {{n full.vague.caught.k}} of {{n full.vague.caught.n}}, but agreement fell to {{pct full.vague.rate}}: it also failed {{n full.vague.overFailed}} verdicts that should have passed.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>{{k full.vague.kappa}}</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>Trust takes more labels than you'd think.</strong> {{n labelsNeeded.0.labels}} labels couldn't settle a single criterion. It took {{n labelsNeeded.2.labels}} to settle three of the four.</p><span class="exam-m red"><b>{{n labelsNeeded.2.labels}}</b><small>labels</small></span></li>
       </ol>
       <p class="moderated"><svg class="mk ring" aria-hidden="true"><use href="#m-ring"/></svg><b>{{n blind.agree}}/{{n blind.labels}}</b><span>of my blind labels agree with the answer key</span></p>
     </section>
@@ -171,12 +171,12 @@
   <h3>Labels grow with how rare failures are, not with volume</h3>
   <p>Even a judge that catches every held-back failure needs {{n scale.minFailures}} of them before its range is narrow enough to decide. With a third of labels held back, that puts a floor under labelling that has nothing to do with how many replies you grade:</p>
   <figure class="plate scale-plate"><div class="table-wrap"><table class="scale">
-    <tr><th scope="col">Share of replies that fail a criterion</th><th scope="col">Labels needed, at least</th></tr>
+    <tr><th scope="col">How often a criterion fails</th><th scope="col">Labels you need</th></tr>
     <tr><td>{{pct scale.labelsAt.0.rate}}</td><td>{{n scale.labelsAt.0.labels}}</td></tr>
     <tr><td>{{pct scale.labelsAt.1.rate}}</td><td>{{n scale.labelsAt.1.labels}}</td></tr>
     <tr><td>{{pct scale.labelsAt.2.rate}}</td><td>{{n scale.labelsAt.2.labels}}</td></tr>
   </table></div>
-  <figcaption>The fewest labels that can hold back enough failures to decide, for a judge that catches every one.</figcaption></figure>
+  <figcaption>The minimum, even for a judge that never misses a failure.</figcaption></figure>
   <p>Grading <span data-fixed>1,000</span> replies a month or <span data-fixed>1,000,000</span> takes the same labels. Rare failures are what make checking a judge expensive, so for a rare failure it can be cheaper to plant examples, as this test did, than to wait for real ones.</p>
 
   <h3>Safeguards that let it run unattended</h3>
