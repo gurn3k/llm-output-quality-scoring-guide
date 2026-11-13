@@ -35,11 +35,21 @@ test("the built report quotes findings.json", () => {
     `With ${F.labelsNeeded[0].labels} labelled replies`,
     `on ${F.blind.agree} of ${F.blind.labels} labels`,
     `$${F.spend.judgeTotal.toFixed(2)}`,
+    `kappa ${F.models.opus.kappa.toFixed(2)} against ${F.models.sonnet.kappa.toFixed(2)}`,
+    `${(F.models.opus.costPerReply / F.models.sonnet.costPerReply).toFixed(1)} times the cost per reply`,
   ]) assert.ok(html.includes(s), `report should say "${s}"`);
+  // Without scripts the page still has its static charts and table; the script-only parts start hidden.
+  assert.equal((html.match(/<figure class="chart"><svg/g) || []).length, 2);
+  assert.match(html, /<div data-ix="labels"><div class="table-wrap">/);
+  assert.equal((html.match(/class="ix-only" hidden/g) || []).length, 2);
+  // The embedded data is JSON a script can't break out of.
+  const data = html.match(/<script type="application\/json" id="report-data">([\s\S]*?)<\/script>/)[1];
+  assert.doesNotMatch(data, /</);
+  assert.equal(JSON.parse(data).models.opus.costPerReply, F.models.opus.costPerReply);
 });
 
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".mp4": "video/mp4" };
-const PUBLIC = /^\/(?:index\.html|style\.css|media\/[a-z0-9-]+\.(?:svg|jpg|mp4))$/;
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".mp4": "video/mp4" };
+const PUBLIC = /^\/(?:index\.html|style\.css|interactive\.js|media\/[a-z0-9-]+\.(?:svg|jpg|mp4))$/;
 
 test("the report page in a real browser", { skip: SKIP }, async (t) => {
   execFileSync(process.execPath, [join(REPORT, "build.mjs")], { stdio: "pipe" });
@@ -56,8 +66,64 @@ test("the report page in a real browser", { skip: SKIP }, async (t) => {
 
   const broken = await b.js(`[...document.images].filter((i) => !i.complete || i.naturalWidth === 0).map((i) => i.src)`);
   assert.deepEqual(broken, [], "every image loads");
-  assert.equal(await b.js(`document.querySelectorAll("figure.chart svg").length`), 2);
   assert.ok(await b.js(`!!document.querySelector('video source[src="media/walkthrough.mp4"]')`));
+
+  // The script ran: the headline chart stays static, the other three pieces are interactive, and
+  // the script-only sections are shown.
+  assert.equal(await b.js(`document.querySelectorAll("figure.chart svg").length`), 1);
+  assert.deepEqual(await b.js(`[...document.querySelectorAll("[data-ix-chart]")].map((n) => n.dataset.ixChart)`), ["explorer", "labels", "picker"]);
+  assert.equal(await b.js(`document.querySelectorAll(".ix-only[hidden]").length`), 0);
+  const q = (sel, all = false) => `[...document.querySelectorAll(${JSON.stringify(sel)})]${all ? "" : "[0]"}`;
+  const text = (sel) => b.js(`${q(sel)}.textContent`);
+  const fire = (sel, value, ev) => b.js(`{ const n = ${q(sel)}; ${value === undefined ? "n.click()" : `n.value = ${JSON.stringify(String(value))}; n.dispatchEvent(new Event("${ev}", { bubbles: true }))`}; }`);
+  const crit = F.testSet.criteria;
+
+  // Explorer: kappa first, then agreement, then wrongly failed, each from findings.json.
+  const vals = () => b.js(`${q("[data-ix-chart=explorer] .bval", true)}.map((n) => n.textContent)`);
+  assert.deepEqual(await vals(), crit.flatMap((c) => [F.full.good.byCriterion[c.id].kappa.toFixed(2), F.full.vague.byCriterion[c.id].kappa.toFixed(2)]));
+  await b.js(`{ const n = document.querySelector('[data-ix-chart=explorer] input[value=rate]'); n.checked = true; n.dispatchEvent(new Event("change", { bubbles: true })); }`);
+  assert.deepEqual(await vals(), crit.flatMap((c) => [F.full.good.byCriterion[c.id].rate, F.full.vague.byCriterion[c.id].rate].map((v) => `${Math.round(v * 100)}%`)));
+  await b.js(`{ const n = document.querySelector('[data-ix-chart=explorer] input[value=over]'); n.checked = true; n.dispatchEvent(new Event("change", { bubbles: true })); }`);
+  assert.deepEqual(await vals(), crit.flatMap((c) => [String(F.full.good.byCriterion[c.id].overFailed), String(F.full.vague.byCriterion[c.id].overFailed)]));
+
+  // Labels slider: each step says how many criteria can be decided, as in findings.json.
+  for (const [i, s] of F.labelsNeeded.entries()) {
+    await fire("[data-ix-chart=labels] input[type=range]", i, "input");
+    const ok = crit.filter((c) => s.byCriterion[c.id].decidable).length;
+    assert.match(await text("[data-ix-chart=labels] .ix-out"), new RegExp(`^${s.labels} replies labelled.*: ${ok} of 4 criteria can be decided`));
+    assert.equal(await b.js(`document.querySelectorAll("[data-ix-chart=labels] .lrow.ok").length`), ok);
+  }
+
+  // Picker: the default bars pick the chosen model; dropping the safety bar picks the cheapest;
+  // adding the stricter kappa bar on top of the defaults picks the most expensive.
+  const pick = () => b.js(`document.querySelector("[data-ix-chart=picker] .is-pick .mname strong")?.textContent ?? null`);
+  assert.equal(await pick(), F.models[F.chosen].label);
+  const visibleChips = () => b.js(`[...document.querySelectorAll("[data-ix-chart=picker] .chip.pick")].filter((n) => n.offsetParent !== null).length`);
+  assert.equal(await visibleChips(), 1);
+  assert.match(await text("[data-ix-chart=picker] .ix-out"), new RegExp(`\\$${(F.models.sonnet.costPerReply * 10000).toFixed(2)} a month`));
+  await fire("[data-ix-chart=picker] .check:nth-of-type(3) input");
+  assert.equal(await pick(), F.models.haiku.label);
+  await fire("[data-ix-chart=picker] .check:nth-of-type(3) input");
+  await fire("[data-ix-chart=picker] .check:nth-of-type(4) input");
+  assert.equal(await pick(), F.models.opus.label);
+  assert.equal(await visibleChips(), 1);
+  await fire("[data-ix-chart=picker] .vol input", 3, "input");
+  assert.match(await text("[data-ix-chart=picker] .vol output"), /^1,000,000 replies a month$/);
+
+  // Quiz: one reply at a time; the reveal states the key and the judge, and the score counts the
+  // judge's real matches.
+  const shown = () => b.js(`[...document.querySelectorAll(".q-card")].map((n) => !n.hidden)`);
+  assert.deepEqual(await shown(), [true, false, false]);
+  for (let i = 0; i < 3; i++) {
+    await b.js(`document.querySelectorAll(".q-card")[${i}].querySelector(".q-fail").click()`);
+    assert.ok(await b.js(`!document.querySelectorAll(".q-card")[${i}].querySelector(".q-result").hidden`));
+    assert.equal(await b.js(`document.querySelectorAll(".q-card")[${i}].querySelectorAll(".q-mark.on").length`), 1, "the judge's quote is marked in the reply");
+    if (i < 2) {
+      await b.js(`document.querySelectorAll(".q-card")[${i}].querySelector(".q-next").click()`);
+      assert.deepEqual(await shown(), [0, 1, 2].map((j) => j === i + 1));
+    } else assert.equal(await b.js(`document.querySelectorAll(".q-card")[2].querySelector(".q-next")`), null);
+  }
+  assert.match(await text(".quiz > .ix-out"), /^You matched the answer key on 2 of 3\. The AI judge matched it on 2 of 3\.$/);
   for (const theme of ["light", "dark"]) {
     await b.scheme(theme);
     for (const width of [390, 1280]) {

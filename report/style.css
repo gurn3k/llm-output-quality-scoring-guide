@@ -102,6 +102,89 @@ caption { caption-side: bottom; text-align: left; font-size: 13px; color: var(--
 .ex + .ex { margin-top: 8px; }
 .compare-label { margin: 20px 0 0; font-weight: 600; }
 
+/* Interactive pieces (interactive.js). Bars are HTML so they resize with the column. */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ix-chart { padding: 16px; }
+.ix-legend { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 6px; padding: 0; }
+.ix-note { font-size: 14px; color: var(--muted); margin: 12px 0 0; min-height: 2.6em; }
+.ix-out { font-weight: 600; margin: 12px 0; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pills .ix-legend { width: 100%; }
+.pill { position: relative; }
+.pill input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.pill span { display: inline-block; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 600; background: var(--bg); color: var(--ink); }
+.pill input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.pill input:focus-visible + span, .check input:focus-visible, input[type=range]:focus-visible, .q-btn:focus-visible, .q-result:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.bars { display: grid; gap: 14px; }
+.brow { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 4px 12px; align-items: center; }
+.blab strong { display: block; font-size: 14px; }
+.blab .sub { display: block; font-size: 12px; color: var(--muted); }
+.bpair { display: grid; gap: 4px; }
+.btrack { display: grid; grid-template-columns: minmax(0, 1fr) 3.4em; align-items: center; gap: 6px; }
+.bbar { height: 16px; background: var(--data); border-radius: 3px; overflow: hidden; }
+.bfill { height: 100%; width: 0; border-radius: 3px; transition: width 0.45s ease; }
+.bfill.bar-good { background: var(--accent); }
+.bfill.bar-vague { background: var(--vague); }
+.bval { font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.ix-chart input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
+.lticks, .laxis { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.laxis { margin: 14px 0 2px; }
+.lrow { padding: 10px 0; border-top: 1px solid var(--line); }
+.lhead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-size: 14px; }
+.lstatus { font-weight: 600; color: var(--warn); }
+.lrow.ok .lstatus { color: var(--pass); }
+.ltrack { position: relative; height: 14px; margin: 6px 0 4px; background: var(--data); border-radius: 999px; }
+.lband { position: absolute; top: 0; bottom: 0; background: var(--warnbg); border: 1px solid var(--warn); border-radius: 999px; transition: left 0.45s ease, width 0.45s ease; }
+.lrow.ok .lband { background: var(--passbg); border-color: var(--pass); }
+.ldot { position: absolute; top: 50%; left: calc((100% - 10px) * var(--f, 0)); width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--ink); transition: left 0.45s ease; }
+.ldetail { display: block; font-size: 13px; color: var(--muted); }
+
+.checks { display: grid; gap: 6px; margin-bottom: 14px; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; cursor: pointer; }
+.check input { margin-top: 4px; accent-color: var(--accent); flex: none; }
+.vol output { display: block; font-size: 14px; margin-top: 4px; }
+.mcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.mcard { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--bg); transition: opacity 0.3s ease; }
+.mcard.is-pick { border: 2px solid var(--accent); padding: 11px; }
+.mcard.is-out { opacity: 0.6; }
+.mname { margin: 0 0 4px; font-size: 15px; }
+.chip.pick { background: var(--accent); color: var(--surface); }
+[hidden] { display: none !important; }
+.q-next { margin-top: 10px; }
+.mcost { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+.mcost strong { font-size: 20px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.mbars { list-style: none; margin: 10px 0 0; padding: 0; font-size: 13px; }
+.mbars li { display: flex; gap: 6px; }
+.mbars li + li { margin-top: 3px; }
+.mbars .yes .mark-ic { color: var(--pass); }
+.mbars .no { color: var(--fail); }
+.mbars .none { color: var(--muted); }
+
+.q-card { margin: 14px 0; }
+.q-h { margin: 0 0 6px; font-size: 16px; }
+.q-ask { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.q-ask .ix-legend { margin: 0; }
+.q-btn { font: inherit; font-weight: 650; padding: 6px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.q-btn:disabled { cursor: default; opacity: 0.55; }
+.q-btn[aria-pressed=true] { opacity: 1; border-width: 2px; }
+.q-pass[aria-pressed=true] { color: var(--pass); border-color: var(--pass); background: var(--passbg); }
+.q-fail[aria-pressed=true] { color: var(--fail); border-color: var(--fail); background: var(--failbg); }
+.q-result { margin-top: 12px; border-left: 3px solid var(--accent); padding-left: 12px; }
+.q-lines { list-style: none; margin: 0 0 8px; padding: 0; font-size: 15px; }
+.q-mark.on { background: var(--quote); border-radius: 4px; }
+.takeaways li + li { margin-top: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bfill, .lband, .ldot, .mcard { transition: none; }
+}
+@media (max-width: 600px) {
+  .brow { grid-template-columns: minmax(0, 1fr); }
+  .mcards { grid-template-columns: minmax(0, 1fr); }
+}
+
 .foot { border-top: 1px solid var(--line); padding-top: 24px; padding-bottom: 48px; margin-top: 56px; color: var(--muted); font-size: 15px; }
 .foot .mark { height: 32px; margin-bottom: 8px; }
 .foot p { margin: 4px 0; }

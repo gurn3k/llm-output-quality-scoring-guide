@@ -8,6 +8,11 @@ import { fileURLToPath } from "node:url";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 const F = JSON.parse(readFileSync(here("./data/findings.json"), "utf8"));
+// Ratios the conclusion quotes, worked out here from findings.json rather than typed.
+F.derived = {
+  opusVsSonnet: F.models.opus.costPerReply / F.models.sonnet.costPerReply,
+  sonnetVsHaiku: F.models.sonnet.costPerReply / F.models.haiku.costPerReply,
+};
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 function get(path) {
@@ -23,6 +28,7 @@ const fmt = {
   usd: (v) => `$${Number(v).toFixed(2)}`,
   usd3: (v) => `$${Number(v).toFixed(3)}`,
   text: (v) => esc(v),
+  times: (v) => `${v < 10 ? Number(v).toFixed(1) : Math.round(v)} times`,
 };
 const CRIT = F.testSet.criteria.map((c) => c.id);
 const NAME = Object.fromEntries(F.testSet.criteria.map((c) => [c.id, c.name]));
@@ -98,8 +104,34 @@ ${showReply ? `<details class="ex-full"><summary>Show the customer's message and
 }
 function verdictOnly(name) { return example(name, { showReply: false }); }
 
+// The data the interactive pieces (report/interactive.js) draw from: a subset of findings.json,
+// embedded as a JSON data block so the page still makes no request beyond its own files.
+// BARS are the model bars fixed before the runs (docs/PRD.md); RULE is the "can decide" rule.
+const BARS = { caught: 0.8, clean: 0.85, kappaOptional: 0.9 };
+const RULE = { minFailures: 5, maxWidth: 0.3 };
+function ixData() {
+  const pick = (m) => ({ label: m.label, caught: m.caught, cleanPassed: m.cleanPassed, kappa: m.kappa, flips: m.flips.length, injectionPairs: m.injectionPairs, costPerReply: m.costPerReply });
+  const quiz = [
+    ["caught", F.examples.caught.note],
+    ["missed", F.examples.missed.note],
+    ["vagueGood", `This reply gets the return window wrong, but that belongs to “${NAME.accurate}”. This criterion asks only whether the case should go to a specialist, and a change-of-mind return shouldn't.`],
+  ].map(([k, note]) => {
+    const e = F.examples[k];
+    const def = F.testSet.criteria.find((c) => c.id === e.criterion).pass;
+    return { criterion: e.criterionName, definition: def, customer: e.customer, reply: e.reply, key: e.key, judge: e.verdict, quote: e.quote, reason: e.reason, note };
+  });
+  const D = {
+    criteria: F.testSet.criteria.map((c) => ({ id: c.id, name: c.name, vague: VNAME[c.id] })),
+    good: F.full.good.byCriterion, vague: F.full.vague.byCriterion, replies: F.full.replies,
+    labelsNeeded: F.labelsNeeded, rule: RULE, bars: BARS, chosen: F.chosen,
+    models: { haiku: pick(F.models.haiku), sonnet: pick(F.models.sonnet), opus: pick(F.models.opus) },
+    quiz,
+  };
+  return `<script type="application/json" id="report-data">${JSON.stringify(D).replace(/</g, "\\u003c")}</script>`;
+}
+
 const blocks = {
-  kappaChart, catchAgreeChart, labelsTable, modelsTable,
+  kappaChart, catchAgreeChart, labelsTable, modelsTable, ixData,
   exCaught: () => example("caught"), exMissed: () => example("missed"),
   exVague: () => example("vague"), exVagueHelpful: () => verdictOnly("vagueHelpful"), exVagueGood: () => verdictOnly("vagueGood"), exVagueGoodAccurate: () => verdictOnly("vagueGoodAccurate"),
   exWithheld: () => example("withheld"),
