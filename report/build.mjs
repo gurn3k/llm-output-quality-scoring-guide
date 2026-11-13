@@ -34,40 +34,37 @@ const CRIT = F.testSet.criteria.map((c) => c.id);
 const NAME = Object.fromEntries(F.testSet.criteria.map((c) => [c.id, c.name]));
 const VNAME = Object.fromEntries(F.testSet.vagueCriteria.map((c) => [c.id, c.name]));
 
-// Kappa per criterion, good vs vague criteria: paired horizontal bars on one 0-1 scale.
+// Static paired-bar charts: labels and values are HTML text, so they stay full size at any width;
+// only the bars are SVG (attributes, not inline styles, so the page's style policy still holds).
+// interactive.js swaps the kappa chart for its explorer; these are what a reader sees without scripts.
+function bar(cls, frac, text, who) {
+  const w = Math.max(0.5, Math.min(1, frac) * 100).toFixed(2);
+  return `<div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="${cls}" width="${w}" height="16"/></svg><span class="bvalwrap"><span class="sr">${who}: </span><span class="bval">${text}</span></span></div>`;
+}
+function pairRow(label, sub, good, vague) {
+  return `<div class="brow"><div class="blab"><strong>${esc(label)}</strong>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</div><div class="bpair">${bar("bar-good", ...good, "Clear criteria")}${bar("bar-vague", ...vague, "Vague criteria")}</div></div>`;
+}
+const keyLine = `<span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria`;
+
+// Kappa per criterion, clear vs vague criteria, on one 0-1 scale.
 function kappaChart() {
-  const W = 640, rowH = 58, top = 34, left = 190, right = 56, H = top + rowH * CRIT.length + 26;
-  const x = (v) => left + (W - left - right) * Math.max(0, v);
-  const parts = [];
-  for (const t of [0, 0.2, 0.4, 0.6, 0.8, 1]) parts.push(`<line x1="${x(t)}" x2="${x(t)}" y1="${top - 8}" y2="${H - 22}" class="grid"/><text x="${x(t)}" y="${H - 6}" class="tick" text-anchor="middle">${t.toFixed(1)}</text>`);
-  CRIT.forEach((c, i) => {
-    const y = top + i * rowH, g = F.full.good.byCriterion[c].kappa, v = F.full.vague.byCriterion[c].kappa;
-    parts.push(`<text x="${left - 12}" y="${y + 13}" class="lab" text-anchor="end">${esc(NAME[c])}</text>`);
-    parts.push(`<text x="${left - 12}" y="${y + 33}" class="lab sub" text-anchor="end">vague: “${esc(VNAME[c])}”</text>`);
-    parts.push(`<rect x="${left}" y="${y + 2}" width="${x(g) - left}" height="16" class="bar-good" rx="2"/><text x="${x(g) + 6}" y="${y + 15}" class="val">${g.toFixed(2)}</text>`);
-    parts.push(`<rect x="${left}" y="${y + 22}" width="${Math.max(2, x(v) - left)}" height="16" class="bar-vague" rx="2"/><text x="${x(v) + 6}" y="${y + 35}" class="val">${v.toFixed(2)}</text>`);
-  });
-  return `<figure class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="kchart-t"><title id="kchart-t">Agreement beyond chance (kappa) per criterion: clear criteria ${CRIT.map((c) => `${NAME[c]} ${F.full.good.byCriterion[c].kappa}`).join(", ")}; vague criteria ${CRIT.map((c) => `${VNAME[c]} ${F.full.vague.byCriterion[c].kappa}`).join(", ")}.</title>${parts.join("")}</svg>
-<figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · Agreement beyond chance (kappa) with the answer key, all ${fmt.n(F.full.replies)} replies. 1 is perfect agreement, 0 is no better than chance.</figcaption></figure>`;
+  const rows = CRIT.map((c) => {
+    const g = F.full.good.byCriterion[c].kappa, v = F.full.vague.byCriterion[c].kappa;
+    return pairRow(NAME[c], `vague: “${VNAME[c]}”`, [g, fmt.k(g)], [v, fmt.k(v)]);
+  }).join("");
+  return `<figure class="chart plate" data-static><div class="bars">${rows}</div>
+<figcaption>${keyLine} · Agreement beyond chance (kappa) with the answer key, all ${fmt.n(F.full.replies)} replies. 1 is perfect agreement, 0 is no better than chance.</figcaption></figure>`;
 }
 
-// The headline: catch rate barely moves with vague criteria, agreement falls. Two pairs of bars, 0-100%.
+// The headline: catch rate barely moves with vague criteria; agreement falls.
 function catchAgreeChart() {
-  const W = 640, left = 190, right = 64, top = 30, rowH = 30, gap = 22;
-  const x = (v) => left + (W - left - right) * v;
-  const sets = [["Clear criteria", F.full.good, "bar-good"], ["Vague criteria", F.full.vague, "bar-vague"]];
-  const H = top + sets.length * (2 * rowH + gap) + 8;
-  const parts = [];
-  for (const t of [0, 0.25, 0.5, 0.75, 1]) parts.push(`<line x1="${x(t)}" x2="${x(t)}" y1="${top - 8}" y2="${H - 22}" class="grid"/><text x="${x(t)}" y="${H - 6}" class="tick" text-anchor="middle">${Math.round(t * 100)}%</text>`);
-  sets.forEach(([label, m, cls], i) => {
-    const y = top + i * (2 * rowH + gap);
-    const caught = m.caught.k / m.caught.n, agree = m.agree / m.n;
-    parts.push(`<text x="${left - 12}" y="${y - 6}" class="lab grp" text-anchor="end">${label}</text>`);
-    parts.push(`<text x="${left - 12}" y="${y + 13}" class="lab sub" text-anchor="end">Planted failures caught</text><rect x="${left}" y="${y + 2}" width="${x(caught) - left}" height="16" class="${cls}" rx="2"/><text x="${x(caught) + 6}" y="${y + 15}" class="val">${fmt.pct(caught)}</text>`);
-    parts.push(`<text x="${left - 12}" y="${y + rowH + 13}" class="lab sub" text-anchor="end">Agreement with the key</text><rect x="${left}" y="${y + rowH + 2}" width="${x(agree) - left}" height="16" class="${cls}" rx="2"/><text x="${x(agree) + 6}" y="${y + rowH + 15}" class="val">${fmt.pct(agree)}</text>`);
-  });
-  return `<figure class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="cachart-t"><title id="cachart-t">Clear criteria: ${m2s(F.full.good)}. Vague criteria: ${m2s(F.full.vague)}.</title>${parts.join("")}</svg>
-<figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · All ${fmt.n(F.full.replies)} replies, judged by ${esc(F.models[F.chosen].label)}. Catch rate counts only the planted failures; agreement counts every verdict, so it also counts failing replies the answer key passes.</figcaption></figure>`;
+  const g = F.full.good, v = F.full.vague;
+  const rows = [
+    pairRow("Planted failures caught", "", [g.caught.k / g.caught.n, fmt.pct(g.caught.k / g.caught.n)], [v.caught.k / v.caught.n, fmt.pct(v.caught.k / v.caught.n)]),
+    pairRow("Agreement with the key", "", [g.agree / g.n, fmt.pct(g.agree / g.n)], [v.agree / v.n, fmt.pct(v.agree / v.n)]),
+  ].join("");
+  return `<figure class="chart plate" data-static><div class="bars">${rows}</div><p class="sr">Clear criteria: ${m2s(g)}. Vague criteria: ${m2s(v)}.</p>
+<figcaption>${keyLine} · All ${fmt.n(F.full.replies)} replies, judged by ${esc(F.models[F.chosen].label)}. Catch rate counts only the planted failures; agreement counts every verdict, so it also counts failing replies the answer key passes.</figcaption></figure>`;
 }
 const m2s = (m) => `caught ${m.caught.k} of ${m.caught.n} planted failures, agreed with the answer key on ${m.agree} of ${m.n} verdicts`;
 

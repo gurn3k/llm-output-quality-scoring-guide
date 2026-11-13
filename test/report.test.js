@@ -37,19 +37,23 @@ test("the built report quotes findings.json", () => {
     `$${F.spend.judgeTotal.toFixed(2)}`,
     `kappa ${F.models.opus.kappa.toFixed(2)} against ${F.models.sonnet.kappa.toFixed(2)}`,
     `${(F.models.opus.costPerReply / F.models.sonnet.costPerReply).toFixed(1)} times the cost per reply`,
+    `${Math.round(F.scale.cacheShare * 100)}% of input tokens came from the cache`,
+    `cost ${F.scale.cacheSaving.toFixed(1)} times as much`,
+    `<td>${F.scale.labelsAt[2].labels.toLocaleString("en-US")}</td>`,
+    `The ${F.scale.maxRows}-row limit`,
   ]) assert.ok(html.includes(s), `report should say "${s}"`);
   // Without scripts the page still has its static charts and table; the script-only parts start hidden.
-  assert.equal((html.match(/<figure class="chart"><svg/g) || []).length, 2);
+  assert.equal((html.match(/<figure class="chart plate" data-static>/g) || []).length, 2);
   assert.match(html, /<div data-ix="labels"><div class="table-wrap">/);
-  assert.equal((html.match(/class="ix-only" hidden/g) || []).length, 2);
+  assert.equal((html.match(/class="ix-only" hidden/g) || []).length, 3);
   // The embedded data is JSON a script can't break out of.
   const data = html.match(/<script type="application\/json" id="report-data">([\s\S]*?)<\/script>/)[1];
   assert.doesNotMatch(data, /</);
   assert.equal(JSON.parse(data).models.opus.costPerReply, F.models.opus.costPerReply);
 });
 
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".mp4": "video/mp4" };
-const PUBLIC = /^\/(?:index\.html|style\.css|interactive\.js|media\/[a-z0-9-]+\.(?:svg|jpg|mp4))$/;
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".mp4": "video/mp4", ".woff2": "font/woff2" };
+const PUBLIC = /^\/(?:index\.html|style\.css|interactive\.js|fonts\/[a-z0-9-]+\.woff2|media\/[a-z0-9-]+\.(?:svg|jpg|mp4))$/;
 
 test("the report page in a real browser", { skip: SKIP }, async (t) => {
   execFileSync(process.execPath, [join(REPORT, "build.mjs")], { stdio: "pipe" });
@@ -67,10 +71,12 @@ test("the report page in a real browser", { skip: SKIP }, async (t) => {
   const broken = await b.js(`[...document.images].filter((i) => !i.complete || i.naturalWidth === 0).map((i) => i.src)`);
   assert.deepEqual(broken, [], "every image loads");
   assert.ok(await b.js(`!!document.querySelector('video source[src="media/walkthrough.mp4"]')`));
+  // Every gurn3k logo links to gurn3k.com.
+  assert.deepEqual(await b.js(`[...document.querySelectorAll("img.mark")].map((i) => i.closest("a")?.href ?? null)`), ["https://gurn3k.com/", "https://gurn3k.com/"]);
 
   // The script ran: the headline chart stays static, the other three pieces are interactive, and
   // the script-only sections are shown.
-  assert.equal(await b.js(`document.querySelectorAll("figure.chart svg").length`), 1);
+  assert.equal(await b.js(`document.querySelectorAll("figure.chart[data-static]").length`), 1);
   assert.deepEqual(await b.js(`[...document.querySelectorAll("[data-ix-chart]")].map((n) => n.dataset.ixChart)`), ["explorer", "labels", "picker"]);
   assert.equal(await b.js(`document.querySelectorAll(".ix-only[hidden]").length`), 0);
   const q = (sel, all = false) => `[...document.querySelectorAll(${JSON.stringify(sel)})]${all ? "" : "[0]"}`;

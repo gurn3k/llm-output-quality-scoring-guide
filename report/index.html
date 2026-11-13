@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Nothing fetched from anywhere but this site. One script of its own (interactive.js) adds the
        interactive charts; without it the page reads in full with static charts and tables. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="description" content="How far can you trust an AI judge? Findings from 2,240 verdicts on customer support replies, checked against a written answer key and a person's blind labels.">
   <title>Can you trust an AI judge? Findings from 2,240 verdicts</title>
   <link rel="icon" href="media/icon.svg" type="image/svg+xml">
@@ -13,27 +13,64 @@
   <script src="interactive.js" defer></script>
 </head>
 <body>
-<header class="masthead">
-  <p class="kicker">Findings report</p>
-  <h1>Can you trust an AI judge? Findings from 2,240 verdicts</h1>
-  <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
-  <p class="byline"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture><span>Gurnek Khaira · <span data-fixed>November 2026</span> · a five-minute read</span></p>
+<!-- The drawn marks: one hand-drawn stroke family for every verdict, chart marker and section number. -->
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="m-tick" viewBox="0 0 32 32"><path pathLength="1" d="M4 17.5c2.6 2.1 4.7 4.6 6.6 7.4C14.2 17 19.6 9.6 28 4"/></symbol>
+  <symbol id="m-cross" viewBox="0 0 32 32"><path pathLength="1" d="M6 5.5c6.9 6.4 13.4 13.6 20.5 21.5M26.5 5c-7.2 6.6-14 14.4-21 22"/></symbol>
+  <symbol id="m-ring" viewBox="0 0 120 64" preserveAspectRatio="none"><path pathLength="1" d="M70 5C40 2 8 12 5 32c-3 20 32 28 62 27 30-1 50-12 49-29C115 13 92 4 58 7"/></symbol>
+  <symbol id="m-query" viewBox="0 0 32 32"><path pathLength="1" d="M9.5 10.5C9.8 6.2 12.8 3.6 16.6 3.8c3.9.2 6.4 2.9 6.2 6.4-.2 3.3-2.6 4.7-4.8 6.2-1.8 1.2-2.4 2.6-2.3 5.1M15.6 27.6l.2.6"/></symbol>
+  <symbol id="m-circle" viewBox="0 0 48 48"><path pathLength="1" d="M27 4C13 3 4 12 4 24c0 12 9 20 20 20 12 0 20-9 20-21C44 12 36 5 22 6"/></symbol>
+</svg>
+
+<div class="sheet">
+<header class="mast">
+  <div class="runhead">
+    <a href="https://gurn3k.com" class="mark-link"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k.com" class="mark" width="905" height="390"></picture></a>
+    <p class="runtitle">Findings report · <span data-fixed>November 2026</span></p>
+    <dl class="fields">
+      <div><dt>Marker</dt><dd>Claude Sonnet 5.5</dd></div>
+      <div><dt>Replies</dt><dd>216</dd></div>
+    </dl>
+  </div>
+
+  <div class="cover">
+    <div class="titleblock">
+      <h1>Can you trust an AI judge? <span class="h1-sub">Findings from 2,240 verdicts</span></h1>
+      <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
+      <p class="byline">Gurnek Khaira · a five-minute read · every figure checkable on GitHub</p>
+    </div>
+
+    <section class="exam" aria-labelledby="tldr-h">
+      <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">marked against the answer key</span></h2>
+      <ol>
+        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>With clear criteria, the judge is good.</strong> It caught 189 of 196 planted failures and agreed with the answer key on 95% of verdicts (kappa 0.86, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>0.86</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high (193 of 196), but agreement fell to 65% (kappa 0.35), because the judge failed 297 verdicts the key passes. Catch rate alone would have called the vague rubric better.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>0.35</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>A few dozen labels can't tell you whether to trust it.</strong> With 40 labelled replies, no criterion had enough held-back failures to decide. It took 160 before three of the four could, and Tone still couldn't at 220.</p><span class="exam-m red"><b>160</b><small>labels</small></span></li>
+      </ol>
+      <p class="moderated"><svg class="mk ring" aria-hidden="true"><use href="#m-ring"/></svg><b>116/120</b><span>of my blind labels agree with the answer key</span></p>
+    </section>
+
+    <ul class="marks-key" aria-label="How to read the marks">
+        <li class="red"><span class="mk-pair"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg></span><span><strong>Red marks are the AI judge's.</strong> It marked every reply first.</span></li>
+        <li class="green"><span class="mk-pair"><svg class="mk ring-sm" aria-hidden="true"><use href="#m-ring"/></svg></span><span><strong>Green marks are the check.</strong> The answer key and my blind labels, marking the same replies second.</span></li>
+      </ul>
+  </div>
+
+  <nav class="index" aria-label="Sections">
+    <a href="#f1-h"><span class="idx-n"><span data-fixed>1</span></span>Clear criteria</a>
+    <a href="#f2-h"><span class="idx-n"><span data-fixed>2</span></span>Vague criteria</a>
+    <a href="#f3-h"><span class="idx-n"><span data-fixed>3</span></span>How many labels</a>
+    <a href="#quiz-h" class="ix-only" hidden>You be the judge</a>
+    <a href="#take-h">What to take away</a>
+  </nav>
 </header>
 
 <main>
-<section class="tldr" aria-labelledby="tldr-h">
-  <h2 id="tldr-h">Three findings</h2>
-  <ol>
-    <li><strong>With clear criteria, the judge is good.</strong> It caught 189 of 196 planted failures and agreed with the answer key on 95% of verdicts (kappa 0.86, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</li>
-    <li><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high (193 of 196), but agreement fell to 65% (kappa 0.35), because the judge failed 297 verdicts the key passes. Catch rate alone would have called the vague rubric better.</li>
-    <li><strong>A few dozen labels can't tell you whether to trust it.</strong> With 40 labelled replies, no criterion had enough held-back failures to decide. It took 160 before three of the four could, and Tone still couldn't at 220.</li>
-  </ol>
-</section>
 
 <section aria-labelledby="tool-h">
   <h2 id="tool-h">The tool behind the numbers</h2>
   <p>I built a small calibration tool for this: load replies, write pass/fail criteria, label a sample, and see how far the judge agrees with you on replies it never tuned on. The walkthrough replays stored results, so it makes no API calls.</p>
-  <figure class="video">
+  <figure class="video plate">
     <video controls muted playsinline preload="metadata" poster="media/poster.jpg" width="1280" height="720">
       <source src="media/walkthrough.mp4" type="video/mp4">
       <a href="media/walkthrough.mp4">Download the walkthrough video</a>
@@ -62,7 +99,7 @@
 </section>
 
 <section aria-labelledby="f1-h">
-  <h2 id="f1-h"><span data-fixed>1.</span> Clear criteria: the judge mostly agrees</h2>
+  <h2 id="f1-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>1</span><svg class="mk qv" aria-hidden="true"><use href="#m-tick"/></svg></span> Clear criteria: the judge mostly agrees</h2>
   <p>Across all 216 replies, the judge caught 189 of 196 planted failures (likely between 93% and 98%) and passed 80 of 80 verdicts on clean replies. It failed 41 verdicts the key passes, and left 11 of 864 undecided.</p>
   <p>The bars were set on the first replies judged. The 160 planted failures judged afterwards held up: 155 caught, kappa 0.85.</p>
   <p>The weakest criterion was <strong>Accurate to policy</strong> (kappa 0.71). Most of its 26 over-fails are replies that should have gone to a specialist; the judge also marked them inaccurate, a reading a person could defend. Of the judge's 5 misses, 4 were on Tone: mild blame it read as neutral.</p>
@@ -93,12 +130,12 @@ Mia</p></details>
 </section>
 
 <section aria-labelledby="f2-h">
-  <h2 id="f2-h"><span data-fixed>2.</span> Vague criteria: catch rate lies</h2>
+  <h2 id="f2-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>2</span><svg class="mk qv" aria-hidden="true"><use href="#m-cross"/></svg></span> Vague criteria: catch rate lies</h2>
   <p>I ran the same replies against a deliberately vague version of the four criteria ("The reply is accurate", "The reply is helpful", and so on). I expected it to catch fewer failures. It caught slightly more.</p>
-  <figure class="chart"><svg viewBox="0 0 640 202" role="img" aria-labelledby="cachart-t"><title id="cachart-t">Clear criteria: caught 189 of 196 planted failures, agreed with the answer key on 807 of 853 verdicts. Vague criteria: caught 193 of 196 planted failures, agreed with the answer key on 546 of 843 verdicts.</title><line x1="190" x2="190" y1="22" y2="180" class="grid"/><text x="190" y="196" class="tick" text-anchor="middle">0%</text><line x1="286.5" x2="286.5" y1="22" y2="180" class="grid"/><text x="286.5" y="196" class="tick" text-anchor="middle">25%</text><line x1="383" x2="383" y1="22" y2="180" class="grid"/><text x="383" y="196" class="tick" text-anchor="middle">50%</text><line x1="479.5" x2="479.5" y1="22" y2="180" class="grid"/><text x="479.5" y="196" class="tick" text-anchor="middle">75%</text><line x1="576" x2="576" y1="22" y2="180" class="grid"/><text x="576" y="196" class="tick" text-anchor="middle">100%</text><text x="178" y="24" class="lab grp" text-anchor="end">Clear criteria</text><text x="178" y="43" class="lab sub" text-anchor="end">Planted failures caught</text><rect x="190" y="32" width="372.2142857142858" height="16" class="bar-good" rx="2"/><text x="568.2142857142858" y="45" class="val">96%</text><text x="178" y="73" class="lab sub" text-anchor="end">Agreement with the key</text><rect x="190" y="62" width="365.18405627198126" height="16" class="bar-good" rx="2"/><text x="561.1840562719813" y="75" class="val">95%</text><text x="178" y="106" class="lab grp" text-anchor="end">Vague criteria</text><text x="178" y="125" class="lab sub" text-anchor="end">Planted failures caught</text><rect x="190" y="114" width="380.09183673469397" height="16" class="bar-vague" rx="2"/><text x="576.091836734694" y="127" class="val">98%</text><text x="178" y="155" class="lab sub" text-anchor="end">Agreement with the key</text><rect x="190" y="144" width="250.0071174377224" height="16" class="bar-vague" rx="2"/><text x="446.0071174377224" y="157" class="val">65%</text></svg>
+  <figure class="chart plate" data-static><div class="bars"><div class="brow"><div class="blab"><strong>Planted failures caught</strong></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="96.43" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">96%</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="98.47" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">98%</span></span></div></div></div><div class="brow"><div class="blab"><strong>Agreement with the key</strong></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="94.61" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">95%</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="64.77" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">65%</span></span></div></div></div></div><p class="sr">Clear criteria: caught 189 of 196 planted failures, agreed with the answer key on 807 of 853 verdicts. Vague criteria: caught 193 of 196 planted failures, agreed with the answer key on 546 of 843 verdicts.</p>
 <figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · All 216 replies, judged by Claude Sonnet 5.5. Catch rate counts only the planted failures; agreement counts every verdict, so it also counts failing replies the answer key passes.</figcaption></figure>
   <p>It got there by failing almost everything: 297 verdicts the answer key passes, against 41 with clear criteria. A judge that fails every reply catches every failure, so catch rate rewards exactly this mistake. Agreement beyond chance exposes it:</p>
-  <div data-ix="explorer"><figure class="chart"><svg viewBox="0 0 640 292" role="img" aria-labelledby="kchart-t"><title id="kchart-t">Agreement beyond chance (kappa) per criterion: clear criteria Accurate to policy 0.71, Answers the question 0.84, Escalates when required 0.97, Appropriate tone 0.93; vague criteria Accurate 0.41, Helpful 0.21, Handles the situation 0.15, Tone 0.83.</title><line x1="190" x2="190" y1="26" y2="270" class="grid"/><text x="190" y="286" class="tick" text-anchor="middle">0.0</text><line x1="268.8" x2="268.8" y1="26" y2="270" class="grid"/><text x="268.8" y="286" class="tick" text-anchor="middle">0.2</text><line x1="347.6" x2="347.6" y1="26" y2="270" class="grid"/><text x="347.6" y="286" class="tick" text-anchor="middle">0.4</text><line x1="426.4" x2="426.4" y1="26" y2="270" class="grid"/><text x="426.4" y="286" class="tick" text-anchor="middle">0.6</text><line x1="505.20000000000005" x2="505.20000000000005" y1="26" y2="270" class="grid"/><text x="505.20000000000005" y="286" class="tick" text-anchor="middle">0.8</text><line x1="584" x2="584" y1="26" y2="270" class="grid"/><text x="584" y="286" class="tick" text-anchor="middle">1.0</text><text x="178" y="47" class="lab" text-anchor="end">Accurate to policy</text><text x="178" y="67" class="lab sub" text-anchor="end">vague: “Accurate”</text><rect x="190" y="36" width="279.74" height="16" class="bar-good" rx="2"/><text x="475.74" y="49" class="val">0.71</text><rect x="190" y="56" width="161.53999999999996" height="16" class="bar-vague" rx="2"/><text x="357.53999999999996" y="69" class="val">0.41</text><text x="178" y="105" class="lab" text-anchor="end">Answers the question</text><text x="178" y="125" class="lab sub" text-anchor="end">vague: “Helpful”</text><rect x="190" y="94" width="330.96000000000004" height="16" class="bar-good" rx="2"/><text x="526.96" y="107" class="val">0.84</text><rect x="190" y="114" width="82.74000000000001" height="16" class="bar-vague" rx="2"/><text x="278.74" y="127" class="val">0.21</text><text x="178" y="163" class="lab" text-anchor="end">Escalates when required</text><text x="178" y="183" class="lab sub" text-anchor="end">vague: “Handles the situation”</text><rect x="190" y="152" width="382.18000000000006" height="16" class="bar-good" rx="2"/><text x="578.1800000000001" y="165" class="val">0.97</text><rect x="190" y="172" width="59.099999999999994" height="16" class="bar-vague" rx="2"/><text x="255.1" y="185" class="val">0.15</text><text x="178" y="221" class="lab" text-anchor="end">Appropriate tone</text><text x="178" y="241" class="lab sub" text-anchor="end">vague: “Tone”</text><rect x="190" y="210" width="366.4200000000001" height="16" class="bar-good" rx="2"/><text x="562.4200000000001" y="223" class="val">0.93</text><rect x="190" y="230" width="327.02" height="16" class="bar-vague" rx="2"/><text x="523.02" y="243" class="val">0.83</text></svg>
+  <div data-ix="explorer"><figure class="chart plate" data-static><div class="bars"><div class="brow"><div class="blab"><strong>Accurate to policy</strong><span class="sub">vague: “Accurate”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="71.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.71</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="41.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.41</span></span></div></div></div><div class="brow"><div class="blab"><strong>Answers the question</strong><span class="sub">vague: “Helpful”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="84.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.84</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="21.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.21</span></span></div></div></div><div class="brow"><div class="blab"><strong>Escalates when required</strong><span class="sub">vague: “Handles the situation”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="97.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.97</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="15.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.15</span></span></div></div></div><div class="brow"><div class="blab"><strong>Appropriate tone</strong><span class="sub">vague: “Tone”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="93.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.93</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="83.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.83</span></span></div></div></div></div>
 <figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · Agreement beyond chance (kappa) with the answer key, all 216 replies. 1 is perfect agreement, 0 is no better than chance.</figcaption></figure></div>
   <p>Tone held up even when vague, since "the tone is good" needs little definition. The criteria that depend on the policy collapsed, with "Handles the situation" at kappa 0.15, close to chance.</p>
   <h3>One flaw, three failures</h3>
@@ -122,7 +159,7 @@ Maya</p></details>
 </section>
 
 <section aria-labelledby="f3-h">
-  <h2 id="f3-h"><span data-fixed>3.</span> How many labels before you can trust it</h2>
+  <h2 id="f3-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>3</span></span> How many labels before you can trust it</h2>
   <p>To check a judge fairly, part of your labels must be held back: the judge's instructions are tuned on some, and it is measured only on the rest. A decision needs at least <span data-fixed>5</span> held-back failures per criterion and a catch-rate range no wider than <span data-fixed>30</span> points. Using the tool's own random draw:</p>
   <div data-ix="labels"><div class="table-wrap"><table class="grid-table"><caption>Each cell: whether the criterion can be decided, and how many of its held-back failures the judge caught.</caption><tr><th scope="col">Replies labelled</th><th scope="col">Accurate to policy</th><th scope="col">Answers the question</th><th scope="col">Escalates when required</th><th scope="col">Appropriate tone</th></tr><tr><th scope="row">40</th><td class="no"><span class="cell-v">Too few</span><span class="cell-d">4 of 4 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">4 of 4 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">3 of 3 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">1 of 1 caught</span></td></tr><tr><th scope="row">100</th><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">9 of 9 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">8 of 8 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">7 of 7 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">5 of 5 caught</span></td></tr><tr><th scope="row">160</th><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">12 of 12 caught</span></td><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">13 of 13 caught</span></td><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">14 of 14 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">8 of 9 caught</span></td></tr><tr><th scope="row">220</th><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">16 of 16 caught</span></td><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">20 of 20 caught</span></td><td class="ok"><span class="cell-v">Can decide</span><span class="cell-d">17 of 17 caught</span></td><td class="no"><span class="cell-v">Too few</span><span class="cell-d">11 of 12 caught</span></td></tr></table></div></div>
   <p>Labelling 40 replies, a common first instinct, holds back only 13, too few failures on every criterion to decide anything. In real data failures are often rarer still, so the number needed is driven by how many failures you can hold back, not by how many replies you label.</p>
@@ -159,7 +196,7 @@ Maya</p></details>
 
 <section aria-labelledby="take-h">
   <h2 id="take-h">What to take away</h2>
-  <ul class="takeaways">
+  <ul class="takeaways moderator">
     <li><strong>Write criteria that each judge one thing, and measure agreement, not just catch rate.</strong></li>
     <li><strong>Count held-back failures, not labelled replies.</strong></li>
     <li><strong>The most expensive model isn't automatically the right judge.</strong> Claude Opus 5.5 agreed with the key slightly more than Claude Sonnet 5.5 (kappa 0.92 against 0.87) at 2.3 times the cost per reply. Both cleared every bar, so the extra spend bought little here. Claude Haiku 5.5 was by far the cheapest (Claude Sonnet 5.5 cost 15 times as much per reply) and caught every planted failure, but obeyed a hidden instruction: the failure that matters most when the replies you grade come from outside. Choose the cheapest model that clears every bar you set before looking, including a safety bar, and check again when the task changes.</li>
@@ -169,6 +206,41 @@ Maya</p></details>
     <p>Tick the bars you'd require and set how many replies you'd grade a month. The pick is the cheapest model that clears every ticked bar.</p>
     <div data-ix="picker"></div>
   </div>
+</section>
+
+<section aria-labelledby="scale-h">
+  <h2 id="scale-h">Running it at scale</h2>
+  <p>The test was small on purpose. The tool was built for the volumes a real product produces, and the 1,760 judge calls on the full test set show how it would behave, and what would give way first.</p>
+
+  <h3>Cost grows with replies, not with the policy</h3>
+  <p>The policy and the criteria are the same on every call, so the tool sends them in a form the API can cache and reuse: 85% of input tokens came from the cache. Without that, the same runs would have cost 2.7 times as much. With caching, most of the bill (59%) pays for the judge's quote and reason, about 114 tokens a verdict. A longer policy barely moves the cost; the number of replies does, which is why the monthly figure in the model picker is predictable.</p>
+
+  <h3>Labels grow with how rare failures are, not with volume</h3>
+  <p>Even a judge that catches every held-back failure needs 9 of them before its range is narrow enough to decide. With a third of labels held back, that puts a floor under labelling that has nothing to do with how many replies you grade:</p>
+  <figure class="plate scale-plate"><div class="table-wrap"><table class="scale">
+    <tr><th scope="col">Share of replies that fail a criterion</th><th scope="col">Labels needed, at least</th></tr>
+    <tr><td>20%</td><td>140</td></tr>
+    <tr><td>5%</td><td>540</td></tr>
+    <tr><td>1%</td><td>2,700</td></tr>
+  </table></div>
+  <figcaption>The fewest labels that can hold back enough failures to decide, for a judge that catches every one.</figcaption></figure>
+  <p>Grading <span data-fixed>1,000</span> replies a month or <span data-fixed>1,000,000</span> takes the same labels. Rare failures are what make checking a judge expensive, so for a rare failure it can be cheaper to plant examples, as this test did, than to wait for real ones.</p>
+
+  <h3>Safeguards that let it run unattended</h3>
+  <p>Of 1,760 calls, 1 needed a retry. 30 verdicts came back "unclear" and went to a review pile, and the quote check withheld 3. These were in the tool from its first version:</p>
+  <ul class="marked ok">
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>A hard spending cap.</strong> Before each call the tool sets aside the most that call could cost, so a run stops before it passes the cap ($0.50 by default), not after.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Resume, not restart.</strong> A stopped run keeps its finished results and sends only what's missing.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Backing off when the API is busy.</strong> Rate-limit and server errors wait the time the API asks for, then retry.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Checks that need no reader.</strong> The quote check and the "unclear" answer keep bad verdicts out of the figures without anyone reading every reply.</span></li>
+  </ul>
+
+  <h3>What would give way first</h3>
+  <ul class="marked query">
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>The 500-row limit.</strong> The tool runs in the browser and holds everything in memory. Bigger jobs would move to a server that works through a queue, stores results as it goes, and sends work that can wait as batches.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>The API key sits in the visitor's browser.</strong> That's fine for one person checking their own data. A team would need a server that holds the key and sets a spending limit per person.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>No speed figures.</strong> I didn't record how long calls took, so I make no claim about throughput. It's the first thing I'd measure before a larger run.</span></li>
+  </ul>
 </section>
 
 <section aria-labelledby="limits-h">
@@ -188,10 +260,17 @@ Maya</p></details>
 </main>
 
 <footer class="foot">
-  <picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture>
-  <p>Built and measured by Gurnek Khaira.</p>
-  <p><a href="https://github.com/gurn3k/llm-output-quality-scoring-guide">Code, test set and every verdict on GitHub</a> · <a href="https://www.linkedin.com/in/gurnek-khaira">LinkedIn</a></p>
+  <div class="foot-sign">
+    <a href="https://gurn3k.com" class="mark-link"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k.com" class="mark" width="905" height="390"></picture></a>
+    <p>Built and measured by Gurnek Khaira.</p>
+  </div>
+  <ul class="foot-actions">
+    <li><a href="https://github.com/gurn3k/llm-output-quality-scoring-guide">Check the data</a><span>Code, test set and every verdict on GitHub</span></li>
+    <li><a href="https://gurn3k.com">See my other builds</a><span><span data-fixed>gurn3k.com</span></span></li>
+    <li><a href="https://www.linkedin.com/in/gurnek-khaira">Get in touch</a><span>LinkedIn</span></li>
+  </ul>
 </footer>
+</div>
 <script type="application/json" id="report-data">{"criteria":[{"id":"accurate","name":"Accurate to policy","vague":"Accurate"},{"id":"answers","name":"Answers the question","vague":"Helpful"},{"id":"escalates","name":"Escalates when required","vague":"Handles the situation"},{"id":"tone","name":"Appropriate tone","vague":"Tone"}],"good":{"accurate":{"agree":189,"n":215,"rate":0.879,"kappa":0.71,"missed":0,"overFailed":26},"answers":{"agree":199,"n":212,"rate":0.939,"kappa":0.84,"missed":1,"overFailed":12},"escalates":{"agree":211,"n":213,"rate":0.991,"kappa":0.97,"missed":0,"overFailed":2},"tone":{"agree":208,"n":213,"rate":0.977,"kappa":0.93,"missed":4,"overFailed":1}},"vague":{"accurate":{"agree":142,"n":206,"rate":0.689,"kappa":0.41,"missed":0,"overFailed":64},"answers":{"agree":108,"n":211,"rate":0.512,"kappa":0.21,"missed":0,"overFailed":103},"escalates":{"agree":94,"n":210,"rate":0.448,"kappa":0.15,"missed":0,"overFailed":116},"tone":{"agree":202,"n":216,"rate":0.935,"kappa":0.83,"missed":0,"overFailed":14}},"replies":216,"labelsNeeded":[{"labels":40,"heldBack":13,"byCriterion":{"accurate":{"heldBackFailures":4,"caught":4,"low":0.51,"high":1,"width":0.49,"decidable":false},"answers":{"heldBackFailures":4,"caught":4,"low":0.51,"high":1,"width":0.49,"decidable":false},"escalates":{"heldBackFailures":3,"caught":3,"low":0.439,"high":1,"width":0.561,"decidable":false},"tone":{"heldBackFailures":1,"caught":1,"low":0.207,"high":1,"width":0.793,"decidable":false}}},{"labels":100,"heldBack":33,"byCriterion":{"accurate":{"heldBackFailures":9,"caught":9,"low":0.701,"high":1,"width":0.299,"decidable":true},"answers":{"heldBackFailures":8,"caught":8,"low":0.676,"high":1,"width":0.324,"decidable":false},"escalates":{"heldBackFailures":7,"caught":7,"low":0.646,"high":1,"width":0.354,"decidable":false},"tone":{"heldBackFailures":5,"caught":5,"low":0.566,"high":1,"width":0.434,"decidable":false}}},{"labels":160,"heldBack":53,"byCriterion":{"accurate":{"heldBackFailures":12,"caught":12,"low":0.758,"high":1,"width":0.242,"decidable":true},"answers":{"heldBackFailures":13,"caught":13,"low":0.772,"high":1,"width":0.228,"decidable":true},"escalates":{"heldBackFailures":14,"caught":14,"low":0.785,"high":1,"width":0.215,"decidable":true},"tone":{"heldBackFailures":9,"caught":8,"low":0.565,"high":0.98,"width":0.415,"decidable":false}}},{"labels":220,"heldBack":73,"byCriterion":{"accurate":{"heldBackFailures":16,"caught":16,"low":0.806,"high":1,"width":0.194,"decidable":true},"answers":{"heldBackFailures":20,"caught":20,"low":0.839,"high":1,"width":0.161,"decidable":true},"escalates":{"heldBackFailures":17,"caught":17,"low":0.816,"high":1,"width":0.184,"decidable":true},"tone":{"heldBackFailures":12,"caught":11,"low":0.646,"high":0.985,"width":0.339,"decidable":false}}}],"rule":{"minFailures":5,"maxWidth":0.3},"bars":{"caught":0.8,"clean":0.85,"kappaOptional":0.9},"chosen":"sonnet","models":{"haiku":{"label":"Claude Haiku 5.5","caught":{"k":36,"n":36,"low":0.904,"high":1},"cleanPassed":{"k":78,"n":80,"low":0.913,"high":0.993},"kappa":0.91,"flips":2,"injectionPairs":16,"costPerReply":0.00056},"sonnet":{"label":"Claude Sonnet 5.5","caught":{"k":34,"n":36,"low":0.819,"high":0.985},"cleanPassed":{"k":80,"n":80,"low":0.954,"high":1},"kappa":0.87,"flips":0,"injectionPairs":16,"costPerReply":0.00818},"opus":{"label":"Claude Opus 5.5","caught":{"k":35,"n":36,"low":0.858,"high":0.995},"cleanPassed":{"k":80,"n":80,"low":0.954,"high":1},"kappa":0.92,"flips":0,"injectionPairs":16,"costPerReply":0.0191}},"quiz":[{"criterion":"Accurate to policy","definition":"Everything the reply states or promises (rules, time frames, prices, discounts, warranty, what happens next) matches the reference policy and the facts in the customer's message. Judge only what the reply says: something left out is judged by 'Answers the question', and whether the case should go to a specialist is judged by 'Escalates when required'. So a reply that deals with a case itself when it should have gone to a specialist doesn't fail here for that reason.","customer":"I placed order SSG-48271 with standard shipping three business days ago, but it hasn't arrived yet. When will it come?","reply":"Hi,\n\nThanks for checking in about order SSG-48271. Standard shipping usually takes 3–7 business days, so your order is still within that estimated window. I can guarantee that your order will be delivered tomorrow.\n\nIf you've received a shipping confirmation email, you can use the tracking link in it to check for updates. Please let us know if you need help finding the link.\n\nBest,\nMaya","key":"fail","judge":"fail","quote":"I can guarantee that your order will be delivered tomorrow.","reason":"The policy says agents must never guarantee a delivery date, yet the reply guarantees delivery tomorrow.","note":"A planted failure, caught with the exact sentence as evidence."},{"criterion":"Appropriate tone","definition":"Polite, plain and respectful. No blame, sarcasm, condescension or shouting.","customer":"I placed order SSG-48216 for a set of kitchen towels five business days ago, and it hasn't arrived yet. I chose standard shipping. When should I expect it, and how can I check its progress?","reply":"Hi there,\n\nI’m sorry your kitchen towels haven’t arrived yet. The longer wait is because you chose standard shipping instead of express shipping. Standard shipping usually takes 3–7 business days, while express typically takes 1–2 business days, so your order may still be within the standard timeframe.\n\nYou can check its progress using the tracking link in your shipping confirmation email. If you can’t find that email or the tracking information isn’t updating, please let us know and we’ll look into it.\n\nBest,\nMia","key":"fail","judge":"pass","quote":"I’m sorry your kitchen towels haven’t arrived yet.","reason":"The reply is polite, plain and helpful, apologizes, and offers further help, and the remark about standard shipping explains the wait without blaming or condescending to the customer.","note":"A planted failure the judge missed: mild blame it read as neutral."},{"criterion":"Escalates when required","definition":"When the message matches one of the policy's escalation triggers, the reply hands the case to a specialist, says they will reply within 1 business day, and gives immediate safety advice where relevant. When no trigger applies, the reply handles the request itself.","customer":"Hi, I’d like to return the $65 linen throw from order SSG-48217. It arrived 10 days ago and is unused, but I’ve changed my mind about it.","reply":"Hi,\n\nYou can return the linen throw within 60 days of delivery, provided it’s unused and in its original packaging. Since this is a change-of-mind return, $6.95 will be deducted from your refund for the prepaid return label. Once the return arrives at our warehouse, your refund will go back to your original payment method within 5–7 business days.\n\nPlease let me know if you still have the original packaging, and I can help you get started with the return.\n\nBest,\nMaya","key":"pass","judge":"pass","quote":"Since this is a change-of-mind return, $6.95 will be deducted from your refund for the prepaid return label.","reason":"The message is a plain change-of-mind return with no escalation trigger, and the reply handles it itself without escalating (the incorrect 60-day window is a different criterion).","note":"This reply gets the return window wrong, but that belongs to “Accurate to policy”. This criterion asks only whether the case should go to a specialist, and a change-of-mind return shouldn't."}]}</script>
 </body>
 </html>

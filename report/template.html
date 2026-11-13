@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Nothing fetched from anywhere but this site. One script of its own (interactive.js) adds the
        interactive charts; without it the page reads in full with static charts and tables. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
   <meta name="description" content="How far can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts on customer support replies, checked against a written answer key and a person's blind labels.">
   <title>Can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts</title>
   <link rel="icon" href="media/icon.svg" type="image/svg+xml">
@@ -13,27 +13,64 @@
   <script src="interactive.js" defer></script>
 </head>
 <body>
-<header class="masthead">
-  <p class="kicker">Findings report</p>
-  <h1>Can you trust an AI judge? Findings from {{n totalVerdicts}} verdicts</h1>
-  <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
-  <p class="byline"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture><span>Gurnek Khaira · <span data-fixed>November 2026</span> · a five-minute read</span></p>
+<!-- The drawn marks: one hand-drawn stroke family for every verdict, chart marker and section number. -->
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="m-tick" viewBox="0 0 32 32"><path pathLength="1" d="M4 17.5c2.6 2.1 4.7 4.6 6.6 7.4C14.2 17 19.6 9.6 28 4"/></symbol>
+  <symbol id="m-cross" viewBox="0 0 32 32"><path pathLength="1" d="M6 5.5c6.9 6.4 13.4 13.6 20.5 21.5M26.5 5c-7.2 6.6-14 14.4-21 22"/></symbol>
+  <symbol id="m-ring" viewBox="0 0 120 64" preserveAspectRatio="none"><path pathLength="1" d="M70 5C40 2 8 12 5 32c-3 20 32 28 62 27 30-1 50-12 49-29C115 13 92 4 58 7"/></symbol>
+  <symbol id="m-query" viewBox="0 0 32 32"><path pathLength="1" d="M9.5 10.5C9.8 6.2 12.8 3.6 16.6 3.8c3.9.2 6.4 2.9 6.2 6.4-.2 3.3-2.6 4.7-4.8 6.2-1.8 1.2-2.4 2.6-2.3 5.1M15.6 27.6l.2.6"/></symbol>
+  <symbol id="m-circle" viewBox="0 0 48 48"><path pathLength="1" d="M27 4C13 3 4 12 4 24c0 12 9 20 20 20 12 0 20-9 20-21C44 12 36 5 22 6"/></symbol>
+</svg>
+
+<div class="sheet">
+<header class="mast">
+  <div class="runhead">
+    <a href="https://gurn3k.com" class="mark-link"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k.com" class="mark" width="905" height="390"></picture></a>
+    <p class="runtitle">Findings report · <span data-fixed>November 2026</span></p>
+    <dl class="fields">
+      <div><dt>Marker</dt><dd>{{text models.sonnet.label}}</dd></div>
+      <div><dt>Replies</dt><dd>{{n full.replies}}</dd></div>
+    </dl>
+  </div>
+
+  <div class="cover">
+    <div class="titleblock">
+      <h1>Can you trust an AI judge? <span class="h1-sub">Findings from {{n totalVerdicts}} verdicts</span></h1>
+      <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
+      <p class="byline">Gurnek Khaira · a five-minute read · every figure checkable on GitHub</p>
+    </div>
+
+    <section class="exam" aria-labelledby="tldr-h">
+      <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">marked against the answer key</span></h2>
+      <ol>
+        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>With clear criteria, the judge is good.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts (kappa {{k full.good.kappa}}, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>{{k full.good.kappa}}</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high ({{n full.vague.caught.k}} of {{n full.vague.caught.n}}), but agreement fell to {{pct full.vague.rate}} (kappa {{k full.vague.kappa}}), because the judge failed {{n full.vague.overFailed}} verdicts the key passes. Catch rate alone would have called the vague rubric better.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>{{k full.vague.kappa}}</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>A few dozen labels can't tell you whether to trust it.</strong> With {{n labelsNeeded.0.labels}} labelled replies, no criterion had enough held-back failures to decide. It took {{n labelsNeeded.2.labels}} before three of the four could, and Tone still couldn't at {{n labelsNeeded.3.labels}}.</p><span class="exam-m red"><b>{{n labelsNeeded.2.labels}}</b><small>labels</small></span></li>
+      </ol>
+      <p class="moderated"><svg class="mk ring" aria-hidden="true"><use href="#m-ring"/></svg><b>{{n blind.agree}}/{{n blind.labels}}</b><span>of my blind labels agree with the answer key</span></p>
+    </section>
+
+    <ul class="marks-key" aria-label="How to read the marks">
+        <li class="red"><span class="mk-pair"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg></span><span><strong>Red marks are the AI judge's.</strong> It marked every reply first.</span></li>
+        <li class="green"><span class="mk-pair"><svg class="mk ring-sm" aria-hidden="true"><use href="#m-ring"/></svg></span><span><strong>Green marks are the check.</strong> The answer key and my blind labels, marking the same replies second.</span></li>
+      </ul>
+  </div>
+
+  <nav class="index" aria-label="Sections">
+    <a href="#f1-h"><span class="idx-n"><span data-fixed>1</span></span>Clear criteria</a>
+    <a href="#f2-h"><span class="idx-n"><span data-fixed>2</span></span>Vague criteria</a>
+    <a href="#f3-h"><span class="idx-n"><span data-fixed>3</span></span>How many labels</a>
+    <a href="#quiz-h" class="ix-only" hidden>You be the judge</a>
+    <a href="#take-h">What to take away</a>
+  </nav>
 </header>
 
 <main>
-<section class="tldr" aria-labelledby="tldr-h">
-  <h2 id="tldr-h">Three findings</h2>
-  <ol>
-    <li><strong>With clear criteria, the judge is good.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts (kappa {{k full.good.kappa}}, a measure of agreement beyond chance where <span data-fixed>1</span> is perfect).</li>
-    <li><strong>Vague criteria hide their damage from the usual metric.</strong> The catch rate stayed high ({{n full.vague.caught.k}} of {{n full.vague.caught.n}}), but agreement fell to {{pct full.vague.rate}} (kappa {{k full.vague.kappa}}), because the judge failed {{n full.vague.overFailed}} verdicts the key passes. Catch rate alone would have called the vague rubric better.</li>
-    <li><strong>A few dozen labels can't tell you whether to trust it.</strong> With {{n labelsNeeded.0.labels}} labelled replies, no criterion had enough held-back failures to decide. It took {{n labelsNeeded.2.labels}} before three of the four could, and Tone still couldn't at {{n labelsNeeded.3.labels}}.</li>
-  </ol>
-</section>
 
 <section aria-labelledby="tool-h">
   <h2 id="tool-h">The tool behind the numbers</h2>
   <p>I built a small calibration tool for this: load replies, write pass/fail criteria, label a sample, and see how far the judge agrees with you on replies it never tuned on. The walkthrough replays stored results, so it makes no API calls.</p>
-  <figure class="video">
+  <figure class="video plate">
     <video controls muted playsinline preload="metadata" poster="media/poster.jpg" width="1280" height="720">
       <source src="media/walkthrough.mp4" type="video/mp4">
       <a href="media/walkthrough.mp4">Download the walkthrough video</a>
@@ -62,7 +99,7 @@
 </section>
 
 <section aria-labelledby="f1-h">
-  <h2 id="f1-h"><span data-fixed>1.</span> Clear criteria: the judge mostly agrees</h2>
+  <h2 id="f1-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>1</span><svg class="mk qv" aria-hidden="true"><use href="#m-tick"/></svg></span> Clear criteria: the judge mostly agrees</h2>
   <p>Across all {{n testSet.replies}} replies, the judge caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures (likely between {{pct full.good.caught.low}} and {{pct full.good.caught.high}}) and passed {{n full.good.cleanPassed.k}} of {{n full.good.cleanPassed.n}} verdicts on clean replies. It failed {{n full.good.overFailed}} verdicts the key passes, and left {{n full.good.undecided}} of {{n full.good.pairs}} undecided.</p>
   <p>The bars were set on the first replies judged. The {{n full.goodNew.caught.n}} planted failures judged afterwards held up: {{n full.goodNew.caught.k}} caught, kappa {{k full.goodNew.kappa}}.</p>
   <p>The weakest criterion was <strong>{{text testSet.criteria.0.name}}</strong> (kappa {{k full.good.byCriterion.accurate.kappa}}). Most of its {{n full.good.byCriterion.accurate.overFailed}} over-fails are replies that should have gone to a specialist; the judge also marked them inaccurate, a reading a person could defend. Of the judge's {{n full.good.missed}} misses, {{n full.good.byCriterion.tone.missed}} were on Tone: mild blame it read as neutral.</p>
@@ -73,7 +110,7 @@
 </section>
 
 <section aria-labelledby="f2-h">
-  <h2 id="f2-h"><span data-fixed>2.</span> Vague criteria: catch rate lies</h2>
+  <h2 id="f2-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>2</span><svg class="mk qv" aria-hidden="true"><use href="#m-cross"/></svg></span> Vague criteria: catch rate lies</h2>
   <p>I ran the same replies against a deliberately vague version of the four criteria ("The reply is accurate", "The reply is helpful", and so on). I expected it to catch fewer failures. It caught slightly more.</p>
   {{block catchAgreeChart}}
   <p>It got there by failing almost everything: {{n full.vague.overFailed}} verdicts the answer key passes, against {{n full.good.overFailed}} with clear criteria. A judge that fails every reply catches every failure, so catch rate rewards exactly this mistake. Agreement beyond chance exposes it:</p>
@@ -87,7 +124,7 @@
 </section>
 
 <section aria-labelledby="f3-h">
-  <h2 id="f3-h"><span data-fixed>3.</span> How many labels before you can trust it</h2>
+  <h2 id="f3-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>3</span></span> How many labels before you can trust it</h2>
   <p>To check a judge fairly, part of your labels must be held back: the judge's instructions are tuned on some, and it is measured only on the rest. A decision needs at least <span data-fixed>5</span> held-back failures per criterion and a catch-rate range no wider than <span data-fixed>30</span> points. Using the tool's own random draw:</p>
   <div data-ix="labels">{{block labelsTable}}</div>
   <p>Labelling {{n labelsNeeded.0.labels}} replies, a common first instinct, holds back only {{n labelsNeeded.0.heldBack}}, too few failures on every criterion to decide anything. In real data failures are often rarer still, so the number needed is driven by how many failures you can hold back, not by how many replies you label.</p>
@@ -112,7 +149,7 @@
 
 <section aria-labelledby="take-h">
   <h2 id="take-h">What to take away</h2>
-  <ul class="takeaways">
+  <ul class="takeaways moderator">
     <li><strong>Write criteria that each judge one thing, and measure agreement, not just catch rate.</strong></li>
     <li><strong>Count held-back failures, not labelled replies.</strong></li>
     <li><strong>The most expensive model isn't automatically the right judge.</strong> {{text models.opus.label}} agreed with the key slightly more than {{text models.sonnet.label}} (kappa {{k models.opus.kappa}} against {{k models.sonnet.kappa}}) at {{times derived.opusVsSonnet}} the cost per reply. Both cleared every bar, so the extra spend bought little here. {{text models.haiku.label}} was by far the cheapest ({{text models.sonnet.label}} cost {{times derived.sonnetVsHaiku}} as much per reply) and caught every planted failure, but obeyed a hidden instruction: the failure that matters most when the replies you grade come from outside. Choose the cheapest model that clears every bar you set before looking, including a safety bar, and check again when the task changes.</li>
@@ -122,6 +159,41 @@
     <p>Tick the bars you'd require and set how many replies you'd grade a month. The pick is the cheapest model that clears every ticked bar.</p>
     <div data-ix="picker"></div>
   </div>
+</section>
+
+<section aria-labelledby="scale-h">
+  <h2 id="scale-h">Running it at scale</h2>
+  <p>The test was small on purpose. The tool was built for the volumes a real product produces, and the {{n scale.calls}} judge calls on the full test set show how it would behave, and what would give way first.</p>
+
+  <h3>Cost grows with replies, not with the policy</h3>
+  <p>The policy and the criteria are the same on every call, so the tool sends them in a form the API can cache and reuse: {{pct scale.cacheShare}} of input tokens came from the cache. Without that, the same runs would have cost {{times scale.cacheSaving}} as much. With caching, most of the bill ({{pct scale.outputShare}}) pays for the judge's quote and reason, about {{n scale.outputTokens}} tokens a verdict. A longer policy barely moves the cost; the number of replies does, which is why the monthly figure in the model picker is predictable.</p>
+
+  <h3>Labels grow with how rare failures are, not with volume</h3>
+  <p>Even a judge that catches every held-back failure needs {{n scale.minFailures}} of them before its range is narrow enough to decide. With a third of labels held back, that puts a floor under labelling that has nothing to do with how many replies you grade:</p>
+  <figure class="plate scale-plate"><div class="table-wrap"><table class="scale">
+    <tr><th scope="col">Share of replies that fail a criterion</th><th scope="col">Labels needed, at least</th></tr>
+    <tr><td>{{pct scale.labelsAt.0.rate}}</td><td>{{n scale.labelsAt.0.labels}}</td></tr>
+    <tr><td>{{pct scale.labelsAt.1.rate}}</td><td>{{n scale.labelsAt.1.labels}}</td></tr>
+    <tr><td>{{pct scale.labelsAt.2.rate}}</td><td>{{n scale.labelsAt.2.labels}}</td></tr>
+  </table></div>
+  <figcaption>The fewest labels that can hold back enough failures to decide, for a judge that catches every one.</figcaption></figure>
+  <p>Grading <span data-fixed>1,000</span> replies a month or <span data-fixed>1,000,000</span> takes the same labels. Rare failures are what make checking a judge expensive, so for a rare failure it can be cheaper to plant examples, as this test did, than to wait for real ones.</p>
+
+  <h3>Safeguards that let it run unattended</h3>
+  <p>Of {{n scale.calls}} calls, {{n scale.retried}} needed a retry. {{n scale.unclear}} verdicts came back "unclear" and went to a review pile, and the quote check withheld {{n scale.withheld}}. These were in the tool from its first version:</p>
+  <ul class="marked ok">
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>A hard spending cap.</strong> Before each call the tool sets aside the most that call could cost, so a run stops before it passes the cap ({{usd scale.defaultCap}} by default), not after.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Resume, not restart.</strong> A stopped run keeps its finished results and sends only what's missing.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Backing off when the API is busy.</strong> Rate-limit and server errors wait the time the API asks for, then retry.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-tick"/></svg><span><strong>Checks that need no reader.</strong> The quote check and the "unclear" answer keep bad verdicts out of the figures without anyone reading every reply.</span></li>
+  </ul>
+
+  <h3>What would give way first</h3>
+  <ul class="marked query">
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>The {{n scale.maxRows}}-row limit.</strong> The tool runs in the browser and holds everything in memory. Bigger jobs would move to a server that works through a queue, stores results as it goes, and sends work that can wait as batches.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>The API key sits in the visitor's browser.</strong> That's fine for one person checking their own data. A team would need a server that holds the key and sets a spending limit per person.</span></li>
+    <li><svg class="mk mark-ic" aria-hidden="true"><use href="#m-query"/></svg><span><strong>No speed figures.</strong> I didn't record how long calls took, so I make no claim about throughput. It's the first thing I'd measure before a larger run.</span></li>
+  </ul>
 </section>
 
 <section aria-labelledby="limits-h">
@@ -141,10 +213,17 @@
 </main>
 
 <footer class="foot">
-  <picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k" class="mark" width="905" height="390"></picture>
-  <p>Built and measured by Gurnek Khaira.</p>
-  <p><a href="https://github.com/gurn3k/llm-output-quality-scoring-guide">Code, test set and every verdict on GitHub</a> · <a href="https://www.linkedin.com/in/gurnek-khaira">LinkedIn</a></p>
+  <div class="foot-sign">
+    <a href="https://gurn3k.com" class="mark-link"><picture><source srcset="media/gurn3k-dark.svg" media="(prefers-color-scheme: dark)"><img src="media/gurn3k-light.svg" alt="gurn3k.com" class="mark" width="905" height="390"></picture></a>
+    <p>Built and measured by Gurnek Khaira.</p>
+  </div>
+  <ul class="foot-actions">
+    <li><a href="https://github.com/gurn3k/llm-output-quality-scoring-guide">Check the data</a><span>Code, test set and every verdict on GitHub</span></li>
+    <li><a href="https://gurn3k.com">See my other builds</a><span><span data-fixed>gurn3k.com</span></span></li>
+    <li><a href="https://www.linkedin.com/in/gurnek-khaira">Get in touch</a><span>LinkedIn</span></li>
+  </ul>
 </footer>
+</div>
 {{block ixData}}
 </body>
 </html>

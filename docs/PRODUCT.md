@@ -1,4 +1,67 @@
-# Who visits, and what each screen is for
+# Product
+
+<!-- impeccable:product-schema 1 -->
+
+Updated 2026-11-13. The public product is the **findings report** (ADR 0014, ADR 0015). The calibration tool, described in the second half of this file, stays in the repo and runs locally.
+
+## Platform
+
+web
+
+## Users
+
+Two readers, served equally:
+- **Someone judging the author** (a hiring manager, recruiter or peer, arriving from a link or gurn3k.com). Two to five minutes. They should leave knowing the work was measured honestly, misses included.
+- **A PM or AI builder who runs an LLM judge themselves.** They read further, and want lessons they can apply to their own judge.
+
+The top of the page serves the short visit; the body serves the practitioner.
+
+## Product Purpose
+
+Show how far an AI judge's scores can be trusted, using real runs: an AI judge graded 216 support replies against a written policy, and every verdict was checked against an answer key and a person's blind labels. Success: a reader new to the subject can state the three main findings after reading (ADR 0014's report bar).
+
+## Positioning
+
+Most writing on LLM-as-judge reports a single score or a vendor's claim. This report shows the checking itself: every figure is derived by code from published run files, misses and replaced bars are on the record, and a reader can verify any number in the repo.
+
+## Operating Context
+
+- Read in a browser, often from a link on a phone or a laptop, sometimes alongside the GitHub repo.
+- Static page, no dependencies, one script of its own; nothing loaded from other sites. Hosting is still to be decided.
+- Every figure comes from `report/data/findings.json` through placeholders; a test fails on a hand-typed number.
+
+## Capabilities and Constraints
+
+- Sections: three findings, the walkthrough video, what was tested, a you-be-the-judge quiz, the three findings in depth with charts and real examples, models and injection, blind labels, the quote check, what to take away (with a judge-model picker), limits, cost.
+- Interactive pieces must work by keyboard and screen reader, and the page must read in full with scripts off.
+- When the reader finishes, they should be able to: contact the author (gurn3k.com, LinkedIn), check the data (GitHub), apply the lessons, and see the author's other builds (gurn3k.com).
+
+## Brand Commitments
+
+- The gurn3k wordmark (`report/media/gurn3k-*.svg`) appears in the byline and footer and always links to https://gurn3k.com.
+- The report has its own look, with a visible nod to gurn3k.com. This build has no colour of its own on gurn3k.com yet.
+- Voice: plain, specific, first person, no hype. It must not read as marketing, and must not look like a generic AI-made page.
+
+## Evidence on Hand
+
+- `report/data/findings.json` (every figure), `eval/runs/` (every verdict with raw API replies), `eval/testset/`, `eval/blind/`, `eval/REPORT.md`.
+- `report/media/walkthrough.mp4` with `poster.jpg`; real example replies with the judge's quote and reason.
+- No testimonials, users or press exist; none may be invented.
+
+## Product Principles
+
+1. The figure carries its uncertainty: ranges and counts out of counts, never a bare percentage.
+2. Misses are shown at the same weight as wins.
+3. Every claim can be checked against published data.
+4. Plain words over jargon; a term like kappa is explained where it first appears.
+
+## Accessibility & Inclusion
+
+Pass and fail are never shown by colour alone. Everything works by keyboard, with visible focus, in light and dark, at phone width, with a wide fallback font, and with reduced motion.
+
+---
+
+# The calibration tool (runs locally)
 
 2026-11-10. The flow and promises are in `docs/PRD.md`; this says who the page is for and what each screen has to do first.
 

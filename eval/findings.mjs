@@ -6,6 +6,8 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { tally, kappa, wilson } from "../site/src/stats.js";
 import { drawSample, splitHeldBack } from "../site/src/random.js";
+import { PRICES, DEFAULT_CAP, costOf } from "../site/src/cost.js";
+import { MAX_ROWS } from "../site/src/load.js";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 const read = (p) => JSON.parse(readFileSync(here(p), "utf8"));
@@ -145,6 +147,37 @@ const spend = {
 };
 spend.judgeTotal = round(spend.sample + spend.comparison + spend.rest, 2);
 
+// 5b. Scale: what the full runs on the chosen model show about running this at higher volume.
+// Measured from the run files; the only projection is the label arithmetic, which follows from
+// the trust rule (5+ held-back failures, range no wider than 30 points) and the held-back third.
+const scale = (() => {
+  const P = PRICES["claude-sonnet-5-5"];
+  let calls = 0, retried = 0, unclear = 0, withheld = 0, input = 0, write = 0, readTok = 0, out = 0, cost = 0, noCache = 0, outCost = 0;
+  for (const r of [good, vague]) for (const bc of Object.values(r)) for (const x of Object.values(bc)) {
+    calls++; if (x.attempts > 1) retried++;
+    if (x.status === "unclear") unclear++; if (x.status === "withheld") withheld++;
+    const u = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, ...x.usage };
+    input += u.input_tokens; write += u.cache_creation_input_tokens; readTok += u.cache_read_input_tokens; out += u.output_tokens;
+    cost += costOf("claude-sonnet-5-5", u);
+    noCache += ((u.input_tokens + u.cache_creation_input_tokens + u.cache_read_input_tokens) * P.input + u.output_tokens * P.output) / 1e6;
+    outCost += (u.output_tokens * P.output) / 1e6;
+  }
+  // The fewest held-back failures that can give a range no wider than 30 points, even if the
+  // judge catches every one; a third of labels is held back.
+  let minFailures = 5;
+  while (wilson(minFailures, minFailures).high - wilson(minFailures, minFailures).low > 0.3) minFailures++;
+  const labelsAt = (rate) => ({ rate, labels: Math.ceil((minFailures * 3) / rate / 10) * 10 });
+  return {
+    calls, retried, unclear, withheld,
+    cacheShare: round(readTok / (input + write + readTok)),
+    costPer1000: round((cost / calls) * 4 * 1000, 2), noCachePer1000: round((noCache / calls) * 4 * 1000, 2),
+    cacheSaving: round(noCache / cost, 1), outputShare: round(outCost / cost),
+    outputTokens: Math.round(out / calls),
+    maxRows: MAX_ROWS, defaultCap: DEFAULT_CAP, minFailures,
+    labelsAt: [labelsAt(0.2), labelsAt(0.05), labelsAt(0.01)],
+  };
+})();
+
 // 6. Examples: real replies with the judge's own verdict, quote and reason.
 const ex = (id, c, set = "good", note) => {
   const r = (set === "good" ? good : vague)[id][c];
@@ -164,7 +197,7 @@ const examples = {
 const findings = {
   generated: "2026-11-11",
   testSet: { replies: full.replies, cleanReplies: Object.values(key).filter((k) => k.kind === "clean").length, failuresPerCriterion: Object.values(key).filter((k) => k.kind === "flaw" && k.labels.accurate === "fail").length, injections: 4, criteria: criteria.good.map((c) => ({ id: c.id, name: c.name, pass: c.pass })), vagueCriteria: criteria.vague.map((c) => ({ id: c.id, name: c.name, pass: c.pass })) },
-  models, chosen: "sonnet", full, labelsNeeded, blind, spend, examples,
+  models, chosen: "sonnet", full, labelsNeeded, blind, spend, scale, examples,
   totalVerdicts: ["haiku-good-original", "opus-good-original", "sonnet-good-all", "sonnet-vague-all"].reduce((s, f) => s + Object.values(run(f).results).reduce((a, bc) => a + Object.keys(bc).length, 0), 0),
   goodFailureRate: round(Object.values(key).filter((k) => k.kind !== "injection" && k.labels.tone === "fail").length / full.replies),
 };

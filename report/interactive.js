@@ -26,6 +26,17 @@
   let uid = 0;
   const id = (p) => `ix-${p}-${++uid}`;
   const sr = (text) => el("span", { class: "sr", text });
+  // A drawn mark from the page's own stroke family (the <symbol>s at the top of the page).
+  const SVG = "http://www.w3.org/2000/svg";
+  function mark(name, cls = "") {
+    const s = document.createElementNS(SVG, "svg");
+    s.setAttribute("class", `mk ${cls}`.trim());
+    s.setAttribute("aria-hidden", "true");
+    const u = document.createElementNS(SVG, "use");
+    u.setAttribute("href", `#m-${name}`);
+    s.append(u);
+    return s;
+  }
 
   // A group of radio buttons drawn as pills.
   function pills(legend, options, value, onChange) {
@@ -71,7 +82,7 @@
       }
       note.textContent = m.note;
     }
-    const fig = el("figure", { class: "chart ix-chart", "data-ix-chart": "explorer" },
+    const fig = el("figure", { class: "chart plate ix-chart", "data-ix-chart": "explorer" },
       pills("Show", Object.entries(metrics).map(([k, m]) => [k, m.label]), "kappa", draw),
       el("div", { class: "bars" }, rows.map((r) => r.node)),
       note,
@@ -114,7 +125,7 @@
       input.setAttribute("aria-valuetext", `${s.labels} replies labelled`);
     }
     input.addEventListener("input", () => draw(Number(input.value)));
-    const fig = el("figure", { class: "chart ix-chart", "data-ix-chart": "labels" },
+    const fig = el("figure", { class: "chart plate ix-chart", "data-ix-chart": "labels" },
       el("label", { class: "ix-legend", for: inputId, text: "Replies labelled" }),
       input,
       el("div", { class: "lticks", "aria-hidden": "true" }, steps.map((s) => el("span", { text: num(s.labels) }))),
@@ -172,7 +183,7 @@
         c.fill.style.width = `${Math.max(0.5, (c.m.costPerReply / max) * 100)}%`;
         c.list.replaceChildren(...(active.length ? active.map((b) => {
           const pass = b.test(c.m);
-          return el("li", { class: pass ? "yes" : "no" }, el("span", { class: "mark-ic", "aria-hidden": "true", text: pass ? "✓" : "✗" }), sr(pass ? "Clears: " : "Misses: "), b.show(c.m));
+          return el("li", { class: pass ? "yes" : "no" }, mark(pass ? "tick" : "cross", "mark-ic"), sr(pass ? "Clears: " : "Misses: "), b.show(c.m));
         }) : [el("li", { class: "none", text: "No bars ticked" })]));
       }
       if (!pick) result.textContent = "No model clears every bar you ticked.";
@@ -183,7 +194,7 @@
       }
     }
     draw();
-    return el("figure", { class: "chart ix-chart", "data-ix-chart": "picker" },
+    return el("figure", { class: "chart plate ix-chart", "data-ix-chart": "picker" },
       checks,
       el("div", { class: "vol" }, el("label", { class: "ix-legend", for: volId, text: "Replies graded" }), volInput, volOut),
       result,
@@ -251,5 +262,17 @@
     try { node.replaceChildren(make()); } catch (e) { console.error(e); continue; }
     const wrap = node.closest(".ix-only");
     if (wrap) wrap.hidden = false;
+    if (node.dataset.ix === "quiz") for (const a of document.querySelectorAll(".index .ix-only")) a.hidden = false;
+  }
+
+  // The one authored motion: each drawn mark writes itself once as it comes into view. Marks are
+  // visible by default; nothing is hidden when motion is reduced or the observer is missing.
+  const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.remove("pending"); io.unobserve(e.target); }
+    }, { rootMargin: "0px 0px -8% 0px" });
+    for (const m of document.querySelectorAll(".mk")) { m.classList.add("pending"); io.observe(m); }
+    requestAnimationFrame(() => document.documentElement.classList.add("draw"));
   }
 })();

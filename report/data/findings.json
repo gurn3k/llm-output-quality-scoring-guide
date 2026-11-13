@@ -695,6 +695,35 @@
     "generation": 0.54,
     "judgeTotal": 4.87
   },
+  "scale": {
+    "calls": 1760,
+    "retried": 1,
+    "unclear": 30,
+    "withheld": 3,
+    "cacheShare": 0.852,
+    "costPer1000": 7.74,
+    "noCachePer1000": 20.96,
+    "cacheSaving": 2.7,
+    "outputShare": 0.592,
+    "outputTokens": 114,
+    "maxRows": 500,
+    "defaultCap": 0.5,
+    "minFailures": 9,
+    "labelsAt": [
+      {
+        "rate": 0.2,
+        "labels": 140
+      },
+      {
+        "rate": 0.05,
+        "labels": 540
+      },
+      {
+        "rate": 0.01,
+        "labels": 2700
+      }
+    ]
+  },
   "examples": {
     "caught": {
       "item": "a28",
