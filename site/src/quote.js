@@ -19,17 +19,36 @@ const partsOf = (quote) => normalize(quote).split(/\.{3,}/).map((p) => p.trim())
 
 const words = (s) => (s === "" ? 0 : s.split(" ").length);
 
+// Finds part in hay from a position, only where it starts and ends on a word boundary, so a fragment
+// cut from the middle of words ("und you in fu") doesn't count as a quote.
+const wordChar = (c) => c !== undefined && /[\p{L}\p{N}]/u.test(c);
+function findWhole(hay, part, from = 0) {
+  for (let at = hay.indexOf(part, from); at !== -1; at = hay.indexOf(part, at + 1)) {
+    const startsOk = !wordChar(part[0]) || !wordChar(hay[at - 1]);
+    const endsOk = !wordChar(part.at(-1)) || !wordChar(hay[at + part.length]);
+    if (startsOk && endsOk) return at;
+  }
+  return -1;
+}
+
+// The quote's parts: the whole quote when it's in the text word for word (the reply itself may contain
+// "..."), otherwise the passages "..." joins.
+function partsIn(hay, quote) {
+  const whole = normalize(quote);
+  return whole && findWhole(hay, whole) !== -1 ? [whole] : partsOf(quote);
+}
+
 // Returns { found: true } or { found: false, reason }.
 export function checkQuote(text, quote) {
   const hay = normalize(text);
-  const parts = partsOf(quote);
+  const parts = partsIn(hay, quote);
   if (!parts.length) return { found: false, reason: "The quote is empty." };
   let from = 0;
   for (const part of parts) {
     if (words(part) < MIN_WORDS && part !== hay) return { found: false, reason: `"${part}" is too short to count as evidence (at least ${MIN_WORDS} words).` };
-    const at = hay.indexOf(part, from);
+    const at = findWhole(hay, part, from);
     if (at === -1) {
-      return { found: false, reason: hay.includes(part) ? "The quoted parts are out of order." : "The quote isn't in the text." };
+      return { found: false, reason: findWhole(hay, part) !== -1 ? "The quoted parts are out of order." : "The quote isn't in the text." };
     }
     from = at + part.length;
   }
@@ -60,8 +79,8 @@ export function locate(text, quote) {
   }
   const ranges = [];
   let from = 0;
-  for (const part of partsOf(quote)) {
-    const at = hay.indexOf(part, from);
+  for (const part of partsIn(hay, quote)) {
+    const at = findWhole(hay, part, from);
     if (at === -1) return null;
     ranges.push([start[at], end[at + part.length - 1]]);
     from = at + part.length;

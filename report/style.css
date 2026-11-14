@@ -95,8 +95,8 @@ h1 { font: 800 clamp(44px, 5.4vw, 78px)/0.96 var(--display); font-stretch: 86%; 
 .exam-m b { font: 800 26px/1 var(--display); font-stretch: 90%; font-variant-numeric: tabular-nums; }
 .exam-m small { font: 600 12px/1.2 var(--display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
 .moderated { position: relative; display: flex; align-items: center; gap: 20px; margin: 0; padding: 18px 16px 18px 20px; color: var(--green); }
-.moderated .ring { position: absolute; left: 6px; top: 4px; width: 168px; height: calc(100% - 8px); stroke-width: 2.6; transform: rotate(-6deg); }
-.moderated b { flex: none; width: 168px; margin-left: -14px; text-align: center; font: 800 28px/1 var(--display); font-variant-numeric: tabular-nums; }
+.moderated .ring { position: absolute; left: 9px; top: 4px; width: 168px; height: calc(100% - 8px); stroke-width: 2.6; transform: rotate(-6deg); }
+.moderated b { flex: none; width: 168px; margin-left: -11px; text-align: center; font: 800 28px/1 var(--display); font-variant-numeric: tabular-nums; }
 .moderated span { font: 700 13px/1.35 var(--display); letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* Section index: the way forward from the cover. */
@@ -291,6 +291,12 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .brow { grid-template-columns: minmax(0, 1fr); }
   .mcards, .foot-actions { grid-template-columns: minmax(0, 1fr); }
   main > section { padding-top: 48px; }
+}
+/* Smallest phones: a smaller ring, so its caption keeps more than one word a line. */
+@media (max-width: 400px) {
+  .moderated { gap: 14px; }
+  .moderated .ring, .moderated b { width: 128px; }
+  .moderated b { font-size: 22px; }
 }
 
 /* Bars drawn in SVG inside the static charts; their labels and values are HTML. */

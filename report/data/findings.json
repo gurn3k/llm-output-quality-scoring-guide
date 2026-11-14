@@ -467,6 +467,159 @@
       }
     }
   },
+  "vagueByModel": {
+    "sonnet": {
+      "complete": true,
+      "label": "Claude Sonnet 5.5",
+      "replies": 60,
+      "good": {
+        "agree": 213,
+        "n": 221,
+        "rate": 0.964,
+        "kappa": 0.87,
+        "caught": {
+          "k": 34,
+          "n": 36,
+          "low": 0.819,
+          "high": 0.985
+        },
+        "overFailed": 7
+      },
+      "vague": {
+        "agree": 171,
+        "n": 223,
+        "rate": 0.767,
+        "kappa": 0.46,
+        "caught": {
+          "k": 36,
+          "n": 36,
+          "low": 0.904,
+          "high": 1
+        },
+        "overFailed": 52,
+        "undecided": 1
+      },
+      "vagueByCriterion": {
+        "accurate": {
+          "agree": 44,
+          "n": 55,
+          "rate": 0.8,
+          "kappa": 0.51,
+          "missed": 0,
+          "overFailed": 11
+        },
+        "answers": {
+          "agree": 37,
+          "n": 56,
+          "rate": 0.661,
+          "kappa": 0.32,
+          "missed": 0,
+          "overFailed": 19
+        },
+        "escalates": {
+          "agree": 36,
+          "n": 56,
+          "rate": 0.643,
+          "kappa": 0.3,
+          "missed": 0,
+          "overFailed": 20
+        },
+        "tone": {
+          "agree": 54,
+          "n": 56,
+          "rate": 0.964,
+          "kappa": 0.88,
+          "missed": 0,
+          "overFailed": 2
+        }
+      },
+      "vagueFlips": [
+        {
+          "item": "i02",
+          "criterion": "tone",
+          "from": "pass",
+          "to": "unclear"
+        }
+      ],
+      "vagueCostPerReply": 0.00801
+    },
+    "opus": {
+      "complete": true,
+      "label": "Claude Opus 5.5",
+      "replies": 60,
+      "good": {
+        "agree": 219,
+        "n": 224,
+        "rate": 0.978,
+        "kappa": 0.92,
+        "caught": {
+          "k": 35,
+          "n": 36,
+          "low": 0.858,
+          "high": 0.995
+        },
+        "overFailed": 4
+      },
+      "vague": {
+        "agree": 175,
+        "n": 224,
+        "rate": 0.781,
+        "kappa": 0.48,
+        "caught": {
+          "k": 36,
+          "n": 36,
+          "low": 0.904,
+          "high": 1
+        },
+        "overFailed": 49,
+        "undecided": 0
+      },
+      "vagueByCriterion": {
+        "accurate": {
+          "agree": 51,
+          "n": 56,
+          "rate": 0.911,
+          "kappa": 0.73,
+          "missed": 0,
+          "overFailed": 5
+        },
+        "answers": {
+          "agree": 39,
+          "n": 56,
+          "rate": 0.696,
+          "kappa": 0.36,
+          "missed": 0,
+          "overFailed": 17
+        },
+        "escalates": {
+          "agree": 32,
+          "n": 56,
+          "rate": 0.571,
+          "kappa": 0.24,
+          "missed": 0,
+          "overFailed": 24
+        },
+        "tone": {
+          "agree": 53,
+          "n": 56,
+          "rate": 0.946,
+          "kappa": 0.82,
+          "missed": 0,
+          "overFailed": 3
+        }
+      },
+      "vagueFlips": [
+        {
+          "item": "i04",
+          "criterion": "escalates",
+          "from": "fail",
+          "to": "pass"
+        }
+      ],
+      "vagueCostPerReply": 0.02315
+    }
+  },
+  "rescueKappa": 0.85,
   "labelsNeeded": [
     {
       "labels": 40,
@@ -690,10 +843,10 @@
   },
   "spend": {
     "sample": 0.26,
-    "comparison": 2.18,
+    "comparison": 3.57,
     "rest": 2.43,
     "generation": 0.54,
-    "judgeTotal": 4.87
+    "judgeTotal": 6.26
   },
   "scale": {
     "calls": 1760,
@@ -837,6 +990,6 @@
       "sonnetTwin": "pass"
     }
   },
-  "totalVerdicts": 2240,
+  "totalVerdicts": 2480,
   "goodFailureRate": 0.227
 }

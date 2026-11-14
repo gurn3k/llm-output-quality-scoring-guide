@@ -5,6 +5,7 @@
 // The build fails on an unknown placeholder or a missing value.
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { handTypedNumbers } from "./numbers.mjs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 const F = JSON.parse(readFileSync(here("./data/findings.json"), "utf8"));
@@ -12,7 +13,10 @@ const F = JSON.parse(readFileSync(here("./data/findings.json"), "utf8"));
 F.derived = {
   opusVsSonnet: F.models.opus.costPerReply / F.models.sonnet.costPerReply,
   sonnetVsHaiku: F.models.sonnet.costPerReply / F.models.haiku.costPerReply,
+  opusVagueVsSonnet: F.vagueByModel.opus.vagueCostPerReply / F.vagueByModel.sonnet.vagueCostPerReply,
 };
+// The vague-criteria comparison is only shown when every run behind it finished.
+for (const m of ["sonnet", "opus"]) if (!F.vagueByModel?.[m]?.complete) throw new Error(`the ${m} vague-criteria run isn't complete, so the report can't be built`);
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 function get(path) {
@@ -137,6 +141,9 @@ const blocks = {
 };
 
 const template = readFileSync(here("./template.html"), "utf8");
+// A figure typed into the template instead of coming from findings.json stops the build.
+const typed = handTypedNumbers(template);
+if (typed.length) throw new Error(`numbers typed by hand in report/template.html (use a placeholder, or <span data-fixed> for a fixed rule):\n  ${typed.join("\n  ")}`);
 const out = template.replace(/\{\{(\w+) ([\w.]+)\}\}/g, (m, f, arg) => {
   if (f === "block") { if (!blocks[arg]) throw new Error(`unknown block ${arg}`); return blocks[arg](); }
   if (!fmt[f]) throw new Error(`unknown format ${f} in ${m}`);

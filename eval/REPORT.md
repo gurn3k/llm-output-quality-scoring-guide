@@ -21,9 +21,10 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 | Owner's blind labels vs the answer key | Reported as measured | 116 of 120 (96.7%), kappa 0.90 | Measured (see below) |
 | Judge model | All three compared on the same bar; best wins, cheaper only on a tie | See below | Sonnet 5.5 |
 | Cost | Measured within 50% of the estimate; cap never exceeded | Sonnet +2%, Opus +19%, Haiku +27% against the page's own estimate; no stage or run cap exceeded | **Pass** |
-| Demo | Two people new to it finish in under 2 minutes | Not yet run | **Open** |
+| Demo | Two people new to it finish in under 2 minutes | Replaced by the report bar when the public product became the findings report (ADR 0014) | Superseded |
+| Report | A reader new to the subject can state the three main findings after reading it | Not yet run: needs two readers who haven't seen the project | **Open** |
 
-A run of Opus 5.5 on the vague criteria was started and stopped after 33 of 240 calls, when the API credit ran out. Its file, `eval/runs/full-opus-vague-original.json`, is kept as it stood; no figure in this report or the findings report uses it.
+Opus 5.5 on the vague criteria stopped after 33 of 240 calls when the API credit ran out (2026-11-12). It was completed on 2026-11-14 (all 240 calls); the result is under "Does a stronger judge rescue vague criteria?" below.
 
 ## Choosing the default model
 
@@ -53,6 +54,20 @@ The bar expected vague criteria to catch fewer planted failures. They caught all
 So a vague rubric does show clearly lower agreement, which is what the page measures and shows. Catch rate alone was the wrong measure for this bar. A judge that fails every reply catches every planted failure, so catch rate rewards exactly the failure mode vague criteria produce.
 
 **The bar was replaced, not quietly rewritten.** The original bar and its miss stay in this report. The replacement, at least 15 points lower agreement and kappa below 0.6, counts false alarms as well as misses. It was written after these 60 replies were judged, so passing here proves little. It was fixed *before* the other 160 replies in the test set were judged, and its real test is those 160. Vague tone ("The tone is good") held up well (kappa 0.88), since tone needs little definition. One vague verdict flipped under injection (i02, tone: pass to unclear).
+
+## Does a stronger judge rescue vague criteria?
+
+Asked because the vague-criteria result above was measured on Sonnet alone. The bar was recorded while the Opus run was paused at 33 of 240 calls, before the rest ran: Opus vague kappa of at least 0.85 counts as rescued. Same 60 replies, same criteria, same instructions.
+
+| | Clear criteria | Vague criteria |
+|---|---|---|
+| Sonnet 5.5 | 213 of 221 (96.4%), kappa 0.87 | 171 of 223 (76.7%), kappa 0.46 |
+| Opus 5.5 | 219 of 224 (97.8%), kappa 0.92 | 175 of 224 (78.1%), kappa 0.48 |
+
+- **Not rescued:** Opus reached kappa 0.48 against the 0.85 bar.
+- **Both models fail the same way:** they caught 36 of 36 planted failures on vague criteria while failing sound verdicts (Opus 49, Sonnet 52). Opus per criterion: Accurate 0.73, Helpful 0.36, Handles the situation 0.24, Tone 0.82.
+- **Injection:** on vague criteria a planted instruction changed one Opus verdict (i04, Handles the situation: fail to pass) and one Sonnet verdict (i02, tone); on clear criteria, neither model changed any.
+- **Cost:** $0.023 per reply on Opus against $0.008 on Sonnet, 2.9 times as much for no real gain.
 
 ## The other 160 replies (judged for the demo)
 
@@ -104,6 +119,9 @@ All four disagreements are about replies that respond to something but not to th
 |---|---|
 | Sample run, 3 runs | $0.26 |
 | Model comparison and vague criteria | $2.18 |
+| Opus 5.5 on the vague criteria (stopped at 33 calls for lack of credit, finished 2026-11-14) | $1.39 |
 | The other 160 replies, both criteria sets (demo results) | $2.43 |
-| **Judge spend so far** | **$4.87 of the $10 cap** |
+| **Judge spend** | **$6.26 of the $10 cap** |
 | Writing the test set (OpenAI, separate cap) | $0.54 of $1 |
+
+*Corrected 2026-11-14:* this total was first reported as $4.87. That left out the stopped Opus run and added parts that were already rounded. `eval/findings.mjs` now counts every run file and rounds once, and a test checks it. Finishing the Opus run then brought it to $6.26.

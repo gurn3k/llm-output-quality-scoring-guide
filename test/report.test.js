@@ -4,7 +4,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
-import { readFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { handTypedNumbers } from "../report/numbers.mjs";
@@ -20,6 +21,43 @@ test("the template has no figures typed by hand", () => {
   assert.equal(handTypedNumbers("<p>It caught 189 of 196.</p>").length, 2);
   assert.equal(handTypedNumbers("<p>{{n a.b}} of 40 labels</p>").length, 1);
   assert.deepEqual(handTypedNumbers('<p>at least <span data-fixed>5</span> {{n a.b}}</p><!-- 12 -->'), []);
+});
+
+// Found by the independent review: the total left out a stopped paid run and added rounded parts.
+test("the judge spend counts every paid run file, rounded once", () => {
+  const runs = fileURLToPath(new URL("../eval/runs/", import.meta.url));
+  const files = readdirSync(runs).filter((f) => f.endsWith(".json"));
+  const total = files.reduce((s, f) => s + (JSON.parse(readFileSync(join(runs, f), "utf8")).spent ?? 0), 0);
+  assert.ok(files.includes("full-opus-vague-original.json"), "the Opus vague run, once stopped for credit, is counted");
+  assert.equal(F.spend.judgeTotal, Math.round(total * 100) / 100);
+});
+
+// A comparison resting on an unfinished run must not build.
+test("the build refuses when a run behind the vague-criteria comparison is unfinished", () => {
+  const dir = mkdtempSync(join(tmpdir(), "report-build-"));
+  try {
+    for (const f of ["build.mjs", "numbers.mjs", "template.html"]) cpSync(join(REPORT, f), join(dir, f));
+    mkdirSync(join(dir, "data"));
+    const partial = structuredClone(F);
+    partial.vagueByModel.opus = { complete: false, pairs: 33 };
+    writeFileSync(join(dir, "data/findings.json"), JSON.stringify(partial));
+    assert.throws(() => execFileSync(process.execPath, [join(dir, "build.mjs")], { stdio: "pipe" }), /opus vague-criteria run isn't complete/);
+    assert.ok(!existsSync(join(dir, "index.html")), "nothing is written");
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test("the build refuses a template with a figure typed by hand", () => {
+  const dir = mkdtempSync(join(tmpdir(), "report-build-"));
+  try {
+    for (const f of ["build.mjs", "numbers.mjs"]) cpSync(join(REPORT, f), join(dir, f));
+    cpSync(join(REPORT, "data"), join(dir, "data"), { recursive: true });
+    writeFileSync(join(dir, "template.html"), template.replace("</main>", "<p>It caught 189 of 196.</p></main>"));
+    assert.throws(() => execFileSync(process.execPath, [join(dir, "build.mjs")], { stdio: "pipe" }), /numbers typed by hand[\s\S]*189 of 196/);
+    assert.ok(!existsSync(join(dir, "index.html")), "nothing is written");
+    writeFileSync(join(dir, "template.html"), template);
+    execFileSync(process.execPath, [join(dir, "build.mjs")], { stdio: "pipe" });
+    assert.ok(existsSync(join(dir, "index.html")), "the real template builds");
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
 test("the built report quotes findings.json", () => {
@@ -41,6 +79,9 @@ test("the built report quotes findings.json", () => {
     `cost ${F.scale.cacheSaving.toFixed(1)} times as much`,
     `<td>${F.scale.labelsAt[2].labels.toLocaleString("en-US")}</td>`,
     `The ${F.scale.maxRows}-row limit`,
+    `It reached ${F.vagueByModel.opus.vague.kappa.toFixed(2)}, against ${F.vagueByModel.sonnet.vague.kappa.toFixed(2)} for ${F.vagueByModel.sonnet.label}`,
+    `kappa of at least ${F.rescueKappa.toFixed(2)}`,
+    `Findings from ${F.totalVerdicts.toLocaleString("en-US")} verdicts`,
   ]) assert.ok(html.includes(s), `report should say "${s}"`);
   // Without scripts the page still has its static charts and table; the script-only parts start hidden.
   assert.equal((html.match(/<figure class="chart plate" data-static>/g) || []).length, 2);
@@ -50,6 +91,41 @@ test("the built report quotes findings.json", () => {
   const data = html.match(/<script type="application\/json" id="report-data">([\s\S]*?)<\/script>/)[1];
   assert.doesNotMatch(data, /</);
   assert.equal(JSON.parse(data).models.opus.costPerReply, F.models.opus.costPerReply);
+});
+
+// The README's figures are typed (a README can't be built), so this checks each against findings.json,
+// and fails on any number in its findings that it can't account for.
+export function readmeFigures(readme, F) {
+  const g = F.full.good, v = F.full.vague;
+  const decidable = (r) => Object.values(r.byCriterion).filter((x) => x.decidable).length;
+  const firstOk = F.labelsNeeded.find((r) => decidable(r) > 0 && decidable(r) === Math.max(...F.labelsNeeded.map(decidable)));
+  const words = ["no", "one", "two", "three", "four"];
+  const expected = [
+    `graded ${F.full.replies} customer support replies`,
+    `caught ${g.caught.k} of ${g.caught.n} planted failures`,
+    `on ${Math.round(g.rate * 100)}% of verdicts (kappa ${g.kappa.toFixed(2)})`,
+    `stayed high (${v.caught.k} of ${v.caught.n})`,
+    `fell to ${Math.round(v.rate * 100)}% (kappa ${v.kappa.toFixed(2)})`,
+    `failed ${v.overFailed} verdicts the key passes`,
+    `With ${F.labelsNeeded[0].labels} labelled replies, ${words[decidable(F.labelsNeeded[0])]} criterion`,
+    `took ${firstOk.labels} before ${words[decidable(firstOk)]} of the four`,
+    `cost $${F.spend.judgeTotal.toFixed(2)}`,
+    `the ${F.testSet.replies} replies plus ${F.testSet.injections} prompt-injection replies`,
+    `on the ${F.vagueByModel.opus.replies} replies used to compare models, ${F.vagueByModel.opus.label} reached kappa ${F.vagueByModel.opus.vague.kappa.toFixed(2)} on vague criteria, against ${F.vagueByModel.sonnet.vague.kappa.toFixed(2)} for ${F.vagueByModel.sonnet.label}`,
+  ];
+  const missing = expected.filter((s) => !readme.includes(s));
+  const section = readme.slice(0, readme.indexOf("## Walkthrough"));
+  const allowed = new Set(expected.join(" ").match(/\d[\d.,]*\d|\d/g));
+  const stray = (section.match(/(?<![\w/.-])\d[\d.,]*\d(?![\w/])|(?<![\w/.-])\d(?![\w/.])/g) ?? []).filter((n) => !allowed.has(n.replace(/[.,]$/, "")));
+  return { missing, stray };
+}
+
+test("the README's figures match findings.json", () => {
+  const readme = readFileSync(fileURLToPath(new URL("../README.md", import.meta.url)), "utf8");
+  assert.deepEqual(readmeFigures(readme, F), { missing: [], stray: [] });
+  // Shown failing: a stale figure, and an extra number nobody checks.
+  assert.ok(readmeFigures(readme.replace("caught 189 of 196", "caught 188 of 196"), F).missing.length);
+  assert.deepEqual(readmeFigures(readme.replace("## Three findings", "## Three findings\n\nAbout 3,000 calls."), F).stray, ["3,000"]);
 });
 
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".mp4": "video/mp4", ".woff2": "font/woff2" };
@@ -115,6 +191,10 @@ test("the report page in a real browser", { skip: SKIP }, async (t) => {
   assert.equal(await visibleChips(), 1);
   await fire("[data-ix-chart=picker] .vol input", 3, "input");
   assert.match(await text("[data-ix-chart=picker] .vol output"), /^1,000,000 replies a month$/);
+  // With no bars ticked it doesn't claim a model "clears your bars" (found by the adversarial pass).
+  for (const n of [1, 2, 3, 4]) await fire(`[data-ix-chart=picker] .check:nth-of-type(${n}) input`);
+  assert.equal(await b.js(`[...document.querySelectorAll("[data-ix-chart=picker] .check input")].filter((c) => c.checked).length`), 0);
+  assert.match(await text("[data-ix-chart=picker] .ix-out"), new RegExp(`^No bars ticked, so nothing rules a model out\\. The cheapest is ${F.models.haiku.label}`));
 
   // Quiz: one reply at a time; the reveal states the key and the judge, and the score counts the
   // judge's real matches.
@@ -132,7 +212,8 @@ test("the report page in a real browser", { skip: SKIP }, async (t) => {
   assert.match(await text(".quiz > .ix-out"), /^You matched the answer key on 2 of 3\. The AI judge matched it on 2 of 3\.$/);
   for (const theme of ["light", "dark"]) {
     await b.scheme(theme);
-    for (const width of [390, 1280]) {
+    // Phone and desktop, the smallest phone, and either side of every breakpoint in style.css.
+    for (const width of [320, 390, 399, 401, 759, 761, 999, 1001, 1280]) {
       for (const wide of [false, true]) {
         await b.viewport(width);
         await b.wideFont(wide);

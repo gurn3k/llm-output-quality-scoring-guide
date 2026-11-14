@@ -2,6 +2,7 @@
 // Plain data, so it saves as JSON and survives a round trip unchanged. Functions here change it in place.
 import { drawSample, splitHeldBack, newSeed } from "./random.js";
 import { agreement, passRate } from "./stats.js";
+import { decide } from "./reply.js";
 
 export const FORMAT = "llm-quality-project";
 export const VERSION = 1;
@@ -210,7 +211,59 @@ export function parseProject(text) {
     if (p[k] == null || typeof p[k] !== "object") throw new Error(`That project is missing its ${k}.`);
   }
   if (!p.criteria.length) throw new Error("That project has no criteria.");
+  checkShape(p);
   return p;
+}
+
+// A project file can be edited by hand or damaged, so every part the page reads is checked before
+// anything is shown or saved. A file that fails is refused with the first problem found.
+const isObj = (x) => x != null && typeof x === "object" && !Array.isArray(x);
+const isStr = (x) => typeof x === "string";
+function checkShape(p) {
+  const bad = (what) => { throw new Error(`That project file is damaged: ${what}.`); };
+  if (!Array.isArray(p.rows)) bad("its rows aren't a list");
+  const ids = new Set();
+  p.rows.forEach((r, i) => {
+    if (!isObj(r) || !isStr(r.id) || !isStr(r.input) || !isStr(r.output)) bad(`row ${i + 1} needs an id, an input and an output`);
+    if (ids.has(r.id)) bad(`row id ${r.id} appears twice`);
+    ids.add(r.id);
+  });
+  if (!Array.isArray(p.criteria)) bad("its criteria aren't a list");
+  p.criteria.forEach((c, i) => {
+    if (!isObj(c) || c.v !== i + 1 || !Array.isArray(c.list) || !c.list.length) bad(`criteria version ${i + 1} is incomplete`);
+    for (const x of c.list) if (!isObj(x) || !isStr(x.id) || !isStr(x.name) || !isStr(x.pass)) bad(`a criterion in version ${i + 1} needs an id, a name and a pass rule`);
+  });
+  if (p.sample != null) {
+    const s = p.sample;
+    if (!isObj(s) || !["ids", "tuning", "heldBack"].every((k) => Array.isArray(s[k]) && s[k].every((id) => ids.has(id)))) bad("its labelling sample lists replies it doesn't have");
+  } else if (p.labellingDone) bad("labelling is marked finished but there's no sample");
+  if (!isObj(p.labels) || !Object.values(p.labels).every((l) => isObj(l) && Object.values(l).every((x) => ["pass", "fail", "skip"].includes(x)))) bad("a label isn't pass, fail or skip");
+  if (!Array.isArray(p.heldBackSeen)) bad("its record of results seen isn't a list");
+  for (const k of ["trusted", "runs", "overrides"]) {
+    if (!isObj(p[k]) || !Object.values(p[k]).every(isObj)) bad(`its ${k} aren't stored by criteria version`);
+  }
+  for (const run of Object.values(p.runs)) if (!isObj(run.results) || !Object.values(run.results).every(isObj)) bad("a run's results are incomplete");
+  recheckEvidence(p, bad);
+}
+
+// A stored pass or fail is shown as a score, so it goes through the same quote check as a live one.
+// One whose quote can't be found is withheld, with the reason, never shown.
+const STATUSES = ["pass", "fail", "unclear", "withheld", "error"];
+function recheckEvidence(p, bad) {
+  const rows = new Map(p.rows.map((r) => [r.id, r]));
+  for (const run of Object.values(p.runs)) {
+    for (const [itemId, byCriterion] of Object.entries(run.results)) {
+      for (const r of Object.values(byCriterion)) {
+        if (!isObj(r) || !STATUSES.includes(r.status)) bad("a stored verdict isn't one this page knows");
+        if (r.status !== "pass" && r.status !== "fail") continue;
+        const row = rows.get(itemId);
+        if (!row) bad(`a verdict is stored for a reply it doesn't have (${itemId})`);
+        const parsed = { ok: true, verdict: r.status, evidence_source: r.evidence_source === "input" ? "input" : "output", quote: isStr(r.quote) ? r.quote : "", reason: isStr(r.reason) ? r.reason : "" };
+        const d = decide(row, parsed);
+        if (d.status !== r.status) Object.assign(r, { status: "withheld", judgeVerdict: r.judgeVerdict ?? r.status, why: d.why ?? "The stored quote couldn't be checked." });
+      }
+    }
+  }
 }
 
 // Guarded storage: every access is wrapped, so a blocked or full storage never breaks the page.
@@ -221,6 +274,7 @@ export function createStore(getStorage = () => globalThis.localStorage) {
     available: () => attempt((s) => { s.setItem("lqsg.test", "1"); s.removeItem("lqsg.test"); return true; }, false),
     save: (p) => attempt((s) => { s.setItem(STORE_KEY, serialize(p)); return true; }, false),
     load: () => attempt((s) => { const t = s.getItem(STORE_KEY); return t ? parseProject(t) : null; }, null),
+    loadText: () => attempt((s) => s.getItem(STORE_KEY), null),
     clear: () => attempt((s) => { s.removeItem(STORE_KEY); s.removeItem(KEY_KEY); return true; }, false),
     saveKey: (key) => attempt((s) => { s.setItem(KEY_KEY, key); return true; }, false),
     loadKey: () => attempt((s) => s.getItem(KEY_KEY), null),

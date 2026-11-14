@@ -17,7 +17,7 @@ function labelled() {
 const judged = (p, v, judgeFn) => {
   for (const r of p.rows) for (const c of criteria) {
     const status = judgeFn(r, c);
-    P.recordResult(p, v, r.id, c.id, { status, judgeVerdict: status, quote: "Answer", reason: "r", evidence_source: "output", body: { big: "x" } }, "claude-sonnet-5-5");
+    P.recordResult(p, v, r.id, c.id, { status, judgeVerdict: status, quote: "with = and", reason: "r", evidence_source: "output", body: { big: "x" } }, "claude-sonnet-5-5");
   }
 };
 
@@ -89,7 +89,7 @@ test("calibration counts held-back and tuning separately and lists every disagre
   for (const d of cal.disagreements) {
     assert.equal(d.you, "fail");
     assert.equal(d.status, "pass");
-    assert.equal(d.quote, "Answer");
+    assert.equal(d.quote, "with = and");
   }
 });
 
@@ -100,7 +100,7 @@ test("overrides keep the judge's verdict, quote and reason; who decided is recor
   assert.equal(P.finalVerdict(p, 1, unlabelled, "tone").decidedBy, "judge");
   P.override(p, 1, unlabelled, "tone", "fail", NOW);
   const f = P.finalVerdict(p, 1, unlabelled, "tone");
-  assert.deepEqual([f.verdict, f.decidedBy, f.judge.status, f.judge.quote], ["fail", "you over the judge", "pass", "Answer"]);
+  assert.deepEqual([f.verdict, f.decidedBy, f.judge.status, f.judge.quote], ["fail", "you over the judge", "pass", "with = and"]);
   const labelledId = p.sample.ids.find((id) => P.labelOf(p, id, "tone") === "fail");
   assert.equal(P.finalVerdict(p, 1, labelledId, "tone").decidedBy, "you");
   P.clearOverride(p, 1, unlabelled, "tone");
@@ -149,6 +149,55 @@ test("opening a file that isn't a project gives a plain reason", () => {
   assert.throws(() => P.parseProject('{"format":"other"}'), /isn't a project/);
   assert.throws(() => P.parseProject(JSON.stringify({ format: P.FORMAT, version: 9 })), /format version 9/);
   assert.throws(() => P.parseProject(JSON.stringify({ format: P.FORMAT, version: 1, rows: [] })), /missing its criteria/);
+});
+
+// Found by the independent review: a stored score was trusted as it stood, so a hand-edited file could
+// show a pass or fail whose quote was never checked.
+test("a stored score whose quote isn't in the reply is withheld on load, never shown", () => {
+  const p = labelled();
+  judged(p, 1, () => "pass");
+  const [a, b] = p.rows;
+  p.runs[1].results[a.id].tone = { status: "pass", judgeVerdict: "pass", quote: "totally made up words", reason: "r", evidence_source: "output" };
+  p.runs[1].results[b.id].tone = { status: "pass", judgeVerdict: "pass", quote: b.input, reason: "r", evidence_source: "input" };
+  const back = P.parseProject(P.serialize(p));
+  assert.equal(back.runs[1].results[a.id].tone.status, "withheld");
+  assert.match(back.runs[1].results[a.id].tone.why, /isn't in the text/);
+  assert.equal(back.runs[1].results[b.id].tone.status, "withheld", "a pass can't rest on the customer's message");
+  assert.equal(P.finalVerdict(back, 1, a.id, "tone").verdict === "pass" && P.finalVerdict(back, 1, a.id, "tone").decidedBy === "judge", false);
+  assert.equal(back.runs[1].results[p.rows[2].id].tone.status, "pass", "a sound stored score is kept");
+  const bogus = structuredClone(p);
+  bogus.runs[1].results[a.id].tone.status = "definitely";
+  assert.throws(() => P.parseProject(JSON.stringify(bogus)), /isn't one this page knows/);
+});
+
+// Found by the adversarial pass: these files were accepted, saved, then broke the page on every load.
+test("a damaged project file is refused before anything reads it", () => {
+  const good = labelled();
+  judged(good, 1, () => "pass");
+  P.override(good, 1, "row-3", "tone", "fail", NOW);
+  P.trust(good, 1, "accurate", NOW);
+  const damaged = {
+    "rows of empty objects": (p) => { p.rows = [{}, {}]; },
+    "a row id twice": (p) => { p.rows[1].id = p.rows[0].id; },
+    "a null criteria version": (p) => { p.criteria = [null]; },
+    "an empty criteria version": (p) => { p.criteria = [{}]; },
+    "versions out of order": (p) => { p.criteria[0].v = 2; },
+    "a criterion without a pass rule": (p) => { delete p.criteria[0].list[0].pass; },
+    "a sample naming unknown replies": (p) => { p.sample.heldBack = ["nope"]; },
+    "labelling done with no sample": (p) => { p.sample = null; },
+    "a label that isn't pass, fail or skip": (p) => { p.labels[p.sample.ids[0]].tone = "maybe"; },
+    "runs as a list": (p) => { p.runs = [1]; },
+    "a run without results": (p) => { delete p.runs[1].results; },
+    "trusted as a string": (p) => { p.trusted = { 1: "yes" }; },
+  };
+  for (const [name, spoil] of Object.entries(damaged)) {
+    const p = structuredClone(good);
+    spoil(p);
+    assert.throws(() => P.parseProject(JSON.stringify(p)), /That project (file is damaged|is missing|has no)/, name);
+  }
+  assert.deepEqual(P.parseProject(P.serialize(good)), good, "a sound project still opens");
+  const unlabelled = P.newProject({ rows, criteria, seed: 1, now: NOW });
+  assert.deepEqual(P.parseProject(P.serialize(unlabelled)), unlabelled, "so does one with no sample yet");
 });
 
 test("exports include version, model, held-back rates, every verdict, overrides and who decided", () => {
