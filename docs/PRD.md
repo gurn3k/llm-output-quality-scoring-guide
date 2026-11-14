@@ -84,7 +84,7 @@ Measured on our own test set: support replies for a fictional company (the model
 | Owner's blind labels vs the answer key | Reported as measured (checks the key itself) |
 | Judge model | Haiku 5.5, Sonnet 5.5 and Opus 5.5 compared on the same bar; the default is the best performer, and the cheaper one only on a tie |
 | Cost | Measured per-item cost within 50% of the estimate; the cap is never exceeded (tested with a stub) |
-| Demo | Two people new to it finish the demo in under 2 minutes |
+| Demo | Two people new to it finish the demo in under 2 minutes. *Superseded 2026-11-11 (ADR 0014): a reader new to the subject can state the report's three main findings after reading it.* |
 
 ## Out of scope for version 1, on purpose
 

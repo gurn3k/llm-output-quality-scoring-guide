@@ -1,5 +1,7 @@
 # Can you trust an AI judge?
 
+[![tests](https://github.com/gurn3k/llm-output-quality-scoring-guide/actions/workflows/tests.yml/badge.svg)](https://github.com/gurn3k/llm-output-quality-scoring-guide/actions/workflows/tests.yml)
+
 Teams use an AI model to grade other AI output ("LLM-as-judge"), then report its scores as quality. This project checks how far those scores can be trusted: an AI judge graded 216 customer support replies against a written policy, and every grade was checked against a hand-written answer key and a person's blind labels.
 
 **Findings report:** [gurn3k.com/judging-the-judge](https://gurn3k.com/judging-the-judge/). The source is [`report/index.html`](report/index.html): open it in a browser after cloning, or run `npm run report` to rebuild it.
@@ -10,7 +12,14 @@ Teams use an AI model to grade other AI output ("LLM-as-judge"), then report its
 2. **Vague criteria hide their damage from the usual metric.** The catch rate stayed high (193 of 196), but agreement fell to 65% (kappa 0.35), because the judge failed 297 verdicts the key passes. Catch rate alone would have called the vague rubric better.
 3. **A few dozen labels can't tell you whether to trust it.** With 40 labelled replies, no criterion had enough held-back failures to decide. It took 160 before three of the four could.
 
-The report also covers a three-model comparison (the cheapest model obeyed an instruction hidden in a reply), how a person's labels compare, and the limits. All judge runs cost $4.87 in API fees.
+The report also covers a three-model comparison (the cheapest model obeyed an instruction hidden in a reply), how a person's labels compare, and the limits. All judge runs cost $5.05 in API fees.
+
+## Limits
+
+- One made-up shop and policy. I wrote the answer key, and my blind labels are the only independent check on it.
+- Planted failures are clearer than real ones, so expect lower agreement on real data.
+- One bar was replaced after it was missed. The replacement was fixed before the last replies were judged, and the original miss stays on record in `eval/REPORT.md`.
+- Call timings weren't recorded, so nothing here claims anything about speed.
 
 ## Walkthrough
 
@@ -25,7 +34,7 @@ The report also covers a three-model comparison (the cheapest model obeyed an in
 | `eval/runs/` | Every judge verdict, with the raw API replies. |
 | `eval/` | The scripts that made the test set, ran the judge and derived the findings; `eval/REPORT.md` is the full technical write-up. |
 | `report/` | The findings report. Every figure comes from `report/data/findings.json`, and a test fails if one is typed by hand. |
-| `docs/` | The requirements, design, build log and decision records (`docs/adr/`). |
+| `docs/` | The requirements, design, build log, decision records (`docs/adr/`) and review findings (`FINDINGS.md`). |
 
 ## Run it locally
 

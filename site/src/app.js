@@ -114,7 +114,7 @@ function render() {
     panel = SCREENS[S.step]();
   } catch (e) {
     console.error(e);
-    panel = [h("h2", "Something went wrong"), h("p", e.message), h("p.help", "Your work is saved on this device. Download the project to keep a copy, then reload the page.")];
+    panel = [h("h2", "Something went wrong"), h("p", e.message), h("p.help", "Your work is saved on this device. Use Download project below to keep a copy. If this comes back after a reload, Clear everything starts again.")];
   }
   app.replaceChildren(h("div.shell", rail(), h("section.panel", { "aria-labelledby": "panel-heading" }, panel)), footer());
   const heading = app.querySelector("h2");
@@ -153,7 +153,7 @@ function footer() {
     : button("Clear everything", () => { S.ui.confirmClear = true; render(); }, { kind: "danger", key: "clear" });
   return h("footer.site-footer",
     h("div.foot-actions",
-      button("Download project", downloadProject, { key: "dl-project", disabled: !S.p }),
+      button("Download project", downloadProject, { key: "dl-project", disabled: !S.p && !S.ui.damaged }),
       h("label.btn.btn-secondary.file-btn", { for: "open-project", tabindex: "0", dataset: { k: "open-project" }, onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); } } }, "Open project"), fileInput,
       clear),
     h("p.small", `Prices checked ${PRICES_CHECKED}. No analytics, no third-party scripts. Your key is sent only to api.anthropic.com. `,
@@ -810,21 +810,34 @@ SCREENS.results = () => {
 
 function downloadProject() {
   if (S.p) download("quality-project.json", P.serialize(S.p), "application/json");
+  else if (S.ui.damaged) download("quality-project-damaged.json", S.ui.damaged, "application/json");
+}
+
+// Builds the screen a project would open on without showing or saving it, so a project that can't be
+// shown is refused instead of replacing the work already saved here.
+function tryScreen() {
+  S.step = furthest();
+  SCREENS[S.step]();
 }
 
 async function openProject(file) {
   if (!file) return;
+  const before = S;
   try {
     const p = P.parseProject(await file.text());
     const mode = p.mode === "demo" ? "demo" : "own";
     if (mode === "demo") await demoData();
     S = { ...fresh(), mode, p, demo: S.demo };
-    persist();
-    go(furthest());
+    tryScreen();
   } catch (e) {
-    S.ui.error = e.message;
+    console.warn(e);
+    S = before;
+    S.ui.error = `That project couldn't be opened, so nothing changed. ${e.message}`;
     render();
+    return;
   }
+  persist();
+  go(S.step);
 }
 
 function clearAll() {
@@ -840,17 +853,25 @@ function clearAll() {
 
 async function boot() {
   S = fresh();
-  const saved = store.load();
+  const savedText = store.loadText();
   const key = store.loadKey();
   if (key) { apiKey = key; S.ui.remember = true; }
-  if (saved) {
-    S.p = saved;
-    S.mode = saved.mode === "demo" ? "demo" : "own";
+  if (savedText) {
     try {
+      const saved = P.parseProject(savedText);
+      S.p = saved;
+      S.mode = saved.mode === "demo" ? "demo" : "own";
       if (S.mode === "demo") await demoData();
-      S.step = furthest();
+      tryScreen();
     } catch (e) {
-      S.ui.error = e.message;
+      // The saved work can't be shown (damaged storage or an older page's format). Keep it on the device,
+      // start fresh, and say how to keep a copy or remove it, rather than failing on every load.
+      console.warn(e);
+      const demo = S.demo;
+      S = fresh();
+      S.demo = demo;
+      S.ui.error = `The work saved on this device couldn't be opened. ${e.message} It's still saved until you start something new: use Download project to keep a copy, or Clear everything to remove it.`;
+      S.ui.damaged = savedText;
     }
   }
   render();

@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { serve } from "../scripts/server.mjs";
-import { launch, SKIP } from "./harness.mjs";
+import { launch, SKIP, WIDTHS, SHOT_WIDTHS } from "./harness.mjs";
 
 const SITE = fileURLToPath(new URL("../site", import.meta.url));
 
@@ -27,17 +27,17 @@ test("the page in a real browser", { skip: SKIP }, async (t) => {
     assert.match(csp, /script-src 'self'(;|$)/);
   });
 
-  await t.test("fits at 390 and 1280 wide, light and dark, normal and wide font", async () => {
+  await t.test("fits from 320 to 1280 wide and either side of the 760 breakpoint, light and dark, normal and wide font", async () => {
     for (const theme of ["light", "dark"]) {
       await b.scheme(theme);
-      for (const width of [390, 1280]) {
+      for (const width of WIDTHS) {
         for (const wide of [false, true]) {
           await b.viewport(width);
           await b.wideFont(wide);
           const font = await b.js(`getComputedStyle(document.querySelector("h1")).fontFamily`);
           assert.equal(/Verdana/.test(font), wide, `wide font ${wide ? "not applied" : "left on"}: ${font}`);
           assert.deepEqual(await b.overflow(), [], `${width}px ${theme}${wide ? " wide font" : ""}`);
-          if (!wide) await b.screenshot(`page-${width}-${theme}`);
+          if (!wide && SHOT_WIDTHS.includes(width)) await b.screenshot(`page-${width}-${theme}`);
         }
       }
     }

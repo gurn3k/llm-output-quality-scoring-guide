@@ -2,7 +2,7 @@
 // owner's blind labels. Free: no API calls.
 //   node eval/findings.mjs            writes report/data/findings.json
 // The report page renders numbers from that file only, so none is typed by hand.
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { tally, kappa, wilson } from "../site/src/stats.js";
 import { drawSample, splitHeldBack } from "../site/src/random.js";
@@ -138,14 +138,25 @@ if (existsSync(BLIND) && existsSync(MAP)) {
 }
 
 // 5. Spend.
-const spent = (f) => (existsSync(here(`./runs/${f}`)) ? read(`./runs/${f}`).spent ?? 0 : 0);
-const spend = {
-  sample: round(["sample-2026-11-11.json", "sample-2026-11-11-sharpened.json", "sample-2026-11-11-sharpened2.json"].reduce((s, f) => s + spent(f), 0), 2),
-  comparison: round(["haiku-good-original", "sonnet-good-original", "opus-good-original", "sonnet-vague-original"].reduce((s, f) => s + spent(`full-${f}.json`), 0), 2),
-  rest: round(["sonnet-good-all", "sonnet-vague-all"].reduce((s, f) => s + spent(`full-${f}.json`), 0), 2),
-  generation: round(read("./testset/generated.json").spentUsd, 2),
+// Every paid run file counts, including the Opus vague run stopped when the credit ran out (no accuracy
+// figure uses it, but it was spent). Parts and total are each rounded once, from unrounded sums.
+const spent = (f) => read(`./runs/${f}`).spent ?? 0;
+const runFiles = readdirSync(here("./runs")).filter((f) => f.endsWith(".json"));
+const groups = {
+  sample: runFiles.filter((f) => f.startsWith("sample-")),
+  comparison: runFiles.filter((f) => f.startsWith("full-") && f.endsWith("-original.json")),
+  rest: runFiles.filter((f) => f.startsWith("full-") && f.endsWith("-all.json")),
 };
-spend.judgeTotal = round(spend.sample + spend.comparison + spend.rest, 2);
+const unsorted = runFiles.filter((f) => !Object.values(groups).flat().includes(f));
+if (unsorted.length) throw new Error(`run files not counted in spend: ${unsorted.join(", ")}`);
+const sum = (fs) => fs.reduce((s, f) => s + spent(f), 0);
+const spend = {
+  sample: round(sum(groups.sample), 2),
+  comparison: round(sum(groups.comparison), 2),
+  rest: round(sum(groups.rest), 2),
+  generation: round(read("./testset/generated.json").spentUsd, 2),
+  judgeTotal: round(sum(runFiles), 2),
+};
 
 // 5b. Scale: what the full runs on the chosen model show about running this at higher volume.
 // Measured from the run files; the only projection is the label arithmetic, which follows from

@@ -187,6 +187,7 @@
         }) : [el("li", { class: "none", text: "No bars ticked" })]));
       }
       if (!pick) result.textContent = "No model clears every bar you ticked.";
+      else if (!active.length) result.textContent = `No bars ticked, so nothing rules a model out. The cheapest is ${pick.m.label}, at ${usd(pick.m.costPerReply * v)} a month.`;
       else {
         const next = passing[1];
         result.textContent = `Your pick: ${pick.m.label}, ${usd(pick.m.costPerReply * v)} a month.` +

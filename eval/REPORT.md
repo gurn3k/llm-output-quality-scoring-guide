@@ -21,7 +21,8 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 | Owner's blind labels vs the answer key | Reported as measured | 116 of 120 (96.7%), kappa 0.90 | Measured (see below) |
 | Judge model | All three compared on the same bar; best wins, cheaper only on a tie | See below | Sonnet 5.5 |
 | Cost | Measured within 50% of the estimate; cap never exceeded | Sonnet +2%, Opus +19%, Haiku +27% against the page's own estimate; no stage or run cap exceeded | **Pass** |
-| Demo | Two people new to it finish in under 2 minutes | Not yet run | **Open** |
+| Demo | Two people new to it finish in under 2 minutes | Replaced by the report bar when the public product became the findings report (ADR 0014) | Superseded |
+| Report | A reader new to the subject can state the three main findings after reading it | Not yet run: needs two readers who haven't seen the project | **Open** |
 
 A run of Opus 5.5 on the vague criteria was started and stopped after 33 of 240 calls, when the API credit ran out. Its file, `eval/runs/full-opus-vague-original.json`, is kept as it stood; no figure in this report or the findings report uses it.
 
@@ -104,6 +105,9 @@ All four disagreements are about replies that respond to something but not to th
 |---|---|
 | Sample run, 3 runs | $0.26 |
 | Model comparison and vague criteria | $2.18 |
+| Opus 5.5 on the vague criteria, stopped after 33 of 240 calls (no figure uses it) | $0.17 |
 | The other 160 replies, both criteria sets (demo results) | $2.43 |
-| **Judge spend so far** | **$4.87 of the $10 cap** |
+| **Judge spend so far** | **$5.05 of the $10 cap** |
 | Writing the test set (OpenAI, separate cap) | $0.54 of $1 |
+
+*Corrected 2026-11-14:* this total was first reported as $4.87. That left out the stopped Opus run and added parts that were already rounded. `eval/findings.mjs` now counts every run file and rounds once, and a test checks it.

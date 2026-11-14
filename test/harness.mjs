@@ -16,6 +16,11 @@ const CANDIDATES = [
 export const CHROME = CANDIDATES.find((p) => existsSync(p)) ?? null;
 export const SKIP = CHROME ? false : "no Chrome or Edge found (set CHROME_PATH)";
 
+// The calibration page's layout widths: the smallest phone, a common phone, either side of its one
+// breakpoint (760px in site/style.css), and desktop. Screenshots are kept for two of them.
+export const WIDTHS = [320, 390, 759, 761, 1280];
+export const SHOT_WIDTHS = [390, 1280];
+
 // A wider fallback font than any system font, so layout checks also hold on Linux CI.
 const WIDE_FONT = 'body, input, select, button, textarea { font-family: Verdana, "DejaVu Sans", sans-serif !important; letter-spacing: 0.02em !important; }';
 

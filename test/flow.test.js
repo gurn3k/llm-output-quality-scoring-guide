@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { serve } from "../scripts/server.mjs";
-import { launch, SKIP } from "./harness.mjs";
+import { launch, SKIP, WIDTHS, SHOT_WIDTHS } from "./harness.mjs";
 
 const SITE = fileURLToPath(new URL("../site", import.meta.url));
 
@@ -38,12 +38,12 @@ test("the flow in a real browser", { skip: SKIP }, async (t) => {
   const fits = async (name) => {
     for (const theme of ["light", "dark"]) {
       await b.scheme(theme);
-      for (const width of [390, 1280]) {
+      for (const width of WIDTHS) {
         for (const wide of [false, true]) {
           await b.viewport(width);
           await b.wideFont(wide);
           assert.deepEqual(await b.overflow(), [], `${name} at ${width}px ${theme}${wide ? " wide font" : ""}`);
-          if (!wide) await b.screenshot(`${name}-${width}-${theme}`);
+          if (!wide && SHOT_WIDTHS.includes(width)) await b.screenshot(`${name}-${width}-${theme}`);
         }
       }
     }
@@ -130,6 +130,51 @@ test("the flow in a real browser", { skip: SKIP }, async (t) => {
     await b.open(url);
     await b.until(`document.querySelector(".panel h2")?.textContent === "Results"`, "the results after reload");
     assert.equal(await b.js(`document.querySelector("#mode-badge").textContent`), "Demo");
+  });
+
+  // Found by the adversarial pass: a damaged file used to replace the saved work and break every load.
+  await t.test("a damaged project file is refused and the saved work is kept", async () => {
+    const before = await b.js(`localStorage.getItem("lqsg.project")`);
+    const spoilt = JSON.parse(before);
+    spoilt.rows = [{}, {}];
+    await b.js(`(() => { const i = document.getElementById("open-project"); const dt = new DataTransfer(); dt.items.add(new File([${JSON.stringify(JSON.stringify(spoilt))}], "p.json")); i.files = dt.files; i.dispatchEvent(new Event("change")); })()`);
+    await b.until(`!!document.querySelector(".notice-error")`, "the refusal");
+    assert.match(await b.js(`document.querySelector(".notice-error").textContent`), /couldn't be opened, so nothing changed\. That project file is damaged: row 1/);
+    assert.equal(await b.js(`document.querySelector(".panel h2").textContent`), "Results");
+    assert.equal(await b.js(`localStorage.getItem("lqsg.project")`), before);
+    assert.deepEqual(b.errors, []);
+  });
+
+  await t.test("damaged saved work at start-up gives a way out instead of an error on every load", async () => {
+    const good = await b.js(`localStorage.getItem("lqsg.project")`);
+    const spoilt = JSON.parse(good);
+    spoilt.criteria = [null];
+    await b.js(`localStorage.setItem("lqsg.project", ${JSON.stringify(JSON.stringify(spoilt))})`);
+    await b.open(url);
+    await b.until(`!!document.querySelector(".notice-error")`, "the notice");
+    assert.match(await b.js(`document.querySelector(".notice-error").textContent`), /couldn't be opened.*Download project.*Clear everything/);
+    assert.equal(await b.js(`!!document.querySelector('[data-k="start-demo"]')`), true);
+    assert.equal(await b.js(`document.querySelector('[data-k="dl-project"]').disabled`), false);
+    assert.ok(!(await b.js(`document.querySelector(".panel h2").textContent`)).includes("Something went wrong"));
+    assert.deepEqual(b.errors, []);
+    await b.js(`localStorage.setItem("lqsg.project", ${JSON.stringify(good)})`);
+  });
+
+  // Found by the independent review: an unclear verdict's unplaced quote was shown with no caveat, and a
+  // withheld pass quoting the customer was described as "what the reply left out".
+  await t.test("a quote the code couldn't place is never presented as evidence", async () => {
+    const out = await b.js(`import("./src/ui.js").then(({ evidence }) => {
+      const row = { input: "Can I return the kettle I used once?", output: "Our warranty covers faults for a year." };
+      const text = (r) => { const d = document.createElement("div"); d.append(...evidence(row, r).filter(Boolean)); return d.textContent; };
+      return [
+        text({ status: "unclear", quote: "returns are always free", reason: "r", evidence_source: "output" }),
+        text({ status: "withheld", quote: "Can I return the kettle", reason: "r", evidence_source: "input", why: "A pass must quote the reply itself." }),
+        text({ status: "fail", quote: "Can I return the kettle", reason: "r", evidence_source: "input" }),
+      ];
+    })`);
+    assert.match(out[0], /returns are always free.*not found in the text, so it isn't evidence/);
+    assert.doesNotMatch(out[1], /what the reply left out/);
+    assert.match(out[2], /what the reply left out/);
   });
 
   await t.test("labelling works from the keyboard alone", async () => {

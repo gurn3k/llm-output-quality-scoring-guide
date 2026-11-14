@@ -32,6 +32,22 @@ test("a found quote is placed in the original text, so it can be marked in place
   assert.deepEqual(locate(tr, "istanbul is lovely")?.map(([a, b]) => tr.slice(a, b)) ?? null, checkQuote(tr, "istanbul is lovely").found ? ["İstanbul is lovely"] : null);
 });
 
+// Found by the independent review.
+test("a word-for-word quote of a reply containing '...' is found, and placed", () => {
+  const text = "Sorry... we can refund you today. Thanks for waiting.";
+  assert.deepEqual(checkQuote(text, "Sorry... we can refund you today"), { found: true });
+  assert.deepEqual(locate(text, "Sorry... we can refund you today"), [[0, 32]]);
+  assert.deepEqual(checkQuote(text, "we can refund ... thanks for waiting"), { found: true }, "a joining ellipsis still works");
+});
+
+test("a fragment cut from the middle of words isn't a quote", () => {
+  const text = "We will refund you in full.";
+  assert.equal(checkQuote(text, "und you in fu").found, false);
+  assert.equal(checkQuote(text, "refund you in").found, true);
+  assert.equal(checkQuote(text, "you in full.").found, true, "punctuation at the edge is fine");
+  assert.equal(locate(text, "und you in fu"), null);
+});
+
 test("a paraphrase or invented quote is refused", () => {
   assert.match(checkQuote(REPLY, "you may return it within sixty days").reason, /isn't in the text/);
   assert.match(checkQuote(REPLY, "within 30 days of delivery").reason, /isn't in the text/, "one changed number is enough to refuse");

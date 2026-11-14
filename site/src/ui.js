@@ -103,8 +103,9 @@ export function evidence(row, result) {
     dataBox("AI replied", row.output, inInput ? null : ranges),
   ];
   const notes = [];
-  if (result.quote && !ranges) notes.push(h("p.small", "The judge quoted: ", h("q.quote-text", result.quote), result.status === "withheld" ? " (not found in the text, so the verdict is withheld)" : ""));
-  if (inInput && ranges) notes.push(h("p.small", "The quote is from the customer's message: it shows what the reply left out."));
+  // A quote the code couldn't place is never presented as evidence, whatever the verdict.
+  if (result.quote && !ranges) notes.push(h("p.small", "The judge quoted: ", h("q.quote-text", result.quote), result.status === "withheld" ? " (not found in the text, so the verdict is withheld)" : " (not found in the text, so it isn't evidence)"));
+  if (inInput && ranges && result.status === "fail") notes.push(h("p.small", "The quote is from the customer's message: it shows what the reply left out."));
   return [h("div.two", boxes), ...notes, result.reason ? h("p.reason", h("span.muted", "Judge's reason: "), result.reason) : null, result.why ? h("p.small.warn-text", `Withheld: ${result.why}`) : null];
 }
 

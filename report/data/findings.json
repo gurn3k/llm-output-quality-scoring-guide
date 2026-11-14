@@ -690,10 +690,10 @@
   },
   "spend": {
     "sample": 0.26,
-    "comparison": 2.18,
+    "comparison": 2.35,
     "rest": 2.43,
     "generation": 0.54,
-    "judgeTotal": 4.87
+    "judgeTotal": 5.05
   },
   "scale": {
     "calls": 1760,
