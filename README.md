@@ -2,7 +2,7 @@
 
 Teams use an AI model to grade other AI output ("LLM-as-judge"), then report its scores as quality. This project checks how far those scores can be trusted: an AI judge graded 216 customer support replies against a written policy, and every grade was checked against a hand-written answer key and a person's blind labels.
 
-**Findings report:** [`report/index.html`](report/index.html) (a hosted link will follow). Open it in a browser after cloning, or run `npm run report` to rebuild it.
+**Findings report:** [gurn3k.com/judging-the-judge](https://gurn3k.com/judging-the-judge/). The source is [`report/index.html`](report/index.html): open it in a browser after cloning, or run `npm run report` to rebuild it.
 
 ## Three findings
 

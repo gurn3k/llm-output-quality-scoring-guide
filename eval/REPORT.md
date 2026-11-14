@@ -23,6 +23,8 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 | Cost | Measured within 50% of the estimate; cap never exceeded | Sonnet +2%, Opus +19%, Haiku +27% against the page's own estimate; no stage or run cap exceeded | **Pass** |
 | Demo | Two people new to it finish in under 2 minutes | Not yet run | **Open** |
 
+A run of Opus 5.5 on the vague criteria was started and stopped after 33 of 240 calls, when the API credit ran out. Its file, `eval/runs/full-opus-vague-original.json`, is kept as it stood; no figure in this report or the findings report uses it.
+
 ## Choosing the default model
 
 The rule was set before reading any results: a model must meet the bar, the highest balanced score (the mean of the two rates) wins, and a cheaper model wins only on a tie. A tie means within one pair on both caught and clean passed.
