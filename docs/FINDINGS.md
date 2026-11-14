@@ -1,6 +1,6 @@
 # Review findings
 
-Reviewed 2026-11-14, after the report went live. Three passes:
+Reviewed 2026-11-14. Three passes:
 - **Hostile input:** malformed files, odd text and abused controls, against the calibration tool locally and the live report.
 - **Security:** the code, the full git history and the live hosting.
 - **Correctness:** an independent review of the statistics, the quote check, the spending caps and the derivation of every public figure, by a reviewer who hadn't written the code.
