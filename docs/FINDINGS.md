@@ -17,7 +17,7 @@ Status: **Fixed.** The whole file is checked before it's used, and a project tha
 ### 2. The total judge spend was understated
 Steps: add `spent` across every file in `eval/runs/`.
 Promise broken: "Every judge run … cost $4.87" (report, README).
-What happened: the total left out the Opus run on the vague criteria. That run was stopped after 33 calls when the credit ran out, and it cost $0.17. The total also added parts that had already been rounded. The real figure is **$5.05**.
+What happened: the total left out the Opus run on the vague criteria. That run was stopped after 33 calls when the credit ran out, and it cost $0.17. The total also added parts that had already been rounded. The real figure was **$5.05**. Finishing that run, which also extended the vague-criteria finding to Opus 5.5, brought the total to **$6.26**.
 Seriousness: a wrong public figure (small).
 Status: **Fixed.** `eval/findings.mjs` counts every run file, refuses one it can't place, and rounds once. Test: `report.test.js`. No accuracy figure changed.
 

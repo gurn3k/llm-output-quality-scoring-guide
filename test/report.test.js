@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
-import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -28,8 +28,22 @@ test("the judge spend counts every paid run file, rounded once", () => {
   const runs = fileURLToPath(new URL("../eval/runs/", import.meta.url));
   const files = readdirSync(runs).filter((f) => f.endsWith(".json"));
   const total = files.reduce((s, f) => s + (JSON.parse(readFileSync(join(runs, f), "utf8")).spent ?? 0), 0);
-  assert.ok(files.includes("full-opus-vague-original.json"), "the stopped run is still on file");
+  assert.ok(files.includes("full-opus-vague-original.json"), "the Opus vague run, once stopped for credit, is counted");
   assert.equal(F.spend.judgeTotal, Math.round(total * 100) / 100);
+});
+
+// A comparison resting on an unfinished run must not build.
+test("the build refuses when a run behind the vague-criteria comparison is unfinished", () => {
+  const dir = mkdtempSync(join(tmpdir(), "report-build-"));
+  try {
+    for (const f of ["build.mjs", "numbers.mjs", "template.html"]) cpSync(join(REPORT, f), join(dir, f));
+    mkdirSync(join(dir, "data"));
+    const partial = structuredClone(F);
+    partial.vagueByModel.opus = { complete: false, pairs: 33 };
+    writeFileSync(join(dir, "data/findings.json"), JSON.stringify(partial));
+    assert.throws(() => execFileSync(process.execPath, [join(dir, "build.mjs")], { stdio: "pipe" }), /opus vague-criteria run isn't complete/);
+    assert.ok(!existsSync(join(dir, "index.html")), "nothing is written");
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
 test("the build refuses a template with a figure typed by hand", () => {
@@ -65,6 +79,9 @@ test("the built report quotes findings.json", () => {
     `cost ${F.scale.cacheSaving.toFixed(1)} times as much`,
     `<td>${F.scale.labelsAt[2].labels.toLocaleString("en-US")}</td>`,
     `The ${F.scale.maxRows}-row limit`,
+    `It reached ${F.vagueByModel.opus.vague.kappa.toFixed(2)}, against ${F.vagueByModel.sonnet.vague.kappa.toFixed(2)} for ${F.vagueByModel.sonnet.label}`,
+    `kappa of at least ${F.rescueKappa.toFixed(2)}`,
+    `Findings from ${F.totalVerdicts.toLocaleString("en-US")} verdicts`,
   ]) assert.ok(html.includes(s), `report should say "${s}"`);
   // Without scripts the page still has its static charts and table; the script-only parts start hidden.
   assert.equal((html.match(/<figure class="chart plate" data-static>/g) || []).length, 2);
@@ -94,6 +111,7 @@ export function readmeFigures(readme, F) {
     `took ${firstOk.labels} before ${words[decidable(firstOk)]} of the four`,
     `cost $${F.spend.judgeTotal.toFixed(2)}`,
     `the ${F.testSet.replies} replies plus ${F.testSet.injections} prompt-injection replies`,
+    `on the ${F.vagueByModel.opus.replies} replies used to compare models, ${F.vagueByModel.opus.label} reached kappa ${F.vagueByModel.opus.vague.kappa.toFixed(2)} on vague criteria, against ${F.vagueByModel.sonnet.vague.kappa.toFixed(2)} for ${F.vagueByModel.sonnet.label}`,
   ];
   const missing = expected.filter((s) => !readme.includes(s));
   const section = readme.slice(0, readme.indexOf("## Walkthrough"));

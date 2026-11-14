@@ -13,7 +13,10 @@ const F = JSON.parse(readFileSync(here("./data/findings.json"), "utf8"));
 F.derived = {
   opusVsSonnet: F.models.opus.costPerReply / F.models.sonnet.costPerReply,
   sonnetVsHaiku: F.models.sonnet.costPerReply / F.models.haiku.costPerReply,
+  opusVagueVsSonnet: F.vagueByModel.opus.vagueCostPerReply / F.vagueByModel.sonnet.vagueCostPerReply,
 };
+// The vague-criteria comparison is only shown when every run behind it finished.
+for (const m of ["sonnet", "opus"]) if (!F.vagueByModel?.[m]?.complete) throw new Error(`the ${m} vague-criteria run isn't complete, so the report can't be built`);
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 function get(path) {

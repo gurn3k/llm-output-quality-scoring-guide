@@ -85,6 +85,28 @@ const full = {
   goodFirst60: measure(good, (id) => ORIGINAL.test(id)), vagueFirst60: measure(vague, (id) => ORIGINAL.test(id)),
 };
 
+// 2b. Does a stronger judge rescue vague criteria? The original 60 replies, clear vs vague, per model
+// that has both runs. The bar was recorded while the Opus vague run was paused at 33 of 240 calls
+// (out of credit, 2026-11-12), before the rest ran (2026-11-14): Opus vague kappa of at least 0.85
+// counts as rescued. An unfinished run is refused, never counted.
+const PAIRS_60 = 60 * 4;
+const pairsIn = (results) => Object.values(results).reduce((s, b) => s + Object.keys(b).length, 0);
+const vagueByModel = {};
+for (const m of ["sonnet", "opus"]) {
+  const g = run(`${m}-good-original`).results, v = run(`${m}-vague-original`).results;
+  if (pairsIn(v) !== PAIRS_60) { vagueByModel[m] = { complete: false, pairs: pairsIn(v) }; continue; }
+  const mg = measure(g), mv = measure(v);
+  vagueByModel[m] = {
+    complete: true, label: models[m].label, replies: Object.keys(v).length,
+    good: { agree: mg.agree, n: mg.n, rate: mg.rate, kappa: mg.kappa, caught: mg.caught, overFailed: mg.overFailed },
+    vague: { agree: mv.agree, n: mv.n, rate: mv.rate, kappa: mv.kappa, caught: mv.caught, overFailed: mv.overFailed, undecided: mv.undecided },
+    vagueByCriterion: mv.byCriterion,
+    vagueFlips: flips(v),
+    vagueCostPerReply: costPerReply(v),
+  };
+}
+const RESCUE_KAPPA = 0.85;
+
 // 3. How many labels a trust decision needs: the held-back failures per criterion, and whether
 // the judge's catch range is narrow enough, as the number of labels grows (the demo's fixed draw).
 const demo = JSON.parse(readFileSync(here("../site/data/demo.json"), "utf8"));
@@ -208,8 +230,8 @@ const examples = {
 const findings = {
   generated: "2026-11-11",
   testSet: { replies: full.replies, cleanReplies: Object.values(key).filter((k) => k.kind === "clean").length, failuresPerCriterion: Object.values(key).filter((k) => k.kind === "flaw" && k.labels.accurate === "fail").length, injections: 4, criteria: criteria.good.map((c) => ({ id: c.id, name: c.name, pass: c.pass })), vagueCriteria: criteria.vague.map((c) => ({ id: c.id, name: c.name, pass: c.pass })) },
-  models, chosen: "sonnet", full, labelsNeeded, blind, spend, scale, examples,
-  totalVerdicts: ["haiku-good-original", "opus-good-original", "sonnet-good-all", "sonnet-vague-all"].reduce((s, f) => s + Object.values(run(f).results).reduce((a, bc) => a + Object.keys(bc).length, 0), 0),
+  models, chosen: "sonnet", full, vagueByModel, rescueKappa: RESCUE_KAPPA, labelsNeeded, blind, spend, scale, examples,
+  totalVerdicts: ["haiku-good-original", "opus-good-original", "opus-vague-original", "sonnet-good-all", "sonnet-vague-all"].reduce((s, f) => s + Object.values(run(f).results).reduce((a, bc) => a + Object.keys(bc).length, 0), 0),
   goodFailureRate: round(Object.values(key).filter((k) => k.kind !== "injection" && k.labels.tone === "fail").length / full.replies),
 };
 mkdirSync(here("../report/data/"), { recursive: true });

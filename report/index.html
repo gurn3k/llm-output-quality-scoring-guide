@@ -6,8 +6,8 @@
   <!-- Nothing fetched from anywhere but this site. One script of its own (interactive.js) adds the
        interactive charts; without it the page reads in full with static charts and tables. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
-  <meta name="description" content="How far can you trust an AI judge? Findings from 2,240 verdicts on customer support replies, checked against a written answer key and a person's blind labels.">
-  <title>Can you trust an AI judge? Findings from 2,240 verdicts</title>
+  <meta name="description" content="How far can you trust an AI judge? Findings from 2,480 verdicts on customer support replies, checked against a written answer key and a person's blind labels.">
+  <title>Can you trust an AI judge? Findings from 2,480 verdicts</title>
   <link rel="icon" href="media/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <script src="interactive.js" defer></script>
@@ -35,7 +35,7 @@
 
   <div class="cover">
     <div class="titleblock">
-      <h1>Can you trust an AI judge? <span class="h1-sub">Findings from 2,240 verdicts</span></h1>
+      <h1>Can you trust an AI judge? <span class="h1-sub">Findings from 2,480 verdicts</span></h1>
       <p class="lede">I had an AI model grade customer support replies against a written policy, then checked every grade against an answer key and my own blind labels. Here is what held up, what didn't, and how many labels it takes to know.</p>
       <p class="byline">Gurnek Khaira · a five-minute read · every figure checkable on GitHub</p>
     </div>
@@ -44,7 +44,7 @@
       <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">kappa: <span data-fixed>1</span> is perfect agreement, <span data-fixed>0</span> is chance</span></h2>
       <ol>
         <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>Clear criteria: the judge holds up.</strong> It caught 189 of 196 planted failures and agreed with the answer key on 95% of verdicts.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>0.86</b><small>kappa</small></span></li>
-        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria: the usual metric hides the damage.</strong> It still caught 193 of 196, but agreement fell to 65%: it also failed 297 verdicts that should have passed.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>0.35</b><small>kappa</small></span></li>
+        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria: the usual metric hides the damage.</strong> It still caught 193 of 196, but agreement fell to 65%: it also failed 297 verdicts that should have passed. A stronger judge didn't fix it.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>0.35</b><small>kappa</small></span></li>
         <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>Trust takes more labels than you'd think.</strong> 40 labels couldn't settle a single criterion. It took 160 to settle three of the four.</p><span class="exam-m red"><b>160</b><small>labels</small></span></li>
       </ol>
       <p class="moderated"><svg class="mk ring" aria-hidden="true"><use href="#m-ring"/></svg><b>116/120</b><span>of my blind labels agree with the answer key</span></p>
@@ -138,6 +138,8 @@ Mia</p></details>
   <div data-ix="explorer"><figure class="chart plate" data-static><div class="bars"><div class="brow"><div class="blab"><strong>Accurate to policy</strong><span class="sub">vague: “Accurate”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="71.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.71</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="41.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.41</span></span></div></div></div><div class="brow"><div class="blab"><strong>Answers the question</strong><span class="sub">vague: “Helpful”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="84.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.84</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="21.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.21</span></span></div></div></div><div class="brow"><div class="blab"><strong>Escalates when required</strong><span class="sub">vague: “Handles the situation”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="97.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.97</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="15.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.15</span></span></div></div></div><div class="brow"><div class="blab"><strong>Appropriate tone</strong><span class="sub">vague: “Tone”</span></div><div class="bpair"><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-good" width="93.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Clear criteria: </span><span class="bval">0.93</span></span></div><div class="btrack"><svg class="sbar" viewBox="0 0 100 16" preserveAspectRatio="none" aria-hidden="true"><rect class="track" width="100" height="16"/><rect class="bar-vague" width="83.00" height="16"/></svg><span class="bvalwrap"><span class="sr">Vague criteria: </span><span class="bval">0.83</span></span></div></div></div></div>
 <figcaption><span class="key key-good"></span>Clear criteria <span class="key key-vague"></span>Vague criteria · Agreement beyond chance (kappa) with the answer key, all 216 replies. 1 is perfect agreement, 0 is no better than chance.</figcaption></figure></div>
   <p>Tone held up even when vague, since "the tone is good" needs little definition. The criteria that depend on the policy collapsed, with "Handles the situation" at kappa 0.15, close to chance.</p>
+  <h3>A stronger judge doesn't fix it</h3>
+  <p>Is this a weakness of Claude Sonnet 5.5? I ran Claude Opus 5.5, the strongest of the three, on the vague criteria, using the 60 replies from the model comparison. Before the run finished I set the bar for "rescued": kappa of at least 0.85. It reached 0.48, against 0.46 for Claude Sonnet 5.5 on the same replies. Agreement was 78% against 77%. With clear criteria, the same two models agreed on 98% and 96%. Both caught every planted failure on vague criteria and failed about the same number of sound verdicts (49 and 52). On vague criteria, planted instructions changed 1 of Opus's verdicts and 1 of Sonnet's; on clear criteria, 0 and 0. The fix is the criteria, not a bigger model, and the bigger model cost 2.9 times as much.</p>
   <h3>One flaw, three failures</h3>
   <p>This reply states the wrong return window, and nothing else is wrong with it. The vague criteria fail it three times: on "Accurate", which is right, and also on "Helpful" and on "Handles the situation":</p>
   <div class="ex">
@@ -197,7 +199,7 @@ Maya</p></details>
 <section aria-labelledby="take-h">
   <h2 id="take-h">What to take away</h2>
   <ul class="takeaways moderator">
-    <li><strong>Write criteria that each judge one thing, and measure agreement, not just catch rate.</strong></li>
+    <li><strong>Write criteria that each judge one thing, and measure agreement, not just catch rate.</strong> A stronger judge won't make up for vague criteria.</li>
     <li><strong>Count held-back failures, not labelled replies.</strong></li>
     <li><strong>The most expensive model isn't automatically the right judge.</strong> Claude Opus 5.5 agreed with the key slightly more than Claude Sonnet 5.5 (kappa 0.92 against 0.87) at 2.3 times the cost per reply. Both cleared every bar, so the extra spend bought little here. Claude Haiku 5.5 was by far the cheapest (Claude Sonnet 5.5 cost 15 times as much per reply) and caught every planted failure, but obeyed a hidden instruction: the failure that matters most when the replies you grade come from outside. Choose the cheapest model that clears every bar you set before looking, including a safety bar, and check again when the task changes.</li>
   </ul>
@@ -255,7 +257,7 @@ Maya</p></details>
 
 <section aria-labelledby="cost-h">
   <h2 id="cost-h">Cost</h2>
-  <p>Every judge run, including three small trial runs, cost $5.05 in API fees. Writing the test replies cost $0.54.</p>
+  <p>Every judge run, including three small trial runs, cost $6.26 in API fees. Writing the test replies cost $0.54.</p>
 </section>
 </main>
 

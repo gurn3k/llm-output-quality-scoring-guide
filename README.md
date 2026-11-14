@@ -9,10 +9,10 @@ Teams use an AI model to grade other AI output ("LLM-as-judge"), then report its
 ## Three findings
 
 1. **With clear criteria, the judge is good.** It caught 189 of 196 planted failures and agreed with the answer key on 95% of verdicts (kappa 0.86).
-2. **Vague criteria hide their damage from the usual metric.** The catch rate stayed high (193 of 196), but agreement fell to 65% (kappa 0.35), because the judge failed 297 verdicts the key passes. Catch rate alone would have called the vague rubric better.
+2. **Vague criteria hide their damage from the usual metric.** The catch rate stayed high (193 of 196), but agreement fell to 65% (kappa 0.35), because the judge failed 297 verdicts the key passes. Catch rate alone would have called the vague rubric better. A stronger judge didn’t fix it: on the 60 replies used to compare models, Claude Opus 5.5 reached kappa 0.48 on vague criteria, against 0.46 for Claude Sonnet 5.5.
 3. **A few dozen labels can't tell you whether to trust it.** With 40 labelled replies, no criterion had enough held-back failures to decide. It took 160 before three of the four could.
 
-The report also covers a three-model comparison (the cheapest model obeyed an instruction hidden in a reply), how a person's labels compare, and the limits. All judge runs cost $5.05 in API fees.
+The report also covers a three-model comparison (the cheapest model obeyed an instruction hidden in a reply), how a person's labels compare, and the limits. All judge runs cost $6.26 in API fees.
 
 ## Limits
 
