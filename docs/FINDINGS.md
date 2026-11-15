@@ -67,8 +67,11 @@ Status: **Fixed.** With no bars ticked, it now says nothing rules a model out an
 - **Without scripts:** the report reads in full, with its static charts and tables.
 - **Statistics and money:** the reviewer recomputed the headline figures independently from the run files, and they match (findings 189 of 196, 94.6%, kappa 0.86; 193 of 196, 64.8%, kappa 0.35). So do the model table, the labels-needed table and the scale figures. The Wilson interval, kappa, sampling, cost reservation and spending caps check out.
 
+## Checked by people (2026-11-15)
+
+- **Screen reader:** checked by the owner on the live report, and passed. Names and structure were also checked in code.
+- **The report bar** (ADR 0014): met in round 2, after round 1 missed (see `eval/REPORT.md`).
+
 ## Not tested
 
-- **A real screen reader** (NVDA or VoiceOver). Names and structure were checked in code only.
-- **The report bar** (ADR 0014): whether a reader new to the subject can state the three main findings. It needs two such readers.
 - **Minor, left as is:** when a paste has more than 500 rows, the rows after the 500th are reported as one refusal. The message names the row range, so "loaded + refused" doesn't add up to the file's row count.

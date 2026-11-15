@@ -22,7 +22,7 @@ Measured 2026-11-11 on the test set in `eval/testset/`: support replies for Sofa
 | Judge model | All three compared on the same bar; best wins, cheaper only on a tie | See below | Sonnet 5.5 |
 | Cost | Measured within 50% of the estimate; cap never exceeded | Sonnet +2%, Opus +19%, Haiku +27% against the page's own estimate; no stage or run cap exceeded | **Pass** |
 | Demo | Two people new to it finish in under 2 minutes | Replaced by the report bar when the public product became the findings report (ADR 0014) | Superseded |
-| Report | A reader new to the subject can state the three main findings after reading it | Round 1 (2026-11-15, two readers): both took away that the most expensive model wasn't the best; neither stated the vague-criteria finding, which they found confusing; the labels point came across without landing. The report was rewritten (plainer findings, metrics moved into a note); round 2 needs two different new readers | **Not met** (round 1) |
+| Report | A reader new to the subject can state the three main findings after reading it | Round 1 (2026-11-15, two readers): both took away that the most expensive model wasn't the best; neither stated the vague-criteria finding, which they found confusing; the labels point came across without landing. The report was rewritten (plainer findings, metrics moved into a note); round 2 (2026-11-15, two different new readers, as reported by the owner): both followed the findings | **Not met** in round 1; **met** in round 2 |
 
 Opus 5.5 on the vague criteria stopped after 33 of 240 calls when the API credit ran out (2026-11-12). It was completed on 2026-11-14 (all 240 calls); the result is under "Does a stronger judge rescue vague criteria?" below.
 
