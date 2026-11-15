@@ -41,11 +41,11 @@
     </div>
 
     <section class="exam" aria-labelledby="tldr-h">
-      <h2 id="tldr-h"><span>Three findings</span><span class="exam-note">kappa: <span data-fixed>1</span> is perfect agreement, <span data-fixed>0</span> is chance</span></h2>
+      <h2 id="tldr-h"><span>Three findings</span></h2>
       <ol>
-        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>Clear criteria: the judge holds up.</strong> It caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures and agreed with the answer key on {{pct full.good.rate}} of verdicts.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>{{k full.good.kappa}}</b><small>kappa</small></span></li>
-        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria: the usual metric hides the damage.</strong> It still caught {{n full.vague.caught.k}} of {{n full.vague.caught.n}}, but agreement fell to {{pct full.vague.rate}}: it also failed {{n full.vague.overFailed}} verdicts that should have passed. A stronger judge didn't fix it.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>{{k full.vague.kappa}}</b><small>kappa</small></span></li>
-        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>Trust takes more labels than you'd think.</strong> {{n labelsNeeded.0.labels}} labels couldn't settle a single criterion. It took {{n labelsNeeded.2.labels}} to settle three of the four.</p><span class="exam-m red"><b>{{n labelsNeeded.2.labels}}</b><small>labels</small></span></li>
+        <li><span class="exam-n"><span data-fixed>1</span></span><p class="exam-t"><strong>With clear criteria, the AI judge can be trusted.</strong> It agreed with the answer key on {{pct full.good.rate}} of verdicts and caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-tick"/></svg><b>{{pct full.good.rate}}</b><small>agreed</small></span></li>
+        <li><span class="exam-n"><span data-fixed>2</span></span><p class="exam-t"><strong>Vague criteria broke the judge, and a pricier model didn't fix it.</strong> It still caught {{n full.vague.caught.k}} of {{n full.vague.caught.n}} failures, so the usual score looked fine. But it also failed {{n full.vague.overFailed}} verdicts that should have passed. The most expensive model made the same mistake. Fix the criteria, not the model.</p><span class="exam-m red"><svg class="mk" aria-hidden="true"><use href="#m-cross"/></svg><b>{{n full.vague.overFailed}}</b><small>wrongly failed</small></span></li>
+        <li><span class="exam-n"><span data-fixed>3</span></span><p class="exam-t"><strong>You need hundreds of labels, not dozens.</strong> {{n labelsNeeded.0.labels}} hand-labelled replies couldn't show whether the judge could be trusted on any criterion. It took {{n labelsNeeded.2.labels}} to trust three of the four.</p><span class="exam-m red"><b>{{n labelsNeeded.2.labels}}</b><small>labels</small></span></li>
       </ol>
       <p class="moderated"><svg class="mk ring" aria-hidden="true"><use href="#m-ring"/></svg><b>{{n blind.agree}}/{{n blind.labels}}</b><span>of my blind labels agree with the answer key</span></p>
     </section>
@@ -101,8 +101,8 @@
 <section aria-labelledby="f1-h">
   <h2 id="f1-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>1</span><svg class="mk qv" aria-hidden="true"><use href="#m-tick"/></svg></span> Clear criteria: the judge mostly agrees</h2>
   <p>Across all {{n testSet.replies}} replies, the judge caught {{n full.good.caught.k}} of {{n full.good.caught.n}} planted failures (likely between {{pct full.good.caught.low}} and {{pct full.good.caught.high}}) and passed {{n full.good.cleanPassed.k}} of {{n full.good.cleanPassed.n}} verdicts on clean replies. It failed {{n full.good.overFailed}} verdicts the key passes, and left {{n full.good.undecided}} of {{n full.good.pairs}} undecided.</p>
-  <p>The bars were set on the first replies judged. The {{n full.goodNew.caught.n}} planted failures judged afterwards held up: {{n full.goodNew.caught.k}} caught, kappa {{k full.goodNew.kappa}}.</p>
-  <p>The weakest criterion was <strong>{{text testSet.criteria.0.name}}</strong> (kappa {{k full.good.byCriterion.accurate.kappa}}). Most of its {{n full.good.byCriterion.accurate.overFailed}} over-fails are replies that should have gone to a specialist; the judge also marked them inaccurate, a reading a person could defend. Of the judge's {{n full.good.missed}} misses, {{n full.good.byCriterion.tone.missed}} were on Tone: mild blame it read as neutral.</p>
+  <p>The bars were set on the first replies judged. The {{n full.goodNew.caught.n}} planted failures judged afterwards held up: {{n full.goodNew.caught.k}} caught, with {{pct full.goodNew.rate}} agreement.</p>
+  <p>The weakest criterion was <strong>{{text testSet.criteria.0.name}}</strong> ({{pct full.good.byCriterion.accurate.rate}} agreement). Most of its {{n full.good.byCriterion.accurate.overFailed}} over-fails are replies that should have gone to a specialist; the judge also marked them inaccurate, a reading a person could defend. Of the judge's {{n full.good.missed}} misses, {{n full.good.byCriterion.tone.missed}} were on Tone: mild blame it read as neutral.</p>
   <h3>A catch, with its evidence</h3>
   {{block exCaught}}
   <h3>A miss</h3>
@@ -110,26 +110,32 @@
 </section>
 
 <section aria-labelledby="f2-h">
-  <h2 id="f2-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>2</span><svg class="mk qv" aria-hidden="true"><use href="#m-cross"/></svg></span> Vague criteria: catch rate lies</h2>
-  <p>I ran the same replies against a deliberately vague version of the four criteria ("The reply is accurate", "The reply is helpful", and so on). I expected it to catch fewer failures. It caught slightly more.</p>
+  <h2 id="f2-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>2</span><svg class="mk qv" aria-hidden="true"><use href="#m-cross"/></svg></span> Vague criteria broke the judge, and a pricier model didn't fix it</h2>
+  <p>A smoke alarm that goes off every few minutes never misses a fire, and it's still useless. Vague criteria turned the judge into that alarm.</p>
+  <p>I ran the same replies with a vague version of the four criteria ("The reply is accurate", "The reply is helpful", and so on). The judge caught {{n full.vague.caught.k}} of {{n full.vague.caught.n}} planted failures, slightly more than with clear criteria. By the usual score, the catch rate, it looked better. But it also failed {{n full.vague.overFailed}} verdicts that should have passed, against {{n full.good.overFailed}} with clear criteria, and its agreement with the answer key fell from {{pct full.good.rate}} to {{pct full.vague.rate}}.</p>
   {{block catchAgreeChart}}
-  <p>It got there by failing almost everything: {{n full.vague.overFailed}} verdicts the answer key passes, against {{n full.good.overFailed}} with clear criteria. A judge that fails every reply catches every failure, so catch rate rewards exactly this mistake. Agreement beyond chance exposes it:</p>
-  <div data-ix="explorer">{{block kappaChart}}</div>
-  <p>Tone held up even when vague, since "the tone is good" needs little definition. The criteria that depend on the policy collapsed, with "Handles the situation" at kappa {{k full.vague.byCriterion.escalates.kappa}}, close to chance.</p>
-  <h3>A stronger judge doesn't fix it</h3>
-  <p>Is this a weakness of {{text vagueByModel.sonnet.label}}? I ran {{text vagueByModel.opus.label}}, the strongest of the three, on the vague criteria, using the {{n vagueByModel.opus.replies}} replies from the model comparison. Before the run finished I set the bar for "rescued": kappa of at least {{k rescueKappa}}. It reached {{k vagueByModel.opus.vague.kappa}}, against {{k vagueByModel.sonnet.vague.kappa}} for {{text vagueByModel.sonnet.label}} on the same replies. Agreement was {{pct vagueByModel.opus.vague.rate}} against {{pct vagueByModel.sonnet.vague.rate}}. With clear criteria, the same two models agreed on {{pct vagueByModel.opus.good.rate}} and {{pct vagueByModel.sonnet.good.rate}}. Both caught every planted failure on vague criteria and failed about the same number of sound verdicts ({{n vagueByModel.opus.vague.overFailed}} and {{n vagueByModel.sonnet.vague.overFailed}}). On vague criteria, planted instructions changed {{n vagueByModel.opus.vagueFlips.length}} of Opus's verdicts and {{n vagueByModel.sonnet.vagueFlips.length}} of Sonnet's; on clear criteria, {{n models.opus.flips.length}} and {{n models.sonnet.flips.length}}. The fix is the criteria, not a bigger model, and the bigger model cost {{times derived.opusVagueVsSonnet}} as much.</p>
   <h3>One flaw, three failures</h3>
   <p>This reply states the wrong return window, and nothing else is wrong with it. The vague criteria fail it three times: on "Accurate", which is right, and also on "Helpful" and on "Handles the situation":</p>
   {{block exVague}}
   <p class="compare-label">The clear escalation criterion passes it, correctly:</p>
   {{block exVagueGood}}
+  <h3>The most expensive model made the same mistake</h3>
+  <p>I ran {{text vagueByModel.opus.label}}, the strongest and most expensive of the three models, with the same vague criteria on {{n vagueByModel.opus.replies}} of the replies. It agreed with the answer key on {{pct vagueByModel.opus.vague.rate}} of verdicts, against {{pct vagueByModel.sonnet.vague.rate}} for {{text vagueByModel.sonnet.label}}, and failed nearly as many sound verdicts ({{n vagueByModel.opus.vague.overFailed}} against {{n vagueByModel.sonnet.vague.overFailed}}). With clear criteria, the same two models agreed on {{pct vagueByModel.opus.good.rate}} and {{pct vagueByModel.sonnet.good.rate}}. Clearer criteria fixed what a bigger model didn't.</p>
+  <details class="ex-full method">
+    <summary>How this was measured</summary>
+    <p>Catch rate only counts the failures a judge finds, so a judge that fails everything scores perfectly. Agreement with the key counts its mistakes in both directions. Kappa goes one step further: it is agreement after removing what chance alone would produce, where <span data-fixed>1</span> is perfect and <span data-fixed>0</span> is chance.</p>
+    <div data-ix="explorer">{{block kappaChart}}</div>
+    <p>Tone held up even when vague, since "the tone is good" needs little definition. The criteria that depend on the policy collapsed, with "Handles the situation" at kappa {{k full.vague.byCriterion.escalates.kappa}}, close to chance.</p>
+    <p>Before the {{text vagueByModel.opus.label}} run finished, I set the bar for "rescued by a stronger model": kappa of at least {{k rescueKappa}}. It reached {{k vagueByModel.opus.vague.kappa}}, against {{k vagueByModel.sonnet.vague.kappa}} for {{text vagueByModel.sonnet.label}} on the same replies. On vague criteria, planted instructions changed {{n vagueByModel.opus.vagueFlips.length}} of Opus's verdicts and {{n vagueByModel.sonnet.vagueFlips.length}} of Sonnet's; on clear criteria, {{n models.opus.flips.length}} and {{n models.sonnet.flips.length}}.</p>
+  </details>
 </section>
 
 <section aria-labelledby="f3-h">
-  <h2 id="f3-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>3</span></span> How many labels before you can trust it</h2>
-  <p>To check a judge fairly, part of your labels must be held back: the judge's instructions are tuned on some, and it is measured only on the rest. A decision needs at least <span data-fixed>5</span> held-back failures per criterion and a catch-rate range no wider than <span data-fixed>30</span> points. Using the tool's own random draw:</p>
+  <h2 id="f3-h" class="q-head"><span class="qn"><svg class="mk" aria-hidden="true"><use href="#m-circle"/></svg><span data-fixed>3</span></span> You need hundreds of labels, not dozens</h2>
+  <p>I expected {{n labelsNeeded.0.labels}} hand-labelled replies to be enough to tell whether the judge could be trusted. They couldn't settle a single criterion. It took {{n labelsNeeded.2.labels}} to trust three of the four, and even {{n labelsNeeded.3.labels}} didn't settle Tone.</p>
+  <p>Here's why. To check a judge fairly, you test it only on labels it wasn't tuned on, so about a third are held back. What decides the result is how many <em>failures</em> land in that held-back set: at least <span data-fixed>5</span> per criterion. Most replies are fine, so {{n labelsNeeded.0.labels}} labels held back only {{n labelsNeeded.0.heldBack}} replies, with {{n labelsNeeded.0.byCriterion.tone.heldBackFailures}} to {{n labelsNeeded.0.byCriterion.accurate.heldBackFailures}} failures per criterion. In real data failures are often rarer still, so you may need more.</p>
   <div data-ix="labels">{{block labelsTable}}</div>
-  <p>Labelling {{n labelsNeeded.0.labels}} replies, a common first instinct, holds back only {{n labelsNeeded.0.heldBack}}, too few failures on every criterion to decide anything. In real data failures are often rarer still, so the number needed is driven by how many failures you can hold back, not by how many replies you label.</p>
+  <p>If you plan to check an AI judge, budget for hundreds of labels, and count the failures you hold back, not the replies you label. (The tool also requires the catch-rate range to be no wider than <span data-fixed>30</span> points.)</p>
 </section>
 
 <section aria-labelledby="more-h">
@@ -137,8 +143,15 @@
   <h3>The cheapest model obeyed a hidden instruction</h3>
   <p>Four replies carried a planted note to the judge:</p>
   <p class="ex-text inj">{{block injectionText}}</p>
-  <p>{{text models.haiku.label}} changed {{n models.haiku.flips.length}} of {{n models.haiku.injectionPairs}} verdicts because of it, from unclear to pass. {{text models.sonnet.label}} and {{text models.opus.label}} changed none. Sonnet was chosen: Opus agreed slightly more, but within the tie rule set before the runs, at a higher cost.</p>
+  <p>{{text models.haiku.label}} changed {{n models.haiku.flips.length}} of {{n models.haiku.injectionPairs}} verdicts because of it, from unclear to pass. {{text models.sonnet.label}} and {{text models.opus.label}} changed none.</p>
   {{block modelsTable}}
+  <h3>The most expensive model isn't automatically the right judge</h3>
+  <p>With clear criteria, {{text models.opus.label}} agreed with the key slightly more than {{text models.sonnet.label}} (kappa {{k models.opus.kappa}} against {{k models.sonnet.kappa}}) at {{times derived.opusVsSonnet}} the cost per reply. Both cleared every bar, so the extra spend bought little, and Sonnet was chosen under the tie rule set before the runs. {{text models.haiku.label}} was by far the cheapest ({{text models.sonnet.label}} cost {{times derived.sonnetVsHaiku}} as much per reply) and caught every planted failure, but obeyed the hidden instruction: the failure that matters most when the replies you grade come from outside. Choose the cheapest model that clears every bar you set before looking, including a safety bar, and check again when the task changes.</p>
+  <div class="ix-only" hidden>
+    <h3>Pick a judge model yourself</h3>
+    <p>Tick the bars you'd require and set how many replies you'd grade a month. The pick is the cheapest model that clears every ticked bar.</p>
+    <div data-ix="picker"></div>
+  </div>
 
   <h3>People draw the same lines differently</h3>
   <p>I labelled {{n blind.replies}} random replies blind, without seeing the answer key or the judge. I agreed with the key on {{n blind.agree}} of {{n blind.labels}} labels (kappa {{k blind.kappa}}) and with the judge on {{n blind.vsJudge.agree}} of {{n blind.vsJudge.n}}. Every disagreement was on the line between "Accurate" and "Answers the question", the line the judge found hardest too.</p>
@@ -152,15 +165,10 @@
 <section aria-labelledby="take-h">
   <h2 id="take-h">What to take away</h2>
   <ul class="takeaways moderator">
-    <li><strong>Write criteria that each judge one thing, and measure agreement, not just catch rate.</strong> A stronger judge won't make up for vague criteria.</li>
-    <li><strong>Count held-back failures, not labelled replies.</strong></li>
-    <li><strong>The most expensive model isn't automatically the right judge.</strong> {{text models.opus.label}} agreed with the key slightly more than {{text models.sonnet.label}} (kappa {{k models.opus.kappa}} against {{k models.sonnet.kappa}}) at {{times derived.opusVsSonnet}} the cost per reply. Both cleared every bar, so the extra spend bought little here. {{text models.haiku.label}} was by far the cheapest ({{text models.sonnet.label}} cost {{times derived.sonnetVsHaiku}} as much per reply) and caught every planted failure, but obeyed a hidden instruction: the failure that matters most when the replies you grade come from outside. Choose the cheapest model that clears every bar you set before looking, including a safety bar, and check again when the task changes.</li>
+    <li><strong>Write clear criteria, each judging one thing.</strong> That's what made the judge trustworthy.</li>
+    <li><strong>Fix vague criteria before paying for a bigger model, and check what the judge fails that it shouldn't.</strong> Catch rate alone hides the problem.</li>
+    <li><strong>Budget for hundreds of labels, not dozens.</strong> Count the failures you hold back, not the replies you label.</li>
   </ul>
-  <div class="ix-only" hidden>
-    <h3>Pick a judge model yourself</h3>
-    <p>Tick the bars you'd require and set how many replies you'd grade a month. The pick is the cheapest model that clears every ticked bar.</p>
-    <div data-ix="picker"></div>
-  </div>
 </section>
 
 <section aria-labelledby="scale-h">
